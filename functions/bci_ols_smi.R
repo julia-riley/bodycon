@@ -5,7 +5,7 @@
 # It was partially inspired by Peig & Green (2009) and was adapted from code by Chen-Pan Liao (https://apansharing.blogspot.com/2018/05/an-r-function-olsrobust-caled-mass-index.html)
 
 
-bci <- function(body_size, weight, method, print) {
+bci <- function(body_size, weight, method, print) { #should I put in a data argument here?
     
   require(smatr)
   require(magrittr)
