@@ -1,13 +1,15 @@
 
 #' Body Condition Index Estimation using Residuals from an OLS Regression
 #'
-#' @description 
-#'
+#' @description
+#' This function calculates body condition indices from the residuals of an ordinary least squares regression (OLS). This is a traditional approach in ecology as outlined by \insertCite{krebs1993;textual}{bodycon}. There is discussion whether it is the most robust approach \insertCite{schulte2005,peig2009}{bodycon}, how its appropriateness may vary by taxon \insertCite{jakob1996,buancilua2010,labocha2012}{bodycon}, and whether or not it fits the assumptions of certain statistical tests \insertCite{garcia2001}{bodycon}. 
+#' 
 #' @param data tibble/dataframe containing a standard body size variable and the corresponding weight for each individual of one animal species
 #' @param body_size name of standard body size variable (e.g., snout-vent-length of reptiles, tarsus length of birds, length from the snout to the base of the tail for mammals, etc.)
 #' @param weight name of weight variable (e.g., mass of the animal)
 #'
-#' @returns
+#' @returns a vector of body condition indices for each individual estimates that are the residuals from an OLS regression
+#' 
 #' @importFrom Rdpack reprompt
 #' 
 #' @references 
@@ -15,7 +17,19 @@
 #'      \insertAllCited{}
 #'      }
 #'
-#' @examples FONT! What do we do here?
+#' @examples 
+#' # In this examples we will make use of the Hawks dataset in the Stat2Data R package
+#' # This dataset contains the weight (in grams) and tarsus length (in mm) of three North American Hawk species
+#' # To estimate body condition indices (using residuals from an OLS) for the Red-tailed Hawks from this dataset, one could:
+#' 
+#' # library(Stat2Data)
+#' # library(bodycon)
+#' # data(Hawks) 
+#' # Hawks |>
+#' #   filter(species == "RT") |>
+#' #   bci_resid_ols(Tarsus, Weight)
+#' 
+#' # Note to Fonti: The above is a potential example? We could write it a different way. If we add additional arguments (like whether or not data is log-transformed), then we would also have to add examples with those.
 #' 
 bci_resid_ols <- function(data, body_size, weight){
 
@@ -55,7 +69,18 @@ bci_resid_ols <- function(data, body_size, weight){
 #'      }
 #' 
 #' @examples 
-#' FONTI? WHAT DO WE DO HERE?
+#' # In this examples we will make use of the Hawks dataset in the Stat2Data R package
+#' # This dataset contains the weight (in grams) and tarsus length (in mm) of three North American Hawk species
+#' # To estimate body condition indices (using the scaled mass index with OLS) for the Red-tailed Hawks from this dataset, one could:
+#' 
+#' # library(Stat2Data)
+#' # library(bodycon)
+#' # data(Hawks) 
+#' # Hawks |>
+#' #   filter(species == "RT") |>
+#' #   bci_smi_ols(Tarsus, Weight)
+#' 
+#' # Note to Fonti: The above is a potential example? We could write it a different way. If we add additional arguments, then we would also have to add examples with those.
 #' 
 bci_smi_ols <- function(data, body_size, weight){
   #browser()
