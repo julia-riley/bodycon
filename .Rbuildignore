@@ -1,3 +1,9 @@
 ^R_package_body_condition\.Rproj$
 ^\.Rproj\.user$
 ^data-raw$
+^doc$
+^Meta$
+^LICENSE\.md$
+^bodycon.Rproj$
+
+^\.github$
