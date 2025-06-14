@@ -1,3 +1,7 @@
+<!-- badges: start -->
+  [![R-CMD-check](https://github.com/julia-riley/R_package_body_condition/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/julia-riley/R_package_body_condition/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
+
 Body Condition Indices - R Package
 
 This R package is aimed at creating functions to calculate body condition of animals from ordinary least sqaures (OLS) regression or using the scaled mass index (SMI) created by Peig and Green.
