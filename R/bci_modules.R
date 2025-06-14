@@ -10,12 +10,9 @@
 #'
 #' @returns a vector of body condition indices for each individual estimates that are the residuals from an OLS regression
 #' 
-#' @importFrom Rdpack reprompt
 #' 
 #' @references 
-#'   \references{
-#'      \insertAllCited{}
-#'      }
+#'   \insertAllCited{}
 #'
 #' @examples 
 #' # In this examples we will make use of the Hawks dataset in the Stat2Data R package
@@ -61,24 +58,21 @@ bci_resid_ols <- function(data, body_size, weight){
 #' @param weight name of weight variable (e.g., mass of the animal)
 #' 
 #' @return a vector of body condition indices for each individual estimates using the SMI method using an OLS regression
-#' @importFrom Rdpack reprompt
 #' 
 #' @references 
-#'   \references{
-#'      \insertAllCited{}
-#'      }
+#'  \insertAllCited{}
 #' 
 #' @examples 
 #' # In this examples we will make use of the Hawks dataset in the Stat2Data R package
 #' # This dataset contains the weight (in grams) and tarsus length (in mm) of three North American Hawk species
 #' # To estimate body condition indices (using the scaled mass index with OLS) for the Red-tailed Hawks from this dataset, one could:
 #' 
-#' # library(Stat2Data)
-#' # library(bodycon)
-#' # data(Hawks) 
-#' # Hawks |>
-#' #   filter(species == "RT") |>
-#' #   bci_smi_ols(Tarsus, Weight)
+#' library(Stat2Data)
+#' library(bodycon)
+#' data(Hawks) 
+#' Hawks |>
+#'   dplyr::filter(species == "RT") |>
+#'   bci_smi_ols(Tarsus, Weight)
 #' 
 #' # Note to Fonti: The above is a potential example? We could write it a different way. If we add additional arguments, then we would also have to add examples with those.
 #' 
