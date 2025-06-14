@@ -6,3 +6,6 @@ literature/
 .DS_Store
 
 hex_sticker_drafts.pptx
+inst/doc
+/doc/
+/Meta/

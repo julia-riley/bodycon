@@ -1,8 +1,12 @@
-
 #' Body Condition Index Estimation using Residuals from an OLS Regression
 #'
 #' @description
-#' This function calculates body condition indices from the residuals of an ordinary least squares regression (OLS). This is a traditional approach in ecology as outlined by \insertCite{krebs1993;textual}{bodycon}. There is discussion whether it is the most robust approach \insertCite{schulte2005,peig2009}{bodycon}, how its appropriateness may vary by taxon \insertCite{jakob1996,buancilua2010,labocha2012}{bodycon}, and whether or not it fits the assumptions of certain statistical tests \insertCite{garcia2001}{bodycon}. 
+#' This function calculates body condition indices from the residuals of an ordinary 
+#' least squares regression (OLS). This is a traditional approach in ecology as outlined 
+#' by \insertCite{krebs1993;textual}{bodycon}. There is discussion whether it is the most 
+#' robust approach \insertCite{schulte2005,peig2009}{bodycon}, how its appropriateness
+#' may vary by taxon \insertCite{jakob1996,buancilua2010,labocha2012}{bodycon}, and whether
+#' or not it fits the assumptions of certain statistical tests \insertCite{garcia2001}{bodycon}. 
 #' 
 #' @param data tibble/dataframe containing a standard body size variable and the corresponding weight for each individual of one animal species
 #' @param body_size name of standard body size variable (e.g., snout-vent-length of reptiles, tarsus length of birds, length from the snout to the base of the tail for mammals, etc.)
@@ -16,18 +20,22 @@
 #'
 #' @examples 
 #' # In this examples we will make use of the Hawks dataset in the Stat2Data R package
-#' # This dataset contains the weight (in grams) and tarsus length (in mm) of three North American Hawk species
-#' # To estimate body condition indices (using residuals from an OLS) for the Red-tailed Hawks from this dataset, one could:
+#' # This dataset contains the weight (in grams) and tarsus length (in mm) of three North
+#' # American Hawk species
+#' # To estimate body condition indices (using residuals from an OLS) for the Red-tailed
+#' # Hawks from this dataset, one could:
+#' \dontrun{
+#' library(Stat2Data)
+#' library(bodycon)
+#' data("Hawks") 
+#' Hawks |>
+#'    dplyr::filter(Species == "RT") |>
+#'    bci_resid_ols(Tarsus, Weight)
 #' 
-#' # library(Stat2Data)
-#' # library(bodycon)
-#' # data(Hawks) 
-#' # Hawks |>
-#' #   filter(species == "RT") |>
-#' #   bci_resid_ols(Tarsus, Weight)
-#' 
-#' # Note to Fonti: The above is a potential example? We could write it a different way. If we add additional arguments (like whether or not data is log-transformed), then we would also have to add examples with those.
-#' 
+#' # Note to Fonti: The above is a potential example? We could write it a different way.
+#' # If we add additional arguments (like whether or not data is log-transformed), 
+#' # then we would also have to add examples with those.
+#' }
 bci_resid_ols <- function(data, body_size, weight){
 
   # Create tmp data for log transformations
@@ -45,37 +53,50 @@ bci_resid_ols <- function(data, body_size, weight){
 }
 
 
-
-
 #' Scaled Mass Body Condition Index Estimation with OLS Regression
 #' @description 
-#' This function calculates body condition indices using the scaled mass index (SMI method) as described in \insertCite{peig2009;textual}{bodycon}. Specifically, this methods uses ordinary least squares regression in its estimation of the body condition indices. Yet, this method is sensitive to the presence of outliers (i.e., data points that may distort the expected relationship between body length and weight), and so SMI estimation using robust regression (see function `name`) may be more appropriate in cases where outliers are present.
+#' This function calculates body condition indices using the scaled mass index (SMI method)
+#' as described in \insertCite{peig2009;textual}{bodycon}. Specifically, this methods
+#' uses ordinary least squares regression in its estimation of the body condition indices.
+#' Yet, this method is sensitive to the presence of outliers (i.e., data points that may
+#' distort the expected relationship between body length and weight), and so SMI estimation
+#' using robust regression (see function `name`) may be more appropriate in cases where
+#' outliers are present.
 
-#' #NOTE: FONTI, can we refer to another function in this text? Also, I am not sure if I used the correct notation for a citation; trying something to figure out the references here.
+#' #NOTE: FONTI, can we refer to another function in this text?
+#' #Also, I am not sure if I used the correct notation for a citation;
+#' trying something to figure out the references here.
 
-#' @param data tibble/dataframe containing a standard body size variable and the corresponding weight for each individual of one animal species
-#' @param body_size name of standard body size variable (e.g., snout-vent-length of reptiles, tarsus length of birds, length from the snout to the base of the tail for mammals, etc.)
+#' @param data tibble/dataframe containing a standard body size variable and the 
+#' corresponding weight for each individual of one animal species
+#' @param body_size name of standard body size variable (e.g., snout-vent-length 
+#' of reptiles, tarsus length of birds, length from the snout to the base of the 
+#' tail for mammals, etc.)
 #' @param weight name of weight variable (e.g., mass of the animal)
 #' 
-#' @return a vector of body condition indices for each individual estimates using the SMI method using an OLS regression
-#' 
+#' @return a vector of body condition indices for each individual estimates using 
+#' the SMI method using an OLS regression
+#' @export
 #' @references 
 #'  \insertAllCited{}
 #' 
 #' @examples 
 #' # In this examples we will make use of the Hawks dataset in the Stat2Data R package
-#' # This dataset contains the weight (in grams) and tarsus length (in mm) of three North American Hawk species
-#' # To estimate body condition indices (using the scaled mass index with OLS) for the Red-tailed Hawks from this dataset, one could:
-#' 
+#' # This dataset contains the weight (in grams) and tarsus length (in mm) of 
+#' # three North American Hawk species
+#' # To estimate body condition indices (using the scaled mass index with OLS)
+#' # for the Red-tailed Hawks from this dataset, one could:
+#' \dontrun{
 #' library(Stat2Data)
 #' library(bodycon)
-#' data(Hawks) 
+#' data("Hawks") 
 #' Hawks |>
-#'   dplyr::filter(species == "RT") |>
+#'   dplyr::filter(Species == "RT") |>
 #'   bci_smi_ols(Tarsus, Weight)
 #' 
-#' # Note to Fonti: The above is a potential example? We could write it a different way. If we add additional arguments, then we would also have to add examples with those.
-#' 
+#' # Note to Fonti: The above is a potential example? We could write it a different way.
+#' # If we add additional arguments, then we would also have to add examples with those.
+#' }
 bci_smi_ols <- function(data, body_size, weight){
   #browser()
   

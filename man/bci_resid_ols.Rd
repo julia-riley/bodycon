@@ -17,22 +17,31 @@ bci_resid_ols(data, body_size, weight)
 a vector of body condition indices for each individual estimates that are the residuals from an OLS regression
 }
 \description{
-This function calculates body condition indices from the residuals of an ordinary least squares regression (OLS). This is a traditional approach in ecology as outlined by \insertCite{krebs1993;textual}{bodycon}. There is discussion whether it is the most robust approach \insertCite{schulte2005,peig2009}{bodycon}, how its appropriateness may vary by taxon \insertCite{jakob1996,buancilua2010,labocha2012}{bodycon}, and whether or not it fits the assumptions of certain statistical tests \insertCite{garcia2001}{bodycon}.
+This function calculates body condition indices from the residuals of an ordinary
+least squares regression (OLS). This is a traditional approach in ecology as outlined
+by \insertCite{krebs1993;textual}{bodycon}. There is discussion whether it is the most
+robust approach \insertCite{schulte2005,peig2009}{bodycon}, how its appropriateness
+may vary by taxon \insertCite{jakob1996,buancilua2010,labocha2012}{bodycon}, and whether
+or not it fits the assumptions of certain statistical tests \insertCite{garcia2001}{bodycon}.
 }
 \examples{
 # In this examples we will make use of the Hawks dataset in the Stat2Data R package
-# This dataset contains the weight (in grams) and tarsus length (in mm) of three North American Hawk species
-# To estimate body condition indices (using residuals from an OLS) for the Red-tailed Hawks from this dataset, one could:
+# This dataset contains the weight (in grams) and tarsus length (in mm) of three North
+# American Hawk species
+# To estimate body condition indices (using residuals from an OLS) for the Red-tailed
+# Hawks from this dataset, one could:
+\dontrun{
+library(Stat2Data)
+library(bodycon)
+data("Hawks") 
+Hawks |>
+   dplyr::filter(Species == "RT") |>
+   bci_resid_ols(Tarsus, Weight)
 
-# library(Stat2Data)
-# library(bodycon)
-# data(Hawks) 
-# Hawks |>
-#   filter(species == "RT") |>
-#   bci_resid_ols(Tarsus, Weight)
-
-# Note to Fonti: The above is a potential example? We could write it a different way. If we add additional arguments (like whether or not data is log-transformed), then we would also have to add examples with those.
-
+# Note to Fonti: The above is a potential example? We could write it a different way.
+# If we add additional arguments (like whether or not data is log-transformed), 
+# then we would also have to add examples with those.
+}
 }
 \references{
 \insertAllCited{}

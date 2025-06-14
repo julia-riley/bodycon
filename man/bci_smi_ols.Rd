@@ -7,33 +7,48 @@
 bci_smi_ols(data, body_size, weight)
 }
 \arguments{
-\item{data}{tibble/dataframe containing a standard body size variable and the corresponding weight for each individual of one animal species}
+\item{data}{tibble/dataframe containing a standard body size variable and the
+corresponding weight for each individual of one animal species}
 
-\item{body_size}{name of standard body size variable (e.g., snout-vent-length of reptiles, tarsus length of birds, length from the snout to the base of the tail for mammals, etc.)}
+\item{body_size}{name of standard body size variable (e.g., snout-vent-length
+of reptiles, tarsus length of birds, length from the snout to the base of the
+tail for mammals, etc.)}
 
 \item{weight}{name of weight variable (e.g., mass of the animal)}
 }
 \value{
-a vector of body condition indices for each individual estimates using the SMI method using an OLS regression
+a vector of body condition indices for each individual estimates using
+the SMI method using an OLS regression
 }
 \description{
-This function calculates body condition indices using the scaled mass index (SMI method) as described in \insertCite{peig2009;textual}{bodycon}. Specifically, this methods uses ordinary least squares regression in its estimation of the body condition indices. Yet, this method is sensitive to the presence of outliers (i.e., data points that may distort the expected relationship between body length and weight), and so SMI estimation using robust regression (see function \code{name}) may be more appropriate in cases where outliers are present.
-#NOTE: FONTI, can we refer to another function in this text? Also, I am not sure if I used the correct notation for a citation; trying something to figure out the references here.
+This function calculates body condition indices using the scaled mass index (SMI method)
+as described in \insertCite{peig2009;textual}{bodycon}. Specifically, this methods
+uses ordinary least squares regression in its estimation of the body condition indices.
+Yet, this method is sensitive to the presence of outliers (i.e., data points that may
+distort the expected relationship between body length and weight), and so SMI estimation
+using robust regression (see function \code{name}) may be more appropriate in cases where
+outliers are present.
+#NOTE: FONTI, can we refer to another function in this text?
+#Also, I am not sure if I used the correct notation for a citation;
+trying something to figure out the references here.
 }
 \examples{
 # In this examples we will make use of the Hawks dataset in the Stat2Data R package
-# This dataset contains the weight (in grams) and tarsus length (in mm) of three North American Hawk species
-# To estimate body condition indices (using the scaled mass index with OLS) for the Red-tailed Hawks from this dataset, one could:
-
+# This dataset contains the weight (in grams) and tarsus length (in mm) of 
+# three North American Hawk species
+# To estimate body condition indices (using the scaled mass index with OLS)
+# for the Red-tailed Hawks from this dataset, one could:
+\dontrun{
 library(Stat2Data)
 library(bodycon)
-data(Hawks) 
+data("Hawks") 
 Hawks |>
-  dplyr::filter(species == "RT") |>
+  dplyr::filter(Species == "RT") |>
   bci_smi_ols(Tarsus, Weight)
 
-# Note to Fonti: The above is a potential example? We could write it a different way. If we add additional arguments, then we would also have to add examples with those.
-
+# Note to Fonti: The above is a potential example? We could write it a different way.
+# If we add additional arguments, then we would also have to add examples with those.
+}
 }
 \references{
 \insertAllCited{}
