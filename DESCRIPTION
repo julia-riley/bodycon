@@ -19,3 +19,6 @@ Suggests:
     rmarkdown,
     Stat2Data
 VignetteBuilder: knitr
+Depends: 
+    R (>= 3.5)
+LazyData: true
