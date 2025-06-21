@@ -28,8 +28,8 @@ correct notation for a citation; trying something to figure out the references h
 \examples{
 # In this examples we will make use of the Hawks dataset in the Stat2Data R package
 # This dataset contains the weight (in grams) and tarsus length (in mm) of three North American 
-Hawk species. To estimate body condition indices (using the scaled mass index with a robust regression)
-for the Red-tailed Hawks from this dataset, one could:
+# Hawk species. To estimate body condition indices (using the scaled mass index with a robust regression)
+# for the Red-tailed Hawks from this dataset, one could:
 
 # library(Stat2Data)
 # library(bodycon)
