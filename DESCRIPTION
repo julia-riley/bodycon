@@ -12,7 +12,8 @@ Imports:
     smatr,
     Rdpack,
     dplyr,
-    stats
+    stats,
+    MASS
 RdMacros: Rdpack
 Suggests: 
     knitr,

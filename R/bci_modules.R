@@ -121,26 +121,28 @@ bci_smi_ols <- function(data, body_size, weight){
 
 #' Scaled Mass Body Condition Index Estimation with Robust Regression
 #' @description 
-#' This function calculates body condition indices using the scaled mass index (SMI method) as described in \insertCite{peig2009;textual}{bodycon}. Specifically, this methods uses robust regression using an M estimator (from the MASS R package) \insertCite{venables2002}{bodycon} in its estimation of the body condition indices. This method is less sensitive to the presence of outliers (i.e., data points that may distort the expected relationship between body length and weight), as shown in [this blog by by Chen-Pan Liao](https://apansharing.blogspot.com/2018/05/an-r-function-olsrobust-caled-mass-index.html).
-
-#' #Note to Fonti: Can we refer to a link in this text? Also, I am not sure if I used the correct notation for a citation; trying something to figure out the references here.
-
-#' @param data tibble/dataframe containing a standard body size variable and the corresponding weight for each individual of one animal species
-#' @param body_size name of standard body size variable (e.g., snout-vent-length of reptiles, tarsus length of birds, length from the snout to the base of the tail for mammals, etc.)
+#' This function calculates body condition indices using the scaled mass index (SMI method)
+#'  as described in \insertCite{peig2009;textual}{bodycon}. Specifically, this methods uses robust regression using an M estimator (from the MASS R package) \insertCite{venables2002}{bodycon} in its estimation of the body condition indices. This method is less sensitive to the presence of outliers (i.e., data points that may distort the expected relationship between body length and weight), as shown in [this blog by by Chen-Pan Liao](https://apansharing.blogspot.com/2018/05/an-r-function-olsrobust-caled-mass-index.html).
+#' #Note to Fonti: Can we refer to a link in this text? Also, I am not sure if I used the 
+#' correct notation for a citation; trying something to figure out the references here.
+#' @param data tibble/dataframe containing a standard body size variable and the corresponding 
+#' weight for each individual of one animal species
+#' @param body_size name of standard body size variable (e.g., snout-vent-length of reptiles, 
+#' tarsus length of birds, length from the snout to the base of the tail for mammals, etc.)
 #' @param weight name of weight variable (e.g., mass of the animal)
 #' 
-#' @return a vector of body condition indices for each individual estimates using the SMI method using a robust regression
+#' @return a vector of body condition indices for each individual estimates using the SMI
+#'  method using a robust regression
 #' @importFrom Rdpack reprompt
 #' 
 #' @references 
-#'   \references{
-#'      \insertAllCited{}
-#'      }
+#'   \insertAllCited{}
 #' 
 #' @examples 
 #' # In this examples we will make use of the Hawks dataset in the Stat2Data R package
-#' # This dataset contains the weight (in grams) and tarsus length (in mm) of three North American Hawk species
-#' # To estimate body condition indices (using the scaled mass index with a robust regression) for the Red-tailed Hawks from this dataset, one could:
+#' # This dataset contains the weight (in grams) and tarsus length (in mm) of three North American 
+#' # Hawk species. To estimate body condition indices (using the scaled mass index with a robust regression)
+#' # for the Red-tailed Hawks from this dataset, one could:
 #' 
 #' # library(Stat2Data)
 #' # library(bodycon)
@@ -149,7 +151,8 @@ bci_smi_ols <- function(data, body_size, weight){
 #' #   filter(species == "RT") |>
 #' #   bci_smi_rob(Tarsus, Weight)
 #' 
-#' # Note to Fonti: The above is a potential example? We could write it a different way. If we add additional arguments, then we would also have to add examples with those. This example also does not really include outliers? Does that matter?
+#' # Note to Fonti: The above is a potential example? We could write it a different way.
+#' # If we add additional arguments, then we would also have to add examples with those. This example also does not really include outliers? Does that matter?
 #' 
 bci_smi_rob <- function(data, body_size, weight){
   #browser()
