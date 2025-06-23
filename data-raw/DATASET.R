@@ -5,8 +5,6 @@ library(dplyr)
 # Snake Data 
 snake_data <- read_csv("data-raw/issac acker_snake_data.csv")
 
-glimpse(snake_data)
-table(snake_data$species)
 
 gartersnake <- 
   snake_data |>
@@ -34,6 +32,5 @@ salamander <-
          !is.na(mass_g)) |>
     dplyr::select("salamander_ID", "sex", "morph", "gravid", "age", "mass_g", "svl_mm", "total_length_mm")
 
-dim(erbs_data)
 
 usethis::use_data(gartersnake, salamander, overwrite = TRUE)
