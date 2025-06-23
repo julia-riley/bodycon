@@ -5,7 +5,7 @@
 #' associated with this data is:  Acker I, Baxter-Gilbert J, Riley JL. In press. Assessing the presence of 
 #' Ophidiomyces ophiodiicola on snakes in New Brunswick and Nova Scotia. Herpetological Conservation & Biology.
 #' 
-#' @format ## `gartersnake_data`
+#' @format ## `gartersnake`
 #' A data frame with 46 rows and 6 columns:
 #' \describe{
 #'   \item{id_num}{A unique identifier for each individual snake measured.}
@@ -16,7 +16,7 @@
 #'   \item{total_length_mm}{Total length in mm of the snake.}
 #' }
 #' @source <ADD DOI AFTER PUBLISHED>
-"gartersnake_data"
+"gartersnake"
 
 
 #' Eastern Red-backed Salamander Size and Mass Data from New Brunswick
@@ -27,7 +27,7 @@
 #' Application Improves Plethodontid Salamander Habitat Conditions in Regenerating Clear-cut Forests. Canadian 
 #' Journal of Forest Research. DOI: https://doi.org/10.1139/cjfr-2024-0294
 #'
-#' @format ## `erbs_data`
+#' @format ## `salamander`
 #' A data frame with 183 rows and 8 columns:
 #' \describe{
 #'   \item{salamander_ID}{A unique identifier for each individual salamander measured.}
@@ -40,4 +40,4 @@
 #'   \item{total_length_mm}{Total length in mm of the salamander.}
 #' }
 #' @source <https://doi.org/10.1139/cjfr-2024-0294>
-"erbs_data"
+"salamander"
