@@ -1,6 +1,6 @@
 ---
-title: "bodycon"
-author: "Julia Riley"
+title: "bodycon Quick Start Guide"
+author: "Julia Riley & Fonti Kar"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -17,83 +17,101 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+*bodycon* is an R package for calculating commonly-used body condition indices in wildlife ecology research. In this research field, an individual's fitness traits, like reproduction and survival, are the primary metrics used to quantify an animal's health, biology, and evolution. Yet, direct fitness measures like these can be un unfeasible to collect in the field due to financial or logistical research constraints. So, in these cases, animal ecologists often rely on proxies of individual fitness, such as body condition. In general, individuals in better body condition (that are also assumed to have greater energy reserves) experience higher survival and reproductive success than individuals in inferior body condition. This impact of body condition on fitness parameters has been documented across a diversity of taxa. One widely used method of estimating body condition is to relate body mass to a linear measure of body size, but this can be calculated in a variety of ways. This R package contains functions to for commonly-used methods of calculation of body condition indices; and we hope to continue to develop this R package to expand the taxa it can be applied to moving forward.
+
+# Installation
+
+To install from CRAN:
+```{r}
+install.packages("bodycon")
+```
+
+Or install the development version from GitHub:
+```{r}
+install.packages("remotes")
+remotes::install_github("bodycon") #Fonti, is this correct?
+```
+
+Load the package:
+```{r}
 library(bodycon)
 ```
 
-#### Loading the SMI Functions
-```{r}
-# Inspired by Peig & Green
-#    "New perspectives for estimating body condition from mass/length data:
-#     the scaled mass index as an alternative method"
-#     Oikos 118: 1883-1891, 2009
-# Author: Chen-Pan Liao
-scaledMassIndex <-
-  function(x, y, x.0 = mean(x)) {
-    require(smatr)
-    require(magrittr)
-    require(MASS)
-    require(data.table)
-    logM.ols <- lm(log(y) ~ log(x))
-    logM.rob <- rlm(log(y) ~ log(x), method = "M")
-    b.msa.ols <- coef(sma(log(y) ~ log(x)))[2]
-    b.msa.rob <- coef(sma(log(y) ~ log(x), robust = T))[2]
-    SMI.ols <- y * (x.0 / x)^b.msa.ols
-    SMI.rob <- y * (x.0 / x)^b.msa.rob
-    res <- data.frame(SMI.ols, SMI.rob, x, y)
-    pred.DT <-
-      data.table(x = seq(min(x), max(x), length = 100)) %>%
-      .[, y.ols := predict(logM.ols, newdata = .) %>% exp()] %>%
-      .[, y.rob := predict(logM.rob, newdata = .) %>% exp()]
-    attr(res, "b.msa") <- c(ols = b.msa.ols, rob = b.msa.rob)
-    return(res)
-  }
 
-scaledMassIndex_PRED <-
-  function(x, y, x.0 = mean(x)) {
-    require(smatr)
-    require(magrittr)
-    require(MASS)
-    require(data.table)
-    logM.ols <- lm(log(y) ~ log(x))
-    logM.rob <- rlm(log(y) ~ log(x), method = "M")
-    b.msa.ols <- coef(sma(log(y) ~ log(x)))[2]
-    b.msa.rob <- coef(sma(log(y) ~ log(x), robust = T))[2]
-    SMI.ols <- y * (x.0 / x)^b.msa.ols
-    SMI.rob <- y * (x.0 / x)^b.msa.rob
-    res <- data.frame(SMI.ols, SMI.rob, x, y)
-    pred.DT <-
-      data.table(x = seq(min(x), max(x), length = 100)) %>%
-      .[, y.ols := predict(logM.ols, newdata = .) %>% exp()] %>%
-      .[, y.rob := predict(logM.rob, newdata = .) %>% exp()]
-    attr(res, "b.msa") <- c(ols = b.msa.ols, rob = b.msa.rob)
-    return(pred.DT)
-  }
+# Package Datasets
+
+There are two datasets included in the bodycon R package. The first contains data on the morphology of 46 Maritime Gartersnakes (**Thamnophis sirtalis pallidulus**) collected in summer of 2022 in New Brunswick and Nova Scotia, Canada. The length measure is snout-vent-length (mm), which is the distance from the snake's snout to the posteror edge of their cloaca. The weight measure is mass (g).
+```{r}
+# View the first (Maritime Gartersnake) dataset
+glimpse(gartersnake)
 ```
 
-#### Loading the Libraries, Data & adding SMI
+There is also a second dataset that contains data on the morphology of 128 Eastern Red-backed Salamanders (**Plethodon cinereus**) that was collected the the summer of 2022 in New Brunswick, Canada. It also contains similar length (snout-vent-length in mm) and mass data for each individual salamander that can be used to calculate body condition indexes.
+```{r}
+# View the second (Eastern Red-backed Salamander) dataset
+glimpse(salamander)
+```
+
+
+# Calculation of body condition indexes
+
+There are a few functions you can use to calculate the body condition of animals. Both rely on a standardized length measurement (i.e., tarsus length for birds or snout-vent-length for reptiles) and a measure of weight. 
+
+## Body condition index estimation using residuals from an OLS regression
+
+This function calculates body condition indices from the residuals of an ordinary least squares regression (OLS). This is a traditional approach in ecology as outlined by \insertCite{krebs1993;textual}{bodycon}. The function for this is `bci_resid_ols` and please see the examples below of using it to calculate body condition of gartersnakes:
+
 ```{r}
 
-# loading libraries
-library(tidyverse)
-library(here)
+bci_resid_ols(gartersnake, svl_mm, mass_g)
 
-# loading data
-indiv_data <- read_csv("ex_sara leslie_individual_data.csv")
+# Piped version
+gartersnake |>
+  bci_resid_ols(svl_mm, mass_g)
 
-# adding body condition indices
-SMI_data <- indiv_data %>%
-  filter(
-    !is.na(mass_g),
-    !is.na(svl_mm),
-    species == "RB",
-    gravid == "n",
-    age == "A"
-  ) %>%
-  # adding scaled mass index
-  mutate((SMI_func <- scaledMassIndex(svl_mm, mass_g, x.0 = mean(svl_mm))))
+```
 
-head(SMI_data)
+
+## Scaled mass body condition index (SMI) estimation
+
+Yet, calculating body condition indices from the residuals of an ordinary least squares regression (OLS) has been crtiqued in the literature. There is discussion whether it is the most robust approach \insertCite{schulte2005,peig2009}{bodycon}, how its appropriateness may vary by taxon \insertCite{jakob1996,buancilua2010,labocha2012}{bodycon}, and whether or not it fits the assumptions of certain statistical tests \insertCite{garcia2001}{bodycon}. An alternative is the scaled mass index (SMI method) as described in \insertCite{peig2009;textual}{bodycon}, which can be estimated using either a OLS or robust regression (as described in [this code by Chen-Pan Liao](https://apansharing.blogspot.com/2018/05/an-r-function-olsrobust-caled-mass-index.html)).
+
+### With OLS regression
+
+Below is an example of using the SMI method's function using the ordinary least squares (OLS) regression in its estimation of the body condition indices for salamanders. Yet, this method is sensitive to the presence of outliers (i.e., data points that may distort the expected relationship between body length and weight), and so SMI estimation using robust regression (see function `bci_smi_rob`) may be more appropriate in cases where outliers are present.
+
+```{r}
+
+bci_smi_ols(salamander, svl_mm, mass_g)
+
+# Piped version
+salamander |>
+  bci_smi_ols(svl_mm, mass_g)
+
+```
+
+### With robust regression
+
+Below is an example of using the SMI method's function using the robust regression using an M estimator (from the MASS R package) \insertCite{venables2002}{bodycon} in its estimation of the body condition indices for salamanders. This method is less sensitive to the presence of outliers (i.e., data points that may distort the expected relationship between body length and weight), as shown in [this blog by by Chen-Pan Liao](https://apansharing.blogspot.com/2018/05/an-r-function-olsrobust-caled-mass-index.html).
+
+```{r}
+
+bci_smi_rob(salamander, svl_mm, mass_g)
+
+# Piped version
+salamander |>
+  bci_smi_rob(svl_mm, mass_g)
+
+```
+
+
+## Wrapping function to calculate multiple indexes at once
+
+
+# Visual comparison of body condition indices
+
+```{r}
+# Outline the R function that allows you to visually compare these methods
 ```
 
 #### Steps to Visualize Predictions
