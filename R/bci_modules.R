@@ -60,7 +60,7 @@ bci_resid_ols <- function(data, body_size, weight){
 #' uses ordinary least squares regression in its estimation of the body condition indices.
 #' Yet, this method is sensitive to the presence of outliers (i.e., data points that may
 #' distort the expected relationship between body length and weight), and so SMI estimation
-#' using robust regression (see function `name`) may be more appropriate in cases where
+#' using robust regression (see function `bci_smi_rob`) may be more appropriate in cases where
 #' outliers are present.
 #' #NOTE: FONTI, can we refer to another function in this text?
 #' #Also, I am not sure if I used the correct notation for a citation;
@@ -122,7 +122,7 @@ bci_smi_ols <- function(data, body_size, weight){
 #' Scaled Mass Body Condition Index Estimation with Robust Regression
 #' @description 
 #' This function calculates body condition indices using the scaled mass index (SMI method)
-#'  as described in \insertCite{peig2009;textual}{bodycon}. Specifically, this methods uses robust regression using an M estimator (from the MASS R package) \insertCite{venables2002}{bodycon} in its estimation of the body condition indices. This method is less sensitive to the presence of outliers (i.e., data points that may distort the expected relationship between body length and weight), as shown in [this blog by by Chen-Pan Liao](https://apansharing.blogspot.com/2018/05/an-r-function-olsrobust-caled-mass-index.html).
+#'  as described in \insertCite{peig2009;textual}{bodycon}. Specifically, this method uses robust regression using an M estimator (from the MASS R package) \insertCite{venables2002}{bodycon} in its estimation of the body condition indices. This method is less sensitive to the presence of outliers (i.e., data points that may distort the expected relationship between body length and weight), as shown in [this blog by by Chen-Pan Liao](https://apansharing.blogspot.com/2018/05/an-r-function-olsrobust-caled-mass-index.html).
 #' #Note to Fonti: Can we refer to a link in this text? Also, I am not sure if I used the 
 #' correct notation for a citation; trying something to figure out the references here.
 #' @param data tibble/dataframe containing a standard body size variable and the corresponding 
