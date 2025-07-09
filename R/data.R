@@ -12,7 +12,7 @@
 #'   \item{age_class}{Either J for juvenile or A for adult, depending on the age of the snake.}
 #'   \item{sex}{Either F for female, M for male, or NA if the snake was not sexually mature yet (i.e., a juvenile).}
 #'   \item{mass_g}{Mass, in grams, of the snake.}
-#'   \item{svl_mm}{Snout-vent length (SVL) in mm of the snake. SVL is the distance from the snake's snout to the posteror edge of their cloaca.}
+#'   \item{svl_mm}{Snout-vent length (SVL) in mm of the snake. SVL is the distance from the snake's snout to the anterior edge of their cloaca.}
 #'   \item{total_length_mm}{Total length in mm of the snake.}
 #' }
 #' @source <ADD DOI AFTER PUBLISHED>
@@ -36,7 +36,7 @@
 #'   \item{salamander_ID}{A unique identifier for each individual salamander measured.}
 #'   \item{age}{Either J for juvenile or A for adult, depending on the age of the salamander.}   
 #'   \item{mass_g}{Mass, in grams, of the salamander.}
-#'   \item{svl_mm}{Snout-vent length (SVL) in mm of the salamander. SVL is the distance from the individual's snout to the posteror edge of their cloaca.}
+#'   \item{svl_mm}{Snout-vent length (SVL) in mm of the salamander. SVL is the distance from the individual's snout to the anterior edge of their cloaca.}
 #'   \item{total_length_mm}{Total length in mm of the salamander.}
 #' }
 #' @source <https://doi.org/10.1139/cjfr-2024-0294>

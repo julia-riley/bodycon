@@ -40,7 +40,7 @@ library(bodycon)
 
 # Package Datasets
 
-There are two datasets included in the bodycon R package. The first contains data on the morphology of 46 Maritime Gartersnakes (**Thamnophis sirtalis pallidulus**) collected in summer of 2022 in New Brunswick and Nova Scotia, Canada. The length measure is snout-vent-length (mm), which is the distance from the snake's snout to the posteror edge of their cloaca. The weight measure is mass (g).
+There are two datasets included in the bodycon R package. The first contains data on the morphology of 46 Maritime Gartersnakes (**Thamnophis sirtalis pallidulus**) collected in summer of 2022 in New Brunswick and Nova Scotia, Canada. The length measure is snout-vent-length (mm), which is the distance from the snake's snout to the anterior edge of their cloaca. The weight measure is mass (g).
 ```{r}
 # View the first (Maritime Gartersnake) dataset
 glimpse(gartersnake)
