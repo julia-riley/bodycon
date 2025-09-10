@@ -74,7 +74,7 @@ gartersnake |>
 
 ## Scaled mass body condition index (SMI) estimation
 
-Yet, calculating body condition indices from the residuals of an ordinary least squares regression (OLS) has been crtiqued in the literature. There is discussion whether it is the most robust approach \insertCite{schulte2005,peig2009}{bodycon}, how its appropriateness may vary by taxon \insertCite{jakob1996,buancilua2010,labocha2012}{bodycon}, and whether or not it fits the assumptions of certain statistical tests \insertCite{garcia2001}{bodycon}. An alternative is the scaled mass index (SMI method) as described in \insertCite{peig2009;textual}{bodycon}, which can be estimated using either a OLS or robust regression (as described in [this code by Chen-Pan Liao](https://apansharing.blogspot.com/2018/05/an-r-function-olsrobust-caled-mass-index.html)).
+Yet, calculating body condition indices from the residuals of an ordinary least squares regression (OLS) has been critiqued in the literature. There is discussion whether it is the most robust approach \insertCite{schulte2005,peig2009}{bodycon}, how its appropriateness may vary by taxon \insertCite{jakob1996,buancilua2010,labocha2012}{bodycon}, and whether or not it fits the assumptions of certain statistical tests \insertCite{garcia2001}{bodycon}. An alternative is the scaled mass index (SMI method) as described in \insertCite{peig2009;textual}{bodycon}, which can be estimated using either a OLS or robust regression (as described in [this code by Chen-Pan Liao](https://apansharing.blogspot.com/2018/05/an-r-function-olsrobust-caled-mass-index.html)).
 
 ### With OLS regression
 
