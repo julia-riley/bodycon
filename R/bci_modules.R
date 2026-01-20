@@ -48,7 +48,7 @@ bci_resid_ols <- function(data, body_size, weight){
 #' Scaled Mass Body Condition Index Estimation with OLS Regression
 #' @description 
 #' This function calculates body condition indices using the scaled mass index (SMI method)
-#' as described in \insertCite{peig2009;textual}{bodycon}. Specifically, this methods
+#' as described in \insertCite{peig2009;textual}{bodycon}. Specifically, this method
 #' uses ordinary least squares regression in its estimation of the body condition indices.
 #' Yet, this method is sensitive to the presence of outliers (i.e., data points that may
 #' distort the expected relationship between body length and weight), and so SMI estimation
@@ -268,7 +268,7 @@ bci <- function(data, body_size, weight,
 #'   gartersnake,
 #'   svl_mm,
 #'   mass_g,
-#'   methods = c("resid_ols", "smi_ols", "smi_rob")
+#'   method = c("resid_ols", "smi_ols", "smi_rob")
 #'  )
 #'
 #' # Plot only BCI using the SMI method estimated with an robust regression
@@ -277,7 +277,7 @@ bci <- function(data, body_size, weight,
 #'   gartersnake,
 #'   svl_mm,
 #'   mass_g,
-#'   methods = c("smi_rob"),
+#'   method = c("smi_rob"),
 #'   group = sex
 #' )
 #'
@@ -287,7 +287,7 @@ bci <- function(data, body_size, weight,
 #'   gartersnake,
 #'   svl_mm,
 #'   mass_g,
-#'   methods = c("smi_ols", "smi_rob"),
+#'   method = c("smi_ols", "smi_rob"),
 #'   group = sex,
 #'   raw_colours = c("M" = "darkorange2", "F" = "mediumpurple"),
 #'   method_colours = c("OLS residuals" = "black", "SMI (robust)" = "navy")
@@ -299,7 +299,7 @@ bci <- function(data, body_size, weight,
 #'   gartersnake,
 #'   svl_mm,
 #'   mass_g,
-#'   methods = c("smi_ols"),
+#'   method = c("smi_ols"),
 #'   legend = FALSE
 #' )
 #' }
@@ -310,7 +310,7 @@ bci <- function(data, body_size, weight,
 #'   theme_classic labs scale_colour_manual theme
   #' @export
   plot_bci <- function(data, body_size, weight,
-                       methods = c("resid_ols", "smi_ols", "smi_rob"),
+                       method = c("resid_ols", "smi_ols", "smi_rob"),
                        group = NULL,
                        raw_colours = NULL,
                        method_colours = NULL,
@@ -359,7 +359,7 @@ bci <- function(data, body_size, weight,
     
     pred_lines <- list()
     
-    if ("resid_ols" %in% methods) {
+    if ("resid_ols" %in% method) {
       pred_lines$resid_ols <- data.frame(
         body_size = sort(x),
         weight = exp(predict(stats::lm(log(y) ~ log(x)),
@@ -368,7 +368,7 @@ bci <- function(data, body_size, weight,
       )
     }
     
-    if ("smi_ols" %in% methods) {
+    if ("smi_ols" %in% method) {
       pred_lines$smi_ols <- data.frame(
         body_size = x,
         weight = bci(data, {{ body_size }}, {{ weight }}, method = "smi_ols"),
@@ -376,7 +376,7 @@ bci <- function(data, body_size, weight,
       )
     }
     
-    if ("smi_rob" %in% methods) {
+    if ("smi_rob" %in% method) {
       pred_lines$smi_rob <- data.frame(
         body_size = x,
         weight = bci(data, {{ body_size }}, {{ weight }}, method = "smi_rob"),
