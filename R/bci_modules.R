@@ -133,17 +133,15 @@ bci_smi_ols <- function(data, body_size, weight){
 #'   \insertAllCited{}
 #' 
 #' @examples 
-#' # In this examples we will make use of the Hawks dataset in the Stat2Data R package
-#' # This dataset contains the weight (in grams) and tarsus length (in mm) of three North American 
-#' # Hawk species. To estimate body condition indices (using the scaled mass index with a robust regression)
-#' # for the Red-tailed Hawks from this dataset, one could:
-#' 
-#' # library(Stat2Data)
-#' # library(bodycon)
-#' # data(Hawks) 
-#' # Hawks |>
-#' #   filter(species == "RT") |>
-#' #   bci_smi_rob(Tarsus, Weight)
+#' # In this examples we will make use of the `gartersnake` dataset in this R package.
+#' # This dataset contains the mass (in grams) and snout-vent length (in mm) of 46 Maritime Gartersnakes.
+#' # To estimate body condition indices (using the scaled mass index with a robust regression)
+#' # for the gartersnakes from this dataset, one could:
+#'
+#' \dontrun{ 
+#' library(bodycon)
+#'   data("gartersnake") |>
+#'   bci_smi_rob(svl_mm, mass_g)
 #' 
 #' # Note to Fonti: The above is a potential example? We could write it a different way.
 #' # If we add additional arguments, then we would also have to add examples with those. This example also does not really include outliers? Does that matter?
