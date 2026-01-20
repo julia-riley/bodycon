@@ -19,18 +19,15 @@
 #'   \insertAllCited{}
 #'
 #' @examples 
-#' # In this examples we will make use of the Hawks dataset in the Stat2Data R package
-#' # This dataset contains the weight (in grams) and tarsus length (in mm) of three North
-#' # American Hawk species
-#' # To estimate body condition indices (using residuals from an OLS) for the Red-tailed
-#' # Hawks from this dataset, one could:
+#' # In this examples we will make use of the `gartersnake` dataset in this R package.
+#' # This dataset contains the mass (in grams) and snout-vent length (in mm) of 46 Maritime Gartersnakes.
+#' # To estimate body condition indices (using residuals from an OLS) for the gartersnakes
+#' # in this dataset, one could:
+#' 
 #' \dontrun{
-#' library(Stat2Data)
 #' library(bodycon)
-#' data("Hawks") 
-#' Hawks |>
-#'    dplyr::filter(Species == "RT") |>
-#'    bci_resid_ols(Tarsus, Weight)
+#' data("gartersnake")|>
+#'    bci_resid_ols(svl_mm, mass_g)
 #' 
 #' # Note to Fonti: The above is a potential example? We could write it a different way.
 #' # If we add additional arguments (like whether or not data is log-transformed), 
@@ -80,18 +77,15 @@ bci_resid_ols <- function(data, body_size, weight){
 #'  \insertAllCited{}
 #' 
 #' @examples 
-#' # In this examples we will make use of the Hawks dataset in the Stat2Data R package
-#' # This dataset contains the weight (in grams) and tarsus length (in mm) of 
-#' # three North American Hawk species
+#' # In this examples we will make use of the `gartersnake` dataset in this R package.
+#' # This dataset contains the mass (in grams) and snout-vent length (in mm) of 46 Maritime Gartersnakes.
 #' # To estimate body condition indices (using the scaled mass index with OLS)
-#' # for the Red-tailed Hawks from this dataset, one could:
+#' # for the gartersnakes this dataset, one could:
+#' 
 #' \dontrun{
-#' library(Stat2Data)
 #' library(bodycon)
-#' data("Hawks") 
-#' Hawks |>
-#'   dplyr::filter(Species == "RT") |>
-#'   bci_smi_ols(Tarsus, Weight)
+#' data("gartersnake")  |>
+#'   bci_smi_ols(svl_mm, mass_g)
 #' 
 #' # Note to Fonti: The above is a potential example? We could write it a different way.
 #' # If we add additional arguments, then we would also have to add examples with those.
@@ -176,5 +170,41 @@ bci_smi_rob <- function(data, body_size, weight){
 }
 
 
+#' Visualisation of Body Condition Index Method for Selection
+#' @description 
+#' This function creates a plot of your raw data with body condition estimation based on different methods. 
+#' This allows a visual comparison between methods to visually assess the fit fo each..
+#' @param data tibble/dataframe containing a standard body size variable and the corresponding 
+#' weight for each individual of one animal species
+#' @param body_size name of standard body size variable (e.g., snout-vent-length of reptiles, 
+#' tarsus length of birds, length from the snout to the base of the tail for mammals, etc.)
+#' @param weight name of weight variable (e.g., mass of the animal)
+#' 
+#' @return a plot of your raw data and predictors from more than one body condition index (as selected by you)
+#' 
+#' 
+#' @examples 
+#' # NEED TO PROVIDE
+#' 
 
+bci_smi_rob <- function(data, body_size, weight){
+  #browser()
+  
+  # Compute mean of body size
+  x0 = data |> dplyr::pull({{body_size}}) |> mean(na.rm = TRUE)
+  
+  # Create tmp data for log transformations
+  tmp_data <- data |> 
+    dplyr::select({{body_size}}, {{weight}}) |> 
+    dplyr::mutate(log_body_size = log({{body_size}}), #Note here about log-transformation: for the scale-mass index calculation of body condition, log-transformation needs to occur, so it cannot be an option for this module 
+                  log_weight = log({{weight}}))
+  
+  # Compute OLS
+  log_rob <- MASS::rlm(log_weight ~ log_body_size, method = "M", data = tmp_data)
+  b_msa_rob <- coef(smatr::sma(log_weight ~ log_body_size, robust = T, data = tmp_data))[2]   
+  bci <- tmp_data |> 
+    dplyr::mutate(bci_smi_rob = {{weight}} * (x0 / {{body_size}})^b_msa_rob)
+  
+  return(bci$bci_smi_rob)
+}
 
