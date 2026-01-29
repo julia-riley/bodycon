@@ -1,4 +1,4 @@
-test_that("multiplication works", {
+test_that("Plotting works", {
   # TODO: What are the expected output for these
   # TODO: Need vdiffr expect_dopplerganger
   
