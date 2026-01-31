@@ -19,12 +19,3 @@ FOLDER: functions
 
 FOLDER: literature
 - a variety or resources to use to make an R package as well as cite in the explaination for this R package 
-
-
-POTENTIAL R PACKAGE NAMES
-
-BodyCon
-
-ConditionIndexR
-
-TEST!!!!
