@@ -18,7 +18,9 @@ knitr::opts_chunk$set(
 ```
 
 ```{r hex-sticker, echo=FALSE, out.width='200px'}
-knitr::include_graphics("hex_sticker/hex_sticker.png")
+library(here)
+knitr::include_graphics(
+  here::here("inst", "hex_sticker", "hex_sticker.png"))
 ```
 
 *bodycon* is an R package for calculating commonly-used body condition indices in wildlife ecology research. In this research field, an individual's fitness traits, like reproduction and survival, are the primary metrics used to quantify an animal's health, biology, and evolution. Yet, direct fitness measures like these can be un unfeasible to collect in the field due to financial or logistical research constraints. So, in these cases, animal ecologists often rely on proxies of individual fitness, such as body condition. In general, individuals in better body condition (that are also assumed to have greater energy reserves) experience higher survival and reproductive success than individuals in inferior body condition. This impact of body condition on fitness parameters has been documented across a diversity of taxa. One widely used method of estimating body condition is to relate body mass to a linear measure of body size, but this can be calculated in a variety of ways. This R package contains functions to for commonly-used methods of calculation of body condition indices; and we hope to continue to develop this R package to expand the taxa it can be applied to moving forward.
