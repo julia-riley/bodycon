@@ -31,7 +31,7 @@ bci_resid_ols <- function(data, body_size, weight){
   # Create tmp data for log transformations
   tmp_data <- data |> 
     dplyr::select({{body_size}}, {{weight}}) |> 
-    dplyr::mutate(log_body_size = log({{body_size}}), #TODO: Possible option as an argument log-transform = TRUE as a default
+    dplyr::mutate(log_body_size = log({{body_size}}),
                   log_weight = log({{weight}}))
   
   # Compute OLS
@@ -76,7 +76,6 @@ bci_resid_ols <- function(data, body_size, weight){
 #'   bci_smi_ols(svl_mm, mass_g)
 #'   
 bci_smi_ols <- function(data, body_size, weight){
-  #browser()
   
   # Compute mean of body size
   x0 = data |> dplyr::pull({{body_size}}) |> mean(na.rm = TRUE)
@@ -84,7 +83,7 @@ bci_smi_ols <- function(data, body_size, weight){
   # Create tmp data for log transformations
   tmp_data <- data |> 
     dplyr::select({{body_size}}, {{weight}}) |> 
-    dplyr::mutate(log_body_size = log({{body_size}}), #Note here about log-transformation: for the scale-mass index calculation of body condition, log-transformation needs to occur, so it cannot be an option for this module 
+    dplyr::mutate(log_body_size = log({{body_size}}),
                   log_weight = log({{weight}}))
   
   # Compute OLS
@@ -126,7 +125,6 @@ bci_smi_ols <- function(data, body_size, weight){
 #'   bci_smi_rob(svl_mm, mass_g)
 #'   
 bci_smi_rob <- function(data, body_size, weight){
-  #browser()
   
   # Compute mean of body size
   x0 = data |> dplyr::pull({{body_size}}) |> mean(na.rm = TRUE)
@@ -134,7 +132,7 @@ bci_smi_rob <- function(data, body_size, weight){
   # Create tmp data for log transformations
   tmp_data <- data |> 
     dplyr::select({{body_size}}, {{weight}}) |> 
-    dplyr::mutate(log_body_size = log({{body_size}}), #Note here about log-transformation: for the scale-mass index calculation of body condition, log-transformation needs to occur, so it cannot be an option for this module 
+    dplyr::mutate(log_body_size = log({{body_size}}),
                   log_weight = log({{weight}}))
   
   # Compute OLS
