@@ -24,7 +24,6 @@
 #' # in this dataset, one could:
 #' 
 #' \dontrun{
-#' library(bodycon)
 #' gartersnake |>
 #'    bci_resid_ols(svl_mm, mass_g)
 #' }
@@ -75,7 +74,6 @@ bci_resid_ols <- function(data, body_size, weight){
 #' # for the gartersnakes this dataset, one could:
 #' 
 #' \dontrun{
-#' library(bodycon)
 #' gartersnake  |>
 #'   bci_smi_ols(svl_mm, mass_g)
 #' }
@@ -127,7 +125,6 @@ bci_smi_ols <- function(data, body_size, weight){
 #' # for the gartersnakes from this dataset, one could:
 #'
 #' \dontrun{ 
-#' library(bodycon)
 #' gartersnake |>
 #'   bci_smi_rob(svl_mm, mass_g)
 #' }
@@ -191,8 +188,6 @@ bci_smi_rob <- function(data, body_size, weight){
 #' # To estimate body condition indices for the gartersnakes this dataset, one could:
 #' 
 #' \dontrun{
-#' library(bodycon)
-#' 
 #' # BCI that is the residuals from an OLS regression
 #' gartersnake  |>
 #'   bci_smi_ols(svl_mm, mass_g, method = "resid_ols")
