@@ -23,10 +23,9 @@
 #' # To estimate body condition indices (using residuals from an OLS) for the gartersnakes
 #' # in this dataset, one could:
 #' 
-#' \dontrun{
 #' gartersnake |>
 #'    bci_resid_ols(svl_mm, mass_g)
-#' }
+#'    
 bci_resid_ols <- function(data, body_size, weight){
 
   # Create tmp data for log transformations
@@ -73,10 +72,9 @@ bci_resid_ols <- function(data, body_size, weight){
 #' # To estimate body condition indices (using the scaled mass index with OLS)
 #' # for the gartersnakes this dataset, one could:
 #' 
-#' \dontrun{
 #' gartersnake  |>
 #'   bci_smi_ols(svl_mm, mass_g)
-#' }
+#'   
 bci_smi_ols <- function(data, body_size, weight){
   #browser()
   
@@ -124,10 +122,9 @@ bci_smi_ols <- function(data, body_size, weight){
 #' # To estimate body condition indices (using the scaled mass index with a robust regression)
 #' # for the gartersnakes from this dataset, one could:
 #'
-#' \dontrun{ 
 #' gartersnake |>
 #'   bci_smi_rob(svl_mm, mass_g)
-#' }
+#'   
 bci_smi_rob <- function(data, body_size, weight){
   #browser()
   
@@ -187,7 +184,6 @@ bci_smi_rob <- function(data, body_size, weight){
 #' # This dataset contains the mass (in grams) and snout-vent length (in mm) of 46 Maritime Gartersnakes.
 #' # To estimate body condition indices for the gartersnakes this dataset, one could:
 #' 
-#' \dontrun{
 #' # BCI that is the residuals from an OLS regression
 #' gartersnake  |>
 #'   bci_smi_ols(svl_mm, mass_g, method = "resid_ols")
@@ -203,7 +199,7 @@ bci_smi_rob <- function(data, body_size, weight){
 #' # BCI with all three methods
 #' gartersnake |>
 #'   bci_smi_ols(svl_mm, mass_g, method = c("resid_ols", "smi_ols", "smi_rob"))
-#' }
+#'   
 #' @export
 bci <- function(data, body_size, weight,
                 method = c("resid_ols", "smi_ols", "smi_rob")) {
@@ -255,7 +251,6 @@ bci <- function(data, body_size, weight,
 #' and coloured by a grouping variable.
 #'
 #' @examples
-#' \dontrun{
 #' gartersnake <- data("gartersnake")
 #'
 #' # Basic plot with all methods
@@ -297,7 +292,7 @@ bci <- function(data, body_size, weight,
 #'   method = c("smi_ols"),
 #'   legend = FALSE
 #' )
-#' }
+#' 
 #' @importFrom ggplot2 ggplot aes geom_point geom_line theme_classic labs
 #'   scale_colour_manual theme
 #'
