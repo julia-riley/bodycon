@@ -2,7 +2,7 @@
 #'
 #' This is a subset of data collected by Issac Acker during his Honour's thesis at Mount Allison University on
 #' snakes in Nova Scotia and New Brunswick. It includes morphometric data for 46 Maritime Gartersnakes. The paper
-#' associated with this data is:  Acker I, Baxter-Gilbert J, Riley JL. In press. Assessing the presence of 
+#' associated with this data is:  Acker I, Baxter-Gilbert J, Riley JL. 2025. Assessing the presence of 
 #' Ophidiomyces ophiodiicola on snakes in New Brunswick and Nova Scotia. Herpetological Conservation & Biology, 20(3): 624-638. URL: https://www.herpconbio.org/Volume_20/Issue_3/Acker_etal_2025.pdf
 #' 
 #' @format ## `gartersnake`

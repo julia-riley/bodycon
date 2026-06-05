@@ -3,7 +3,7 @@
 library(dplyr)
 
 # Snake Data 
-snake_data <- read_csv("data-raw/issac acker_snake_data.csv")
+snake_data <- read_csv("data-raw/issac_acker_snake_data.csv")
 
 
 gartersnake <- 
@@ -19,7 +19,7 @@ gartersnake <-
 
 
 # Salamander Data 
-salamander_data <- read_csv("data-raw/sara leslie_salamander_data.csv")
+salamander_data <- read_csv("data-raw/sara_leslie_salamander_data.csv")
 
 
 salamander <- 
