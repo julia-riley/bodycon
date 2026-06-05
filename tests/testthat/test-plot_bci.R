@@ -1,5 +1,6 @@
 test_that("Plotting works", {
-  # TODO: What are the expected output for these
+  # TODO: What are the expected output for these; JLR: A plot
+  # TODO, JLR: The lines are incorrect. So, I need to fix these.
   # TODO: Need vdiffr expect_dopplerganger
   
   plot_bci(
