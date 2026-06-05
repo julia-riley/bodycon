@@ -1,5 +1,5 @@
 test_that("Check output values are correct", {
-  gartersnake_data |>
+  gartersnake |>
     bci_resid_ols(svl_mm, mass_g)
   
   gartersnake_data |>
@@ -9,6 +9,9 @@ test_that("Check output values are correct", {
     bci_smi_rob(svl_mm, mass_g)
   
 })
+
+
+
 
 
 test_that("Check output structure is correct", {

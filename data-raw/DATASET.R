@@ -1,6 +1,7 @@
 ## Code to prepare the datasets used in the bodycon R package
 
 library(dplyr)
+library(readr)
 
 # Snake Data 
 snake_data <- read_csv("data-raw/issac_acker_snake_data.csv")
