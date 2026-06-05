@@ -25,7 +25,8 @@
 #' 
 #' gartersnake |>
 #'    bci_resid_ols(svl_mm, mass_g)
-#'    
+#'
+#' @export    
 bci_resid_ols <- function(data, body_size, weight){
 
   # Create tmp data for log transformations
@@ -74,7 +75,8 @@ bci_resid_ols <- function(data, body_size, weight){
 #' 
 #' gartersnake  |>
 #'   bci_smi_ols(svl_mm, mass_g)
-#'   
+#'
+#' @export   
 bci_smi_ols <- function(data, body_size, weight){
   
   # Compute mean of body size
@@ -123,7 +125,8 @@ bci_smi_ols <- function(data, body_size, weight){
 #'
 #' gartersnake |>
 #'   bci_smi_rob(svl_mm, mass_g)
-#'   
+#'
+#' @export
 bci_smi_rob <- function(data, body_size, weight){
   
   # Compute mean of body size
