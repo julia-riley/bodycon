@@ -1,5 +1,10 @@
 <!-- badges: start -->
   [![R-CMD-check](https://github.com/julia-riley/R_package_body_condition/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/julia-riley/R_package_body_condition/actions/workflows/R-CMD-check.yaml)
+
+  <p align="right">
+  <img src="inst/hex_sticker/hex_sticker.png" width="250">
+  </p>
+
 <!-- badges: end -->
 
 Body Condition Indices - R Package
