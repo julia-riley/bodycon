@@ -24,6 +24,7 @@
 #' @param group_lab Label for the grouping variable, if provided, enclosed in quotations. The default is `"Group"`.
 #' @param method_lab Label for the method of calculating body condition enclosed in quotations. The default is `"Method"`.
 #' @param legend Logical indicating whether to display the legend. Default is \code{TRUE}.
+#' @param return_predictions Either `TRUE` or `FALSE` to indicate whether or not you would like the predictions calculated to plot the lines returned to you, or not. The default is `FALSE`.
 #'
 #' @return A `ggplot` object.
 #'
@@ -91,7 +92,8 @@ plot_bci <- function(data, body_size, weight,
                      y_lab = "Weight",
                      group_lab = "Group",
                      method_lab = "Method",
-                     legend = TRUE) {
+                     legend = TRUE,
+                     return_predictions = FALSE) {
   
   #----Generating Data----
   x <- dplyr::pull(data, {{ body_size }})
@@ -266,5 +268,16 @@ plot_bci <- function(data, body_size, weight,
     p <- p + ggplot2::theme(legend.position = "none")
   }
   
-  return(p)
+  if (return_predictions) {
+    
+    return(list(
+      plot = p,
+      predictions = pred_df,
+      data = plot_data
+    ))
+    
+  } else {
+    
+    return(p)
+  }
 }
