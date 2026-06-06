@@ -87,7 +87,7 @@ plot_bci <- function(data, body_size, weight,
                      raw_colours = NULL,
                      method_colours = NULL,
                      legend = TRUE) {
-  
+    
   x <- dplyr::pull(data, {{ body_size }})
   y <- dplyr::pull(data, {{ weight }})
   
@@ -106,7 +106,7 @@ plot_bci <- function(data, body_size, weight,
   # Set default method colours
   if (is.null(method_colours)) {
     method_colours <- c(
-      "OLS residuals" = "grey30",
+      "OLS regression" = "grey30",
       "SMI (OLS)" = "gold2",
       "SMI (robust)" = "steelblue"
     )
@@ -131,38 +131,79 @@ plot_bci <- function(data, body_size, weight,
   
   pred_lines <- list()
   
+  body_seq <- seq(
+    min(plot_data$body_size, na.rm = TRUE),
+    max(plot_data$body_size, na.rm = TRUE),
+    length.out = 100
+  )
+  
+  pred_grid <- data.frame(body_size = body_seq)
+  
+  # OLS regression line
   if ("resid_ols" %in% method) {
-    pred_lines$resid_ols <- data.frame(
-      body_size = sort(x),
-      weight = exp(predict(stats::lm(log(y) ~ log(x)),
-                           newdata = data.frame(x = sort(x)))),
-      method = "OLS residuals"
-    )
+    
+    log_ols <- lm(log(weight) ~ log(body_size), data = plot_data)
+    
+    pred_lines$resid_ols <- pred_grid |>
+      dplyr::mutate(
+        pred_wgt = exp(predict(log_ols, newdata = pred_grid)),
+        method = "OLS regression"
+      )
   }
   
+  # SMI (OLS)
   if ("smi_ols" %in% method) {
-    pred_lines$smi_ols <- data.frame(
-      body_size = x,
-      weight = bci(data, {{ body_size }}, {{ weight }}, method = "smi_ols"),
-      method = "SMI (OLS)"
-    )
+    
+    x0 <- mean(plot_data$body_size, na.rm = TRUE)
+    
+    b_msa_ols <- coef(
+      smatr::sma(log(weight) ~ log(body_size), data = plot_data)
+    )[2]
+    
+    smi_values <- plot_data$weight *
+      (x0 / plot_data$body_size)^b_msa_ols
+    
+    mean_smi <- mean(smi_values, na.rm = TRUE)
+    
+    pred_lines$smi_ols <- pred_grid |>
+      dplyr::mutate(
+        pred_wgt = mean_smi * (body_size / x0)^b_msa_ols,
+        method = "SMI (OLS)"
+      )
   }
   
+
+  # SMI (robust)
   if ("smi_rob" %in% method) {
-    pred_lines$smi_rob <- data.frame(
-      body_size = x,
-      weight = bci(data, {{ body_size }}, {{ weight }}, method = "smi_rob"),
-      method = "SMI (robust)"
-    )
+    
+    x0 <- mean(plot_data$body_size, na.rm = TRUE)
+    
+    b_msa_rob <- coef(
+      smatr::sma(log(weight) ~ log(body_size),
+                 data = plot_data,
+                 robust = TRUE)
+    )[2]
+    
+    smi_values <- plot_data$weight *
+      (x0 / plot_data$body_size)^b_msa_rob
+    
+    mean_smi <- mean(smi_values, na.rm = TRUE)
+    
+    pred_lines$smi_rob <- pred_grid |>
+      dplyr::mutate(
+        pred_wgt = mean_smi * (body_size / x0)^b_msa_rob,
+        method = "SMI (robust)"
+      )
   }
   
-  pred_df <- do.call(rbind, pred_lines)
+  # Combine all
+  pred_df <- dplyr::bind_rows(pred_lines)
   
   # Add method lines
   p <- p +
     ggplot2::geom_line(
       data = pred_df,
-      ggplot2::aes(body_size, weight, colour = method),
+      ggplot2::aes(body_size, pred_wgt, colour = method),
       linewidth = 1.2
     ) +
     ggplot2::scale_colour_manual(values = method_colours)
