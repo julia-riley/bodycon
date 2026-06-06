@@ -204,7 +204,7 @@ bci_smi_rob <- function(data, body_size, weight, id = NULL){
     return(out)
   }
   
-  ## If ID is not included included, then named vector is provided
+  ## If ID is not included, then named vector is provided
   if (is.null(id)) {
     
     out <- data |>
@@ -240,6 +240,7 @@ bci_smi_rob <- function(data, body_size, weight, id = NULL){
 #' @param body_size name of standard body size variable (e.g., snout-vent-length of reptiles, tarsus length of birds, length from the snout to the base of the tail for mammals, etc.)
 #' @param weight name of weight variable (e.g., mass of the animal)
 #' @param method method used to estimate body condition, either residuals from an OLS regression (`"resid_ols"`) or scaled mass index using an OLS (`"smi_ols"` or robust regression (`"smi_ols"`). Provide one or a list of these. 
+#' @param id a unique identifier for the animals included in your dataset. If included, a tibble with these unique identifiers and the estimates is returned and, if not, the estimate alone is returned. Default is `NULL`.
 #'
 #' @return a vector of body condition indices for each individual estimates using the method specified
 #' 
@@ -255,19 +256,19 @@ bci_smi_rob <- function(data, body_size, weight, id = NULL){
 #' 
 #' # BCI that is the residuals from an OLS regression
 #' gartersnake  |>
-#'   bci_smi_ols(svl_mm, mass_g, method = "resid_ols")
+#'   bci(svl_mm, mass_g, method = "resid_ols")
 #'   
 #' # BCI using the SMI method estimated with an OLS regression
 #' gartersnake  |>
-#'   bci_smi_ols(svl_mm, mass_g, method = "smi_ols")
+#'   bci(svl_mm, mass_g, method = "smi_ols")
 #'   
 #' # BCI using the SMI method estimated with an robust regression
 #' gartersnake  |>
-#'   bci_smi_ols(svl_mm, mass_g, method = "smi_rob")
+#'   bci(svl_mm, mass_g, method = "smi_rob")
 #'   
 #' # BCI with all three methods
 #' gartersnake |>
-#'   bci_smi_ols(svl_mm, mass_g, method = c("resid_ols", "smi_ols", "smi_rob"))
+#'   bci(svl_mm, mass_g, method = c("resid_ols", "smi_ols", "smi_rob"))
 #'   
 #' @export
 bci <- function(data, body_size, weight, id = NULL,
@@ -296,13 +297,17 @@ bci <- function(data, body_size, weight, id = NULL,
   
   #---- Add ID if provided ----
   if (!rlang::quo_is_null(rlang::enquo(id))) {
-    out <- dplyr::bind_cols(
-      tibble::tibble(id = dplyr::pull(data, {{ id }})),
-      out
-    )
-  }
     
+    id_vec <- dplyr::pull(data, {{ id }})
+  
+  stopifnot(length(id_vec) == nrow(out))
+  
+  out <- dplyr::bind_cols(
+    tibble::tibble(id = id_vec),
+    out
+  )
+  }
+  
   return(out)
     
-}
-
+  }
