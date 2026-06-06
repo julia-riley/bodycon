@@ -11,6 +11,7 @@
 #' @param body_size name of standard body size variable (e.g., snout-vent-length of reptiles, tarsus length of birds, length from the snout to the base of the tail for mammals, etc.)
 #' @param weight name of weight variable (e.g., mass of the animal)
 #' @param method method used to estimate body condition, either residuals from an OLS regression (`"resid_ols"`) or scaled mass index using an OLS (`"smi_ols"`) or robust regression (`"smi_ols"`). Provide one or a list of these. 
+#' @param log_transform an argument to specify whether or not the weight and body size variable should be log-transformed. This will only applied to the OLS regression residual method (`reside_ols`). Default is `TRUE`. Biologically speaking, most animals exhibit a allometric relationship between their weight and body size measurements, so log-transformation is appropriate. Please note that if you choose not to log-transform these variables, you are assuming a linear relationship between them.
 #' @param group Optional column in \code{data} specifying grouping of raw points
 #'   (e.g., sex, population). Default is \code{NULL} (all points treated as one group) and plotted in light grey.
 #' @param group_colours Optional named vector specifying colours for each group of raw points.
@@ -84,6 +85,7 @@
 #'   theme_classic labs scale_colour_manual theme
 #' @export
 plot_bci <- function(data, body_size, weight,
+                     log_transform = TRUE, 
                      method = c("resid_ols", "smi_ols", "smi_rob"),
                      group = NULL,
                      group_colours = NULL,
@@ -126,7 +128,8 @@ plot_bci <- function(data, body_size, weight,
   #----Defining default colours for method---
   if (is.null(method_colours)) {
     method_colours <- c(
-      "OLS regression" = "grey30",
+      "OLS regression (linear)" = "grey30",
+      "OLS regression (allometric)" = "grey30",
       "SMI (OLS)" = "gold2",
       "SMI (robust)" = "steelblue"
     )
@@ -141,8 +144,13 @@ plot_bci <- function(data, body_size, weight,
     length.out = 100
   )
   
-  method_labels = c(
-    resid_ols = "OLS regression",
+  method_labels <- c(
+    resid_ols =
+      if (log_transform) {
+        "OLS regression (allometric)"
+      } else {
+        "OLS regression (linear)"
+      },
     smi_ols = "SMI (OLS)",
     smi_rob = "SMI (robust)"
   )
@@ -152,13 +160,37 @@ plot_bci <- function(data, body_size, weight,
   ## OLS regression residuals
   if ("resid_ols" %in% method) {
     
-    log_ols <- lm(log(weight) ~ log(body_size), data = plot_data)
-    
-    pred_lines$resid_ols <- dplyr::mutate(
-      pred_grid,
-      pred_wgt = exp(predict(log_ols, newdata = pred_grid)),
-      method = method_labels["resid_ols"]
-    )
+    if (log_transform) {
+      
+      log_ols <- lm(
+        log(weight) ~ log(body_size),
+        data = plot_data
+      )
+      
+      pred_lines$resid_ols <- dplyr::mutate(
+        pred_grid,
+        pred_wgt = exp(
+          predict(log_ols, newdata = pred_grid)
+        ),
+        method = method_labels["resid_ols"]
+      )
+      
+    } else {
+      
+      ols <- lm(
+        weight ~ body_size,
+        data = plot_data
+      )
+      
+      pred_lines$resid_ols <- dplyr::mutate(
+        pred_grid,
+        pred_wgt = predict(
+          ols,
+          newdata = pred_grid
+        ),
+        method = method_labels["resid_ols"]
+      )
+    }
   }
   
   ## SMI using OLS regression
@@ -268,6 +300,24 @@ plot_bci <- function(data, body_size, weight,
     p <- p + ggplot2::theme(legend.position = "none")
   }
   
+  # Adding warning for no log-transformation
+  if (!log_transform &&
+      any(method %in% c("smi_ols", "smi_rob"))) {
+    
+    warning(
+      paste(
+        "log_transform = FALSE.",
+        "You have not selected log-transformation of your size and weight variables,",
+        "which assumes a linear relationships between them. This differs from the",
+        "more common log-log approach used to model allometric relationships.",
+        "This argument only affects the residual method, because SMI methods always assume",
+        "log-transformed allometric relationships."
+      ),
+      call. = FALSE
+    )
+  }
+  
+  # Definiting outputs
   if (return_predictions) {
     
     return(list(

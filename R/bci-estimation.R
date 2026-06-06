@@ -12,6 +12,7 @@
 #' @param body_size name of standard body size variable (e.g., snout-vent-length of reptiles, tarsus length of birds, length from the snout to the base of the tail for mammals, etc.)
 #' @param weight name of weight variable (e.g., mass of the animal)
 #' @param id a unique identifier for the animals included in your dataset. If included, a tibble with these unique identifiers and the estimates is returned and, if not, the estimate alone is returned. Default is `NULL`.
+#' @param log_transform an argument to specify whether or not the weight and body size variable should be log-transformed. Default is `TRUE`. Biologically speaking, most animals exhibit a allometric relationship between their weight and body size measurements, so log-transformation is appropriate. Please note that if you choose not to log-transform these variables, you are assuming a linear relationship between them.
 #'
 #' @returns a vector of body condition indices for each individual estimates that are the residuals from an OLS regression
 #' 
@@ -28,18 +29,47 @@
 #'    bci_resid_ols(svl_mm, mass_g)
 #'
 #' @export    
-bci_resid_ols <- function(data, body_size, weight, id = NULL){
+bci_resid_ols <- function(data, body_size, weight, 
+                          id = NULL,
+                          log_transform = TRUE){
 
-  # Create tmp data for log transformations
-  tmp_data <- data |> 
-    dplyr::select({{body_size}}, {{weight}}) |> 
-    dplyr::mutate(log_body_size = log({{body_size}}),
-                  log_weight = log({{weight}}))
+  # Create tmp data for use in models and log transformations
+  tmp_data <- data |>
+    dplyr::transmute(
+      x = {{ body_size }},
+      y = {{ weight }}
+    )
   
-  # Compute OLS
-  log_ols <- lm(log_weight ~ log_body_size, data = tmp_data)
-  bci <- tmp_data |> 
-    dplyr::mutate(bci_resid_ols = resid(log_ols))
+  # Compute OLS conditional on log-transformation selection
+  if (log_transform) {
+    
+    tmp_data <- tmp_data |>
+      dplyr::mutate(
+        x = log(x),
+        y = log(y)
+      )
+    
+    model <- lm(y ~ x, data = tmp_data)
+    
+    bci <- tmp_data |> 
+            dplyr::mutate(bci_resid_ols = resid(model))
+    
+  } else {
+    
+    warning(paste(
+      "log_transform = FALSE.",
+      "You have not selected log-transformation of your size and weight variables,",
+      "which assumes a linear relationships between them. This differs from the",
+      "more common log-log approach used to model allometric relationships."
+    ),
+    call. = FALSE
+    )
+    
+    model <- lm(y ~ x, data = tmp_data)
+    
+    bci <- tmp_data |> 
+      dplyr::mutate(bci_resid_ols = resid(model))
+  }
   
   # Output options
   ## If ID is included, then a tibble is provided
@@ -239,8 +269,9 @@ bci_smi_rob <- function(data, body_size, weight, id = NULL){
 #' weight for each individual of one animal species
 #' @param body_size name of standard body size variable (e.g., snout-vent-length of reptiles, tarsus length of birds, length from the snout to the base of the tail for mammals, etc.)
 #' @param weight name of weight variable (e.g., mass of the animal)
-#' @param method method used to estimate body condition, either residuals from an OLS regression (`"resid_ols"`) or scaled mass index using an OLS (`"smi_ols"` or robust regression (`"smi_ols"`). Provide one or a list of these. 
 #' @param id a unique identifier for the animals included in your dataset. If included, a tibble with these unique identifiers and the estimates is returned and, if not, the estimate alone is returned. Default is `NULL`.
+#' @param log_transform an argument to specify whether or not the weight and body size variable should be log-transformed. This will only applied to the OLS regression residual method (`reside_ols`). Default is `TRUE`. Biologically speaking, most animals exhibit a allometric relationship between their weight and body size measurements, so log-transformation is appropriate. Please note that if you choose not to log-transform these variables, you are assuming a linear relationship between them.
+#' @param method method used to estimate body condition, either residuals from an OLS regression (`"resid_ols"`) or scaled mass index using an OLS (`"smi_ols"` or robust regression (`"smi_ols"`). Provide one or a list of these. 
 #'
 #' @return a vector of body condition indices for each individual estimates using the method specified
 #' 
@@ -272,6 +303,7 @@ bci_smi_rob <- function(data, body_size, weight, id = NULL){
 #'   
 #' @export
 bci <- function(data, body_size, weight, id = NULL,
+                log_transform = TRUE,
                 method = c("resid_ols", "smi_ols", "smi_rob")) {
   
   #browser()
@@ -282,7 +314,7 @@ bci <- function(data, body_size, weight, id = NULL,
     
   # Calculate methods selected
   if ("resid_ols" %in% method) {
-    results$bci_resid_ols = bci_resid_ols(data, {{ body_size }}, {{ weight }})[[1]]
+    results$bci_resid_ols = bci_resid_ols(data, {{ body_size }}, {{ weight }}, log_transform = log_transform)[[1]]
   }
     
   if ("smi_ols" %in% method) {
@@ -306,6 +338,18 @@ bci <- function(data, body_size, weight, id = NULL,
     tibble::tibble(id = id_vec),
     out
   )
+  }
+  
+  if (!log_transform &&
+      any(method %in% c("smi_ols", "smi_rob"))) {
+    
+    warning(
+      paste(
+        "log_transform = FALSE only affects the OLS residual method for body condition estimation.",
+        "The SMI methods always assume log-transformed allometric relationships."
+      ),
+      call. = FALSE
+    )
   }
   
   return(out)
