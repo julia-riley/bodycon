@@ -11,6 +11,7 @@
 #' @param data tibble/dataframe containing a standard body size variable and the corresponding weight for each individual of one animal species
 #' @param body_size name of standard body size variable (e.g., snout-vent-length of reptiles, tarsus length of birds, length from the snout to the base of the tail for mammals, etc.)
 #' @param weight name of weight variable (e.g., mass of the animal)
+#' @param id a unique identifier for the animals included in your dataset. If included, a tibble with these unique identifiers and the estimates is returned and, if not, the estimate alone is returned. Default is `NULL`.
 #'
 #' @returns a vector of body condition indices for each individual estimates that are the residuals from an OLS regression
 #' 
@@ -27,7 +28,7 @@
 #'    bci_resid_ols(svl_mm, mass_g)
 #'
 #' @export    
-bci_resid_ols <- function(data, body_size, weight){
+bci_resid_ols <- function(data, body_size, weight, id = NULL){
 
   # Create tmp data for log transformations
   tmp_data <- data |> 
@@ -39,8 +40,30 @@ bci_resid_ols <- function(data, body_size, weight){
   log_ols <- lm(log_weight ~ log_body_size, data = tmp_data)
   bci <- tmp_data |> 
     dplyr::mutate(bci_resid_ols = resid(log_ols))
- 
-   return(bci$bci_resid_ols)
+  
+  # Output options
+  ## If ID is included, then a tibble is provided
+  if (!rlang::quo_is_null(rlang::enquo(id))) {
+    
+    out <- data |>
+      dplyr::transmute(
+        id = dplyr::pull(data, {{ id }}),
+        bci_resid_ols = bci$bci_resid_ols
+      )
+    
+    return(out)
+  }
+    
+  ## If ID is not included included, then named vector is provided
+    if (is.null(id)) {
+      
+      out <- data |>
+        dplyr::transmute(
+          bci_resid_ols = bci$bci_resid_ols
+        )
+    
+    return(out)
+    }
 }
 
 
@@ -60,6 +83,7 @@ bci_resid_ols <- function(data, body_size, weight){
 #' of reptiles, tarsus length of birds, length from the snout to the base of the 
 #' tail for mammals, etc.)
 #' @param weight name of weight variable (e.g., mass of the animal)
+#' @param id a unique identifier for the animals included in your dataset. If included, a tibble with these unique identifiers and the estimates is returned and, if not, the estimate alone is returned. Default is `NULL`.
 #' 
 #' @return a vector of body condition indices for each individual estimates using 
 #' the SMI method using an OLS regression
@@ -77,7 +101,7 @@ bci_resid_ols <- function(data, body_size, weight){
 #'   bci_smi_ols(svl_mm, mass_g)
 #'
 #' @export   
-bci_smi_ols <- function(data, body_size, weight){
+bci_smi_ols <- function(data, body_size, weight, id = NULL){
   
   # Compute mean of body size
   x0 = data |> dplyr::pull({{body_size}}) |> mean(na.rm = TRUE)
@@ -94,7 +118,29 @@ bci_smi_ols <- function(data, body_size, weight){
   bci <- tmp_data |> 
     dplyr::mutate(bci_smi_ols = {{weight}} * (x0 / {{body_size}})^b_msa_ols)
   
-  return(bci$bci_smi_ols)
+  # Output options
+  ## If ID is included, then a tibble is provided
+  if (!rlang::quo_is_null(rlang::enquo(id))) {
+    
+    out <- data |>
+      dplyr::transmute(
+        id = dplyr::pull(data, {{ id }}),
+        bci_smi_ols = bci$bci_smi_ols
+      )
+    
+    return(out)
+  }
+  
+  ## If ID is not included included, then named vector is provided
+  if (is.null(id)) {
+    
+    out <- data |>
+      dplyr::transmute(
+        bci_smi_ols = bci$bci_smi_ols
+      )
+    
+    return(out)
+  }
 }
 
 
@@ -109,6 +155,7 @@ bci_smi_ols <- function(data, body_size, weight){
 #' @param body_size name of standard body size variable (e.g., snout-vent-length of reptiles, 
 #' tarsus length of birds, length from the snout to the base of the tail for mammals, etc.)
 #' @param weight name of weight variable (e.g., mass of the animal)
+#' @param id a unique identifier for the animals included in your dataset. If included, a tibble with these unique identifiers and the estimates is returned and, if not, the estimate alone is returned. Default is `NULL`.
 #' 
 #' @return a vector of body condition indices for each individual estimates using the SMI
 #'  method using a robust regression
@@ -127,7 +174,7 @@ bci_smi_ols <- function(data, body_size, weight){
 #'   bci_smi_rob(svl_mm, mass_g)
 #'
 #' @export
-bci_smi_rob <- function(data, body_size, weight){
+bci_smi_rob <- function(data, body_size, weight, id = NULL){
   
   # Compute mean of body size
   x0 = data |> dplyr::pull({{body_size}}) |> mean(na.rm = TRUE)
@@ -144,8 +191,29 @@ bci_smi_rob <- function(data, body_size, weight){
   bci <- tmp_data |> 
     dplyr::mutate(bci_smi_rob = {{weight}} * (x0 / {{body_size}})^b_msa_rob)
   
-  return(bci$bci_smi_rob)
-}
+  # Output options
+  ## If ID is included, then a tibble is provided
+  if (!rlang::quo_is_null(rlang::enquo(id))) {
+    
+    out <- data |>
+      dplyr::transmute(
+        id = dplyr::pull(data, {{ id }}),
+        bci_smi_rob = bci$bci_smi_rob
+      )
+    
+    return(out)
+  }
+  
+  ## If ID is not included included, then named vector is provided
+  if (is.null(id)) {
+    
+    out <- data |>
+      dplyr::transmute(
+        bci_smi_rob = bci$bci_smi_rob
+      )
+    
+    return(out)
+}}
 
 
 #' Animal Body Condition Index Estimation
@@ -202,16 +270,39 @@ bci_smi_rob <- function(data, body_size, weight){
 #'   bci_smi_ols(svl_mm, mass_g, method = c("resid_ols", "smi_ols", "smi_rob"))
 #'   
 #' @export
-bci <- function(data, body_size, weight,
+bci <- function(data, body_size, weight, id = NULL,
                 method = c("resid_ols", "smi_ols", "smi_rob")) {
   
-  method <- match.arg(method)
-  
-  if (method == "resid_ols") {
-    bci_resid_ols(data, {{ body_size }}, {{ weight }})
-  } else if (method == "smi_ols") {
-    bci_smi_ols(data, {{ body_size }}, {{ weight }})
-  } else if (method == "smi_rob") {
-    bci_smi_rob(data, {{ body_size }}, {{ weight }})
+  #browser()
+    
+  method <- match.arg(method, several.ok = TRUE)
+    
+  results <- list()
+    
+  # Calculate methods selected
+  if ("resid_ols" %in% method) {
+    results$bci_resid_ols = bci_resid_ols(data, {{ body_size }}, {{ weight }})[[1]]
   }
+    
+  if ("smi_ols" %in% method) {
+    results$bci_smi_ols <- bci_smi_ols(data, {{ body_size }}, {{ weight }})[[1]]
+  }
+    
+  if ("smi_rob" %in% method) {
+    results$bci_smi_rob <- bci_smi_rob(data, {{ body_size }}, {{ weight }})[[1]]
+  }
+  
+  out <- tibble::as_tibble(results)
+  
+  #---- Add ID if provided ----
+  if (!rlang::quo_is_null(rlang::enquo(id))) {
+    out <- dplyr::bind_cols(
+      tibble::tibble(id = dplyr::pull(data, {{ id }})),
+      out
+    )
+  }
+    
+  return(out)
+    
 }
+
