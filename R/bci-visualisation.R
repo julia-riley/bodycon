@@ -97,13 +97,23 @@ plot_bci <- function(data, body_size, weight,
   )
   
   # Add grouping if specified
-  if (!is.null(group)) {
-    plot_data$group <- dplyr::pull(data, {{ group }})
+  group_var <- rlang::enquo(group)
+  
+  if (rlang::quo_is_null(group_var)) {
+    plot_data$.group <- "all"
   } else {
-    plot_data$group <- "All"
+    plot_data$.group <- dplyr::pull(plot_data, !!group_var)
   }
   
-  # Set default method colours
+  plot_data$.group <- as.factor(plot_data$.group)
+  
+  # Define colours for points
+  if (is.null(raw_colours)) {
+    raw_colours <- scales::hue_pal()(length(unique(plot_data$.group)))
+    names(raw_colours) <- unique(plot_data$.group)
+  }
+  
+  # Set default method colours for lines
   if (is.null(method_colours)) {
     method_colours <- c(
       "OLS regression" = "grey30",
@@ -112,23 +122,7 @@ plot_bci <- function(data, body_size, weight,
     )
   }
   
-  p <- ggplot2::ggplot(plot_data, ggplot2::aes(body_size, weight)) +
-    ggplot2::geom_point(
-      ggplot2::aes(colour = group),
-      alpha = 0.7,
-      size = 2
-    ) +
-    ggplot2::theme_classic() +
-    ggplot2::labs(
-      x = "body_size",
-      y = "weight",
-      colour = "method"
-    )
-  
-  if (!is.null(raw_colours)) {
-    p <- p + ggplot2::scale_color_manual(values = raw_colours)
-  }
-  
+  # Calculating possible prediction lines
   pred_lines <- list()
   
   body_seq <- seq(
@@ -139,7 +133,7 @@ plot_bci <- function(data, body_size, weight,
   
   pred_grid <- data.frame(body_size = body_seq)
   
-  # OLS regression line
+  ## OLS regression line
   if ("resid_ols" %in% method) {
     
     log_ols <- lm(log(weight) ~ log(body_size), data = plot_data)
@@ -151,7 +145,7 @@ plot_bci <- function(data, body_size, weight,
       )
   }
   
-  # SMI (OLS)
+  ## SMI (OLS)
   if ("smi_ols" %in% method) {
     
     x0 <- mean(plot_data$body_size, na.rm = TRUE)
@@ -172,8 +166,7 @@ plot_bci <- function(data, body_size, weight,
       )
   }
   
-
-  # SMI (robust)
+  ## SMI (robust)
   if ("smi_rob" %in% method) {
     
     x0 <- mean(plot_data$body_size, na.rm = TRUE)
@@ -196,22 +189,61 @@ plot_bci <- function(data, body_size, weight,
       )
   }
   
-  # Combine all
+  ## Combine all
   pred_df <- dplyr::bind_rows(pred_lines)
   
-  # Add method lines
-  p <- p +
+  
+  # Plot of point data 
+  if (length(unique(plot_data$.group)) == 1) {
+    
+    # Default neutral colour
+    p <- ggplot2::ggplot(plot_data, ggplot2::aes(body_size, weight)) +
+      ggplot2::geom_point(
+        colour = "grey80",
+        alpha = 0.7,
+        size = 2
+      )
+    
+  } else {
+    
+    # real grouping → mapped colours
+    p <- ggplot2::ggplot(plot_data, ggplot2::aes(body_size, weight)) +
+      ggplot2::geom_point(
+        ggplot2::aes(colour = .group),
+        alpha = 0.7,
+        size = 2
+      ) +
+      
+      ggplot2::scale_colour_manual(values = raw_colours)
+  }
+  
+  # Add lines to plot
+    
+    ##Reset colours for lines
+    p <- ggnewscale::new_scale_colour() +
+    
     ggplot2::geom_line(
       data = pred_df,
       ggplot2::aes(body_size, pred_wgt, colour = method),
       linewidth = 1.2
     ) +
+      
     ggplot2::scale_colour_manual(values = method_colours)
+    
+  # Add themes to plot
+    p <- ggplot2::theme_classic() +
+    
+    ggplot2::labs(
+      x = "body_size",
+      y = "weight",
+      colour = "legend"
+    )
   
   # Optionally hide legend
   if (!legend) {
     p <- p + ggplot2::theme(legend.position = "none")
   }
-  
+ 
+  # Plot it as the function output 
   p
 }
