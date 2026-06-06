@@ -8,6 +8,11 @@
 #' may vary by taxon \insertCite{jakob1996,buancilua2010,labocha2012}{bodycon}, and whether
 #' or not it fits the assumptions of certain statistical tests \insertCite{garcia2001}{bodycon}. 
 #' 
+#' @details
+#' For the OLS regression calculation of body condition, log-transformation of both
+#' body size and weight variables is required. This transformation is applied automatically
+#' within the function and cannot be disabled.
+#' 
 #' @param data tibble/dataframe containing a standard body size variable and the corresponding weight for each individual of one animal species
 #' @param body_size name of standard body size variable (e.g., snout-vent-length of reptiles, tarsus length of birds, length from the snout to the base of the tail for mammals, etc.)
 #' @param weight name of weight variable (e.g., mass of the animal)
@@ -53,6 +58,11 @@ bci_resid_ols <- function(data, body_size, weight){
 #' distort the expected relationship between body length and weight), and so SMI estimation
 #' using robust regression (see function `bci_smi_rob`) may be more appropriate in cases where
 #' outliers are present.
+#' 
+#' @details
+#' For the scaled mass index calculation of body condition, log-transformation of both
+#' body size and weight variables is required. This transformation is applied automatically
+#' within the function and cannot be disabled.
 #' 
 #' @param data tibble/dataframe containing a standard body size variable and the 
 #' corresponding weight for each individual of one animal species
@@ -104,6 +114,11 @@ bci_smi_ols <- function(data, body_size, weight){
 #' This function calculates body condition indices using the scaled mass index (SMI method)
 #'  as described in \insertCite{peig2009;textual}{bodycon}. Specifically, this method uses robust regression using an M estimator (from the MASS R package) \insertCite{venables2002}{bodycon} in its estimation of the body condition indices. This method is less sensitive to the presence of outliers (i.e., data points that may distort the expected relationship between body length and weight), as shown in [this blog by by Chen-Pan Liao](https://apansharing.blogspot.com/2018/05/an-r-function-olsrobust-caled-mass-index.html).
 #'
+#' @details
+#' For the scaled mass index calculation of body condition, log-transformation of both
+#' body size and weight variables is required. This transformation is applied automatically
+#' within the function and cannot be disabled.
+#' 
 #' @param data tibble/dataframe containing a standard body size variable and the corresponding 
 #' weight for each individual of one animal species
 #' @param body_size name of standard body size variable (e.g., snout-vent-length of reptiles, 
@@ -164,14 +179,14 @@ bci_smi_rob <- function(data, body_size, weight){
 #' Specifically, this method uses OLS or robust regression in its estimation of the body condition indices.
 #' OLS regression is sensitive to the presence of outliers (i.e., data points that may distort the expected relationship between body length and weight).
 #' So, another option is to estimate SMI using robust regression using an M estimator (from the MASS R package) \insertCite{venables2002}{bodycon} in its 
-#' estimation of the body condition indices. The robus regression approach is less sensitive to the presence of outliers 
+#' estimation of the body condition indices. The robust regression approach is less sensitive to the presence of outliers 
 #' (i.e., data points that may distort the expected relationship between body length and weight), as shown in [this blog by by Chen-Pan Liao](https://apansharing.blogspot.com/2018/05/an-r-function-olsrobust-caled-mass-index.html).
 #'
 #' @param data tibble/dataframe containing a standard body size variable and the corresponding 
 #' weight for each individual of one animal species
 #' @param body_size name of standard body size variable (e.g., snout-vent-length of reptiles, tarsus length of birds, length from the snout to the base of the tail for mammals, etc.)
 #' @param weight name of weight variable (e.g., mass of the animal)
-#' @param method method used to estimate body condition, either residuals from an OLS regression (`"resid_ols"`) or scaled mass index using an OLS (`"smi_ols"` or robust regression (`"smi_ols"`). Provide one or a list of these. 
+#' @param method method used to estimate body condition, either residuals from an OLS regression (`"resid_ols"`) or scaled mass index using an OLS (`"smi_ols"`) or robust regression (`"smi_rob"`). Provide one or a list of these. 
 #'
 #' @return a vector of body condition indices for each individual estimates using the method specified
 #' 
@@ -187,19 +202,19 @@ bci_smi_rob <- function(data, body_size, weight){
 #' 
 #' # BCI that is the residuals from an OLS regression
 #' gartersnake  |>
-#'   bci_smi_ols(svl_mm, mass_g, method = "resid_ols")
+#'   bci(svl_mm, mass_g, method = "resid_ols")
 #'   
 #' # BCI using the SMI method estimated with an OLS regression
 #' gartersnake  |>
-#'   bci_smi_ols(svl_mm, mass_g, method = "smi_ols")
+#'   bci(svl_mm, mass_g, method = "smi_ols")
 #'   
 #' # BCI using the SMI method estimated with an robust regression
 #' gartersnake  |>
-#'   bci_smi_ols(svl_mm, mass_g, method = "smi_rob")
+#'   bci(svl_mm, mass_g, method = "smi_rob")
 #'   
 #' # BCI with all three methods
 #' gartersnake |>
-#'   bci_smi_ols(svl_mm, mass_g, method = c("resid_ols", "smi_ols", "smi_rob"))
+#'   bci(svl_mm, mass_g, method = c("resid_ols", "smi_ols", "smi_rob"))
 #'   
 #' @export
 bci <- function(data, body_size, weight,
