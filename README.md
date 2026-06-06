@@ -11,7 +11,7 @@
 This package is not on CRAN yet and is still under active development. At this time, there is no stable release of `bodycon`, but stay tuned. When available, you will be able to download a stable release of `bodycon `, which has full capabilities of the functions used in vignettes, by:
 
 ```{r}
-remotes::install_github("bodycon")
+remotes::install_github("julia-riley/bodycon")
 ```
 
 **Getting Started**
