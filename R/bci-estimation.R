@@ -12,7 +12,7 @@
 #' @param body_size name of standard body size variable (e.g., snout-vent-length of reptiles, tarsus length of birds, length from the snout to the base of the tail for mammals, etc.)
 #' @param weight name of weight variable (e.g., mass of the animal)
 #' @param id a unique identifier for the animals included in your dataset. If included, a tibble with these unique identifiers and the estimates is returned and, if not, the estimate alone is returned. Default is `NULL`.
-#' @param log_transform an argument to specify whether or not the weight and body size variable should be log-transformed. Default is `TRUE`. Biologically speaking, most animals exhibit a allometric relationship between their weight and body size measurements, so log-transformation is appropriate. Please note that if you choose not to log-transform these variables, you are assuming a linear relationship between them.
+#' @param relation an argument to specify whether or not the relationship between weight and body size variables are assummed to be allometric (`"allometric"`) or linear (`"linear"`). If allomtric, both variables are log-transformed. Default is `"allometric`. Biologically speaking, most animals exhibit a allometric relationship between their weight and body size measurements, this is the method that is appropriate.
 #'
 #' @returns a vector of body condition indices for each individual estimates that are the residuals from an OLS regression
 #' 
@@ -29,72 +29,53 @@
 #'    bci_resid_ols(svl_mm, mass_g)
 #'
 #' @export    
-bci_resid_ols <- function(data, body_size, weight, 
+bci_resid_ols <- function(data, body_size, weight,
                           id = NULL,
-                          log_transform = TRUE){
-
-  # Create tmp data for use in models and log transformations
-  tmp_data <- data |>
-    dplyr::transmute(
-      x = {{ body_size }},
-      y = {{ weight }}
-    )
+                          relation = c("allometric", "linear")) {
   
-  # Compute OLS conditional on log-transformation selection
-  if (log_transform) {
-    
-    tmp_data <- tmp_data |>
-      dplyr::mutate(
-        x = log(x),
-        y = log(y)
-      )
-    
-    model <- lm(y ~ x, data = tmp_data)
-    
-    bci <- tmp_data |> 
-            dplyr::mutate(bci_resid_ols = resid(model))
-    
-  } else {
-    
-    warning(paste(
-      "log_transform = FALSE.",
-      "You have not selected log-transformation of your size and weight variables,",
-      "which assumes a linear relationships between them. This differs from the",
-      "more common log-log approach used to model allometric relationships."
-    ),
-    call. = FALSE
-    )
-    
-    model <- lm(y ~ x, data = tmp_data)
-    
-    bci <- tmp_data |> 
-      dplyr::mutate(bci_resid_ols = resid(model))
-  }
+  relation <- match.arg(relation, several.ok = TRUE)
   
-  # Output options
-  ## If ID is included, then a tibble is provided
-  if (!rlang::quo_is_null(rlang::enquo(id))) {
+  out_list <- list()
+  
+  for (rel in relation) {
     
-    out <- data |>
+    tmp_data <- data |>
       dplyr::transmute(
-        id = dplyr::pull(data, {{ id }}),
-        bci_resid_ols = bci$bci_resid_ols
+        x = {{ body_size }},
+        y = {{ weight }}
       )
     
-    return(out)
-  }
-    
-  ## If ID is not included included, then named vector is provided
-    if (is.null(id)) {
-      
-      out <- data |>
-        dplyr::transmute(
-          bci_resid_ols = bci$bci_resid_ols
-        )
-    
-    return(out)
+    if (rel == "allometric") {
+      tmp_data <- tmp_data |>
+        dplyr::mutate(x = log(x), y = log(y))
     }
+    
+    
+    fit <- lm(y ~ x, data = tmp_data)
+    
+    res <- resid(fit)
+    
+    name <- if (rel == "allometric") {
+      "bci_resid_allometric"
+    } else {
+      "bci_resid_linear"
+    }
+    
+    out_list[[name]] <- res
+  }
+  
+  # combine into tibble
+  out <- tibble::as_tibble(out_list)
+  
+  # optional id
+  if (!rlang::quo_is_null(rlang::enquo(id))) {
+    id_vec <- dplyr::pull(data, {{ id }})
+    out <- dplyr::bind_cols(tibble::tibble(id = id_vec), out)
+  }
+  
+  out
 }
+
 
 
 #' Scaled Mass Body Condition Index Estimation with OLS Regression
@@ -146,7 +127,7 @@ bci_smi_ols <- function(data, body_size, weight, id = NULL){
   log_ols <- lm(log_weight ~ log_body_size, data = tmp_data)
   b_msa_ols <- coef(smatr::sma(log_weight ~ log_body_size, data = tmp_data))[2]   
   bci <- tmp_data |> 
-    dplyr::mutate(bci_smi_ols = {{weight}} * (x0 / {{body_size}})^b_msa_ols)
+    dplyr::mutate(smi_ols = {{weight}} * (x0 / {{body_size}})^b_msa_ols)
   
   # Output options
   ## If ID is included, then a tibble is provided
@@ -155,7 +136,7 @@ bci_smi_ols <- function(data, body_size, weight, id = NULL){
     out <- data |>
       dplyr::transmute(
         id = dplyr::pull(data, {{ id }}),
-        bci_smi_ols = bci$bci_smi_ols
+        smi_ols = bci$smi_ols
       )
     
     return(out)
@@ -166,7 +147,7 @@ bci_smi_ols <- function(data, body_size, weight, id = NULL){
     
     out <- data |>
       dplyr::transmute(
-        bci_smi_ols = bci$bci_smi_ols
+        smi_ols = bci$smi_ols
       )
     
     return(out)
@@ -219,7 +200,7 @@ bci_smi_rob <- function(data, body_size, weight, id = NULL){
   log_rob <- MASS::rlm(log_weight ~ log_body_size, method = "M", data = tmp_data)
   b_msa_rob <- coef(smatr::sma(log_weight ~ log_body_size, robust = T, data = tmp_data))[2]   
   bci <- tmp_data |> 
-    dplyr::mutate(bci_smi_rob = {{weight}} * (x0 / {{body_size}})^b_msa_rob)
+    dplyr::mutate(smi_rob = {{weight}} * (x0 / {{body_size}})^b_msa_rob)
   
   # Output options
   ## If ID is included, then a tibble is provided
@@ -228,7 +209,7 @@ bci_smi_rob <- function(data, body_size, weight, id = NULL){
     out <- data |>
       dplyr::transmute(
         id = dplyr::pull(data, {{ id }}),
-        bci_smi_rob = bci$bci_smi_rob
+        smi_rob = bci$smi_rob
       )
     
     return(out)
@@ -239,7 +220,7 @@ bci_smi_rob <- function(data, body_size, weight, id = NULL){
     
     out <- data |>
       dplyr::transmute(
-        bci_smi_rob = bci$bci_smi_rob
+        smi_rob = bci$smi_rob
       )
     
     return(out)
@@ -270,8 +251,8 @@ bci_smi_rob <- function(data, body_size, weight, id = NULL){
 #' @param body_size name of standard body size variable (e.g., snout-vent-length of reptiles, tarsus length of birds, length from the snout to the base of the tail for mammals, etc.)
 #' @param weight name of weight variable (e.g., mass of the animal)
 #' @param id a unique identifier for the animals included in your dataset. If included, a tibble with these unique identifiers and the estimates is returned and, if not, the estimate alone is returned. Default is `NULL`.
-#' @param log_transform an argument to specify whether or not the weight and body size variable should be log-transformed. This will only applied to the OLS regression residual method (`reside_ols`). Default is `TRUE`. Biologically speaking, most animals exhibit a allometric relationship between their weight and body size measurements, so log-transformation is appropriate. Please note that if you choose not to log-transform these variables, you are assuming a linear relationship between them.
 #' @param method method used to estimate body condition, either residuals from an OLS regression (`"resid_ols"`) or scaled mass index using an OLS (`"smi_ols"` or robust regression (`"smi_ols"`). Provide one or a list of these. 
+#' @param relation an argument to specify whether or not the relationship between weight and body size variables are assummed to be allometric (`"allometric"`) or linear (`"linear"`). If allomtric, both variables are log-transformed. Default is `"allometric`. Biologically speaking, most animals exhibit a allometric relationship between their weight and body size measurements, this is the method that is appropriate.
 #'
 #' @return a vector of body condition indices for each individual estimates using the method specified
 #' 
@@ -304,54 +285,130 @@ bci_smi_rob <- function(data, body_size, weight, id = NULL){
 #' @export
 bci <- function(data, body_size, weight, id = NULL,
                 log_transform = TRUE,
-                method = c("resid_ols", "smi_ols", "smi_rob")) {
+                method = c("resid_ols", "smi_ols", "smi_rob"),
+                relation = NULL) {
   
-  #browser()
-    
   method <- match.arg(method, several.ok = TRUE)
-    
-  results <- list()
-    
-  # Calculate methods selected
-  if ("resid_ols" %in% method) {
-    results$bci_resid_ols = bci_resid_ols(data, {{ body_size }}, {{ weight }}, log_transform = log_transform)[[1]]
-  }
-    
-  if ("smi_ols" %in% method) {
-    results$bci_smi_ols <- bci_smi_ols(data, {{ body_size }}, {{ weight }})[[1]]
-  }
-    
-  if ("smi_rob" %in% method) {
-    results$bci_smi_rob <- bci_smi_rob(data, {{ body_size }}, {{ weight }})[[1]]
+  
+  relation_used <- NULL
+  
+  if (!is.null(relation)) {
+    relation_used <- match.arg(relation, c("allometric", "linear"), several.ok = TRUE)
+  } else {
+    relation_used <- "allometric"
   }
   
-  out <- tibble::as_tibble(results)
+  # Validation that relation only applies to resid_ols
+  has_smi <- any(method %in% c("smi_ols", "smi_rob"))
+  has_resid <- "resid_ols" %in% method
   
-  #---- Add ID if provided ----
-  if (!rlang::quo_is_null(rlang::enquo(id))) {
-    
-    id_vec <- dplyr::pull(data, {{ id }})
-  
-  stopifnot(length(id_vec) == nrow(out))
-  
-  out <- dplyr::bind_cols(
-    tibble::tibble(id = id_vec),
-    out
-  )
-  }
-  
-  if (!log_transform &&
-      any(method %in% c("smi_ols", "smi_rob"))) {
-    
-    warning(
-      paste(
-        "log_transform = FALSE only affects the OLS residual method for body condition estimation.",
-        "The SMI methods always assume log-transformed allometric relationships."
-      ),
-      call. = FALSE
+  # ---- handle relation defaults ----
+  if (is.null(relation)) {
+    relation_used <- "allometric"
+  } else {
+    relation_used <- match.arg(
+      relation,
+      c("allometric", "linear"),
+      several.ok = TRUE
     )
   }
   
-  return(out)
+  # ---- collect warning messages ----
+  warn_msgs <- character()
+  
+  # linear relation warning (only meaningful if resid_ols is used)
+  if ("resid_ols" %in% method && !is.null(relation) && "linear" %in% relation) {
     
+    warn_msgs <- c(
+      warn_msgs,
+      "OLS residual method used a linear (non-log) relationship. This is not the more commonly made allometric assumption."
+    )
+  }
+  
+  # SMI relation warning (only once, not repeated)
+  if (any(method %in% c("smi_ols", "smi_rob")) &&
+      !is.null(relation) &&
+      length(setdiff(relation, "allometric")) > 0) {
+    
+    warn_msgs <- c(
+      warn_msgs,
+      "SMI methods always assume allometric (log-log) scaling; relation = 'linear' was ignored for these methods."
+    )
+  }
+  
+  # ---- collect warning messages ----
+  warn_msgs <- character()
+  
+  # linear relation warning (only meaningful if resid_ols is used)
+  if ("resid_ols" %in% method && !is.null(relation) && "linear" %in% relation) {
+    
+    warn_msgs <- c(
+      warn_msgs,
+      "OLS residual method used a linear (non-log) relationship. This is not the more commonly made allometric assumption."
+    )
+  }
+  
+  # SMI relation warning (only once, not repeated)
+  if (any(method %in% c("smi_ols", "smi_rob")) &&
+      !is.null(relation) &&
+      length(setdiff(relation, "allometric")) > 0) {
+    
+    warn_msgs <- c(
+      warn_msgs,
+      "SMI methods always assume allometric (log-log) scaling; relation = 'linear' was ignored for these methods."
+    )
+  }
+  
+  # ---- emit ONE warning only ----
+  warning(
+    paste0(
+      "BCI configuration notes:\n",
+      paste("-", unique(warn_msgs), collapse = "\n")
+    ),
+    call. = FALSE
+  )
+  
+  
+  results <- list()
+  
+  # ---- Residual OLS ----
+  if ("resid_ols" %in% method) {
+    
+    results$resid_ols <-
+      bci_resid_ols(
+        data,
+        {{ body_size }},
+        {{ weight }},
+        relation = relation_used,
+        id = NULL
+      )
+    }
+  
+  # ---- SMI OLS ----
+  if ("smi_ols" %in% method) {
+    results$smi_ols <-
+      bci_smi_ols(data, {{ body_size }}, {{ weight }})
+  }
+  
+  # ---- SMI robust ----
+  if ("smi_rob" %in% method) {
+    results$smi_rob <-
+      bci_smi_rob(data, {{ body_size }}, {{ weight }})
+  }
+  
+  # ---- Combine safely ----
+  out <- dplyr::bind_cols(results)
+  
+  # ---- ID handling ----
+  if (!rlang::quo_is_null(rlang::enquo(id))) {
+    id_vec <- dplyr::pull(data, {{ id }})
+    stopifnot(length(id_vec) == nrow(out))
+    
+    out <- dplyr::bind_cols(
+      tibble::tibble(id = id_vec),
+      out
+    )
+  }
+  
+  out
   }
