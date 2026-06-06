@@ -11,18 +11,19 @@
 #' @param body_size name of standard body size variable (e.g., snout-vent-length of reptiles, tarsus length of birds, length from the snout to the base of the tail for mammals, etc.)
 #' @param weight name of weight variable (e.g., mass of the animal)
 #' @param method method used to estimate body condition, either residuals from an OLS regression (`"resid_ols"`) or scaled mass index using an OLS (`"smi_ols"`) or robust regression (`"smi_ols"`). Provide one or a list of these. 
-#' @param legend Logical indicating whether a legend mapping methods to
-#'   visual elements should be displayed. Default is `TRUE`.
 #' @param group Optional column in \code{data} specifying grouping of raw points
-#'   (e.g., sex, population). Default is \code{NULL} (all points treated as one group).
-#' @param raw_colours Optional named vector specifying colours for each group of raw points.
+#'   (e.g., sex, population). Default is \code{NULL} (all points treated as one group) and plotted in light grey.
+#' @param group_colours Optional named vector specifying colours for each group of raw points.
 #'   Names must match the values in the \code{group} column.
 #'   If \code{NULL}, default ggplot2 colours are used.
 #' @param method_colours Optional named vector specifying colours for the BCI methods.
-#'   Names must match \code{"OLS residuals"}, \code{"SMI (OLS)"}, \code{"SMI (robust)"}.
-#'   Defaults are grey, yellow, and blue.
+#'   Names must match \code{"OLS regression"}, \code{"SMI (OLS)"}, \code{"SMI (robust)"}.
+#'   Defaults are dark grey, yellow, and blue.
+#' @param x_lab Label for the x-axis enclosed in quotations. The default is `"body_size"`.
+#' @param y_lab Label for the y-axis enclosed in quotations. The default is `"body_size"`.
+#' @param group_lab Label for the grouping variable, if provided, enclosed in quotations. The default is `"Group"`.
+#' @param method_lab Label for the method of calculating body condition enclosed in quotations. The default is `"Method"`.
 #' @param legend Logical indicating whether to display the legend. Default is \code{TRUE}.
-#'
 #'
 #' @return A `ggplot` object.
 #'
@@ -61,7 +62,7 @@
 #'   mass_g,
 #'   method = c("smi_ols", "smi_rob"),
 #'   group = sex,
-#'   raw_colours = c("M" = "darkorange2", "F" = "mediumpurple"),
+#'   group_colours = c("M" = "darkorange2", "F" = "mediumpurple"),
 #'   method_colours = c("OLS residuals" = "black", "SMI (robust)" = "navy")
 #' )
 #' 
@@ -84,8 +85,12 @@
 plot_bci <- function(data, body_size, weight,
                      method = c("resid_ols", "smi_ols", "smi_rob"),
                      group = NULL,
-                     raw_colours = NULL,
+                     group_colours = NULL,
                      method_colours = NULL,
+                     x_lab = "Body Size",
+                     y_lab = "Weight",
+                     group_lab = "Group",
+                     method_lab = "Method",
                      legend = TRUE) {
   
   #----Generating Data----
@@ -111,9 +116,9 @@ plot_bci <- function(data, body_size, weight,
   has_group <- !all(is.na(plot_data$.group))
   
   #----Defining default colours for group----
-  if (is.null(raw_colours) && has_group) {
-    raw_colours <- scales::hue_pal()(length(unique(plot_data$.group)))
-    names(raw_colours) <- levels(plot_data$.group)
+  if (is.null(group_colours) && has_group) {
+    group_colours <- scales::hue_pal()(length(unique(plot_data$.group)))
+    names(group_colours) <- levels(plot_data$.group)
   }
   
   #----Defining default colours for method---
@@ -134,6 +139,12 @@ plot_bci <- function(data, body_size, weight,
     length.out = 100
   )
   
+  method_labels = c(
+    resid_ols = "OLS regression",
+    smi_ols = "SMI (OLS)",
+    smi_rob = "SMI (robust)"
+  )
+  
   pred_grid <- data.frame(body_size = body_seq)
   
   ## OLS regression residuals
@@ -144,7 +155,7 @@ plot_bci <- function(data, body_size, weight,
     pred_lines$resid_ols <- dplyr::mutate(
       pred_grid,
       pred_wgt = exp(predict(log_ols, newdata = pred_grid)),
-      method = "OLS regression"
+      method = method_labels["resid_ols"]
     )
   }
   
@@ -165,7 +176,7 @@ plot_bci <- function(data, body_size, weight,
     pred_lines$smi_ols <- dplyr::mutate(
       pred_grid,
       pred_wgt = mean_smi * (body_size / x0)^b_msa_ols,
-      method = "SMI (OLS)"
+      method = method_labels["smi_ols"]
     )
   }
   
@@ -188,7 +199,7 @@ plot_bci <- function(data, body_size, weight,
     pred_lines$smi_rob <- dplyr::mutate(
       pred_grid,
       pred_wgt = mean_smi * (body_size / x0)^b_msa_rob,
-      method = "SMI (robust)"
+      method = method_labels["smi_rob"]
     )
   }
   
@@ -201,6 +212,11 @@ plot_bci <- function(data, body_size, weight,
   ## Points (group colour scale and legend)
   if (has_group) {
     
+    if (is.null(group_colours)) {
+      group_colours <- scales::hue_pal()(length(unique(plot_data$.group)))
+      names(group_colours) <- levels(plot_data$.group)
+    }
+    
     p <- p +
       ggplot2::geom_point(
         ggplot2::aes(colour = .group),
@@ -208,8 +224,8 @@ plot_bci <- function(data, body_size, weight,
         size = 2
       ) +
       ggplot2::scale_colour_manual(
-        name = "Group",
-        values = raw_colours
+        name = group_lab,
+        values = group_colours
       )
     
   } else {
@@ -233,7 +249,7 @@ plot_bci <- function(data, body_size, weight,
       linewidth = 1.2
     ) +
     ggplot2::scale_colour_manual(
-      name = "Method",
+      name = method_lab,
       values = method_colours
     )
   
@@ -241,8 +257,8 @@ plot_bci <- function(data, body_size, weight,
   p <- p +
     ggplot2::theme_classic() +
     ggplot2::labs(
-      x = "body_size",
-      y = "weight"
+      x = x_lab,
+      y = y_lab
     )
   
   # Adding legend option
