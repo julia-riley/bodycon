@@ -114,3 +114,54 @@ test_that("plot_bci returns predictions correctly", {
   expect_true("predictions" %in% names(out))
   expect_true("data" %in% names(out))
 })
+
+#Does the plot show both linear and alometric when requested?
+test_that("plot_bci shows linear and allometric when requested", {
+  
+  res <- plot_bci(
+    gartersnake,
+    svl_mm,
+    mass_g,
+    method = "resid_ols",
+    relation = c("allometric", "linear")
+  )
+  
+  expect_s3_class(res, "ggplot")
+})
+
+#Does this real-world mixed-methods version work?
+test_that("plot_bci mixed methods snapshot", {
+  
+  skip_on_cran()
+  
+  p <- plot_bci(
+    gartersnake,
+    svl_mm,
+    mass_g,
+    method = c("resid_ols", "smi_ols", "smi_rob"),
+    relation = "allometric"
+  )
+  
+  vdiffr::expect_doppelganger(
+    "plot_bci_all_methods",
+    p
+  )
+})
+
+#Does plot grouping work?
+test_that("plot_bci grouping snapshot", {
+  
+  p <- plot_bci(
+    gartersnake,
+    svl_mm,
+    mass_g,
+    method = "resid_ols",
+    relation = "allometric",
+    group = sex
+  )
+  
+  vdiffr::expect_doppelganger(
+    "plot_bci_grouped",
+    p
+  )
+})

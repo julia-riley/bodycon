@@ -56,9 +56,9 @@ bci_resid_ols <- function(data, body_size, weight,
     res <- resid(fit)
     
     name <- if (rel == "allometric") {
-      "bci_resid_allometric"
+      "resid_allometric"
     } else {
-      "bci_resid_linear"
+      "resid_linear"
     }
     
     out_list[[name]] <- res

@@ -111,6 +111,6 @@
 <text x='601.93' y='277.36' style='font-size: 8.80px; font-family: sans;' textLength='107.12px' lengthAdjust='spacingAndGlyphs'>OLS regression (allometric)</text>
 <text x='601.93' y='294.64' style='font-size: 8.80px; font-family: sans;' textLength='41.57px' lengthAdjust='spacingAndGlyphs'>SMI (OLS)</text>
 <text x='601.93' y='311.92' style='font-size: 8.80px; font-family: sans;' textLength='48.42px' lengthAdjust='spacingAndGlyphs'>SMI (robust)</text>
-<text x='37.69' y='14.56' style='font-size: 13.20px; font-family: sans;' textLength='52.10px' lengthAdjust='spacingAndGlyphs'>bci-basic</text>
+<text x='37.69' y='14.56' style='font-size: 13.20px; font-family: sans;' textLength='124.03px' lengthAdjust='spacingAndGlyphs'>plot_bci_all_methods</text>
 </g>
 </svg>
