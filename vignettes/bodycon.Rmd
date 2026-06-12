@@ -69,18 +69,19 @@ This example calculates body condition indices from the residuals of an ordinary
 
 ```{r}
 
-bci_resid_ols(gartersnake, svl_mm, mass_g, method = "resid_ols")
+bci_resid_ols(gartersnake, svl_mm, mass_g)
 
 # Piped version
 gartersnake |>
-  bci_resid_ols(svl_mm, mass_g, method = "resid_ols")
+  bci_resid_ols(svl_mm, mass_g)
 
 ```
 
+The default for the `bci_resid_ols` function is assuming an allometric relationship between animal body size and weight, which is typical for most species (i.e., both are log-transformed before the OLS regression is run). But you can call on the `relation = "linear"` argument to assume a linear relationship between body size and weight (i.e., these variables would then not be log-transformed).
 
 ## Scaled mass body condition index (SMI) estimation
 
-Yet, calculating body condition indices from the residuals of an ordinary least squares regression (OLS) has been critiqued in the literature. There is discussion whether it is the most robust approach \insertCite{schulte2005,peig2009}{bodycon}, how its appropriateness may vary by taxon \insertCite{jakob1996,buancilua2010,labocha2012}{bodycon}, and whether or not it fits the assumptions of certain statistical tests \insertCite{garcia2001}{bodycon}. An alternative is the scaled mass index (SMI method) as described in \insertCite{peig2009;textual}{bodycon}, which can be estimated using either a OLS or robust regression (as described in [this code by Chen-Pan Liao](https://apansharing.blogspot.com/2018/05/an-r-function-olsrobust-caled-mass-index.html)).
+Yet, calculating body condition indices from the residuals of an ordinary least squares regression (OLS) has been critiqued in the literature. There is discussion whether it is the most robust approach \insertCite{schulte2005,peig2009}{bodycon}, how its appropriateness may vary by taxon \insertCite{jakob1996,buancilua2010,labocha2012}{bodycon}, and whether or not it fits the assumptions of certain statistical tests \insertCite{garcia2001}{bodycon}. An alternative is the scaled mass index (SMI method) as described in \insertCite{peig2009;textual}{bodycon}, which can be estimated using either a OLS or robust regression (as described in [this code by Chen-Pan Liao](https://apansharing.blogspot.com/2018/05/an-r-function-olsrobust-caled-mass-index.html)). One note, for SMI, body size and mass is always log-transformed because this method assumes an allometric relationship between these two variables.
 
 ### With OLS regression
 
@@ -88,11 +89,11 @@ Below is an example of using the SMI method's function using the ordinary least 
 
 ```{r}
 
-bci_smi_ols(salamander, svl_mm, mass_g, method = "smi_ols")
+bci_smi_ols(salamander, svl_mm, mass_g)
 
 # Piped version
 salamander |>
-  bci_smi_ols(svl_mm, mass_g, method = "smi_ols")
+  bci_smi_ols(svl_mm, mass_g)
 
 ```
 
@@ -102,11 +103,11 @@ Below is an example of using the SMI method's function using the robust regressi
 
 ```{r}
 
-bci_smi_rob(salamander, svl_mm, mass_g, method = "smi_rob")
+bci_smi_rob(salamander, svl_mm, mass_g)
 
 # Piped version
 salamander |>
-  bci_smi_rob(svl_mm, mass_g, method = "smi_rob")
+  bci_smi_rob(svl_mm, mass_g)
 
 ```
 
@@ -118,11 +119,29 @@ It is possible to estimate body condition indexes using multiple methods. This m
 ```{r}
 
 bci_resid_ols(gartersnake, svl_mm, mass_g, 
+              method = c("resid_ols", "smi_ols", "smi_rob"),
+              relation = c("linear", "allometric"))
+
+# Piped version
+gartersnake |>
+  bci_resid_ols(svl_mm, mass_g, 
+                method = c("resid_ols", "smi_ols", "smi_rob"),
+              relation = c("linear", "allometric"))
+
+```
+
+If you would like to add an unique individual code to tell animals apart, then you can used that using the `id` argument. Here is an example:
+
+```{r}
+
+bci_resid_ols(gartersnake, svl_mm, mass_g,
+              id = id_num,
               method = c("resid_ols", "smi_ols", "smi_rob"))
 
 # Piped version
 gartersnake |>
   bci_resid_ols(svl_mm, mass_g, 
+                id = id_num,
                 method = c("resid_ols", "smi_ols", "smi_rob"))
 
 ```
@@ -146,9 +165,22 @@ plot_bci(
    gartersnake,
    svl_mm,
    mass_g,
-   methods = c("resid_ols", "smi_ols", "smi_rob")
+   method = c("resid_ols", "smi_ols", "smi_rob")
    )
 ```
+
+This is another basic plot, that is comparing the linear vs. allometric relationship between body size and weight variables. This would be worthwhile to visually examine before you decide not to go with the most common approach for calculation of a residual body condition index, which is an allometric relationship.
+
+```{r}
+plot_bci(
+   gartersnake,
+   svl_mm,
+   mass_g,
+   method = c("resid_ols"),
+   relation = c("linear", "allometric")
+   )
+```
+
 
 ### Grouped plot
 You can highlight different groups in the raw data using the `group` argument. For example, here we separate male and female gartersnakes and the fit of the SMI method using robust regression:
@@ -158,7 +190,7 @@ plot_bci(
    gartersnake,
    svl_mm,
    mass_g,
-   methods = c("smi_rob"),
+   method = c("smi_rob"),
    group = sex
    )
 ```
@@ -170,12 +202,15 @@ plot_bci(
    gartersnake,
    svl_mm,
    mass_g,
-   methods = c("smi_rob"),
+   method = c("smi_rob"),
    group = sex,
-   raw_colours = c("M" = "darkorange3", "F" = "darkorchid"),
+   group_colours = c("M" = "darkorange3", "F" = "darkorchid"),
    method_colours = c("SMI (robust)" = "black")
 )
 ```
+
+You can also adjust the labels, presence of a legend, and, in addition to plotting the graph, return the preductions so you can customise a figure further on your own. Check our the documentation for this function using `?plot_bci` for details on all possibel arguments.
+
 
 # References
 

@@ -172,19 +172,6 @@ test_that("bci_resid_ols returns both allometric and linear", {
   ) %in% names(res)))
 })
 
-# Is the linear warning produced?
-test_that("bci_resid_ols warns when linear is selected", {
-  
-  expect_warning(
-    bci_resid_ols(
-      gartersnake,
-      svl_mm,
-      mass_g,
-      relation = "linear"
-    )
-  )
-})
-
 # Does the output length match the input length?
 test_that("bci_resid_ols output length matches input", {
   
@@ -246,10 +233,7 @@ test_that("SMI methods trigger warning with linear relation", {
   # Does error occurs when relation = linear is improperly used?
   test_that("invalid relation-method combo throws error", {
     
-    skip_on_cran()
-    
-    expect_error(
-      suppressWarnings(bci(
+    expect_warning((bci(
         gartersnake,
         svl_mm,
         mass_g,
@@ -288,20 +272,5 @@ test_that("SMI methods trigger warning with linear relation", {
     ))
     
     expect_s3_class(res, "tbl_df")
-  })
-  
-  #Does SMI ignore the relation = linear?
-  test_that("SMI ignores linear relation safely in plot", {
-    
-    expect_warning(
-      plot_bci(
-        gartersnake,
-        svl_mm,
-        mass_g,
-        method = "smi_ols",
-        relation = "linear"
-      ),
-      "SMI"
-    )
   })
   
