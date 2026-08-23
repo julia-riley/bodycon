@@ -24,7 +24,7 @@ the SMI method using an OLS regression
 }
 \description{
 This function calculates body condition indices using the scaled mass index (SMI method)
-as described in \insertCite{peig2009;textual}{bodycon}. Specifically, this method
+as described by Peig and Green (2009). Specifically, this method
 uses ordinary least squares regression in its estimation of the body condition indices.
 Yet, this method is sensitive to the presence of outliers (i.e., data points that may
 distort the expected relationship between body length and weight), and so SMI estimation
@@ -42,5 +42,7 @@ gartersnake  |>
 
 }
 \references{
-\insertAllCited{}
+Peig J, Green AJ (2009). "New perspectives for estimating body condition
+from mass/length data: the scaled mass index as an alternative method."
+\emph{Oikos}, 118(12), 1883–1891.
 }

@@ -23,7 +23,11 @@ method using a robust regression
 }
 \description{
 This function calculates body condition indices using the scaled mass index (SMI method)
-as described in \insertCite{peig2009;textual}{bodycon}. Specifically, this method uses robust regression using an M estimator (from the MASS R package) \insertCite{venables2002}{bodycon} in its estimation of the body condition indices. This method is less sensitive to the presence of outliers (i.e., data points that may distort the expected relationship between body length and weight), as shown in \href{https://apansharing.blogspot.com/2018/05/an-r-function-olsrobust-caled-mass-index.html}{this blog by by Chen-Pan Liao}.
+as described by Peig and Green (2009). Specifically, this method uses robust
+regression using an M estimator from MASS (Venables and Ripley, 2002) in its
+estimation of the body condition indices. This method is less sensitive to
+the presence of outliers (i.e., data points that may distort the expected
+relationship between body length and weight), as shown in \href{https://apansharing.blogspot.com/2018/05/an-r-function-olsrobust-caled-mass-index.html}{this code by Chen-Pan Liao}.
 }
 \examples{
 # In this examples we will make use of the `gartersnake` dataset in this R package.
@@ -36,5 +40,10 @@ gartersnake |>
 
 }
 \references{
-\insertAllCited{}
+Peig J, Green AJ (2009). "New perspectives for estimating body condition
+from mass/length data: the scaled mass index as an alternative method."
+\emph{Oikos}, 118(12), 1883–1891.
+
+Venables WN, Ripley BD (2002). \emph{Modern Applied Statistics with S}, 4th ed.
+Springer, New York.
 }

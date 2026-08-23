@@ -36,15 +36,18 @@ This function calculates body condition indices using multiple established metho
 least squares regression (OLS), and using the scaled mass index (SMI) method using OLS or robust regression for estimation.
 
 First, calculating body condition indices from the residuals of an OLS regression  is a traditional
-approach in ecology as outlined by \insertCite{krebs1993;textual}{bodycon}. There is discussion whether it is the most
-robust approach \insertCite{schulte2005,peig2009}{bodycon}, how its appropriateness
-may vary by taxon \insertCite{jakob1996,buancilua2010,labocha2012}{bodycon}, and whether
-or not it fits the assumptions of certain statistical tests \insertCite{garcia2001}{bodycon}.
+approach in ecology as outlined by Krebs and Singleton (1993). There is discussion
+about whether it is the most robust approach (Schulte-Hostedde et al., 2005;
+Peig and Green, 2009), how its appropriateness may vary by taxon (Jakob et al.,
+1996; Băncilă et al., 2010; Labocha and Hayes, 2012), and whether it fits the
+assumptions of certain statistical tests (García-Berthou, 2001).
 
-The second method, calculates body condition indices using the SMI method as described in \insertCite{peig2009;textual}{bodycon}.
+The second method calculates body condition indices using the SMI method as
+described by Peig and Green (2009).
 Specifically, this method uses OLS or robust regression in its estimation of the body condition indices.
 OLS regression is sensitive to the presence of outliers (i.e., data points that may distort the expected relationship between body length and weight).
-So, another option is to estimate SMI using robust regression using an M estimator (from the MASS R package) \insertCite{venables2002}{bodycon} in its
+So, another option is to estimate SMI using robust regression using an M estimator
+from MASS (Venables and Ripley, 2002) in its
 estimation of the body condition indices. The robus regression approach is less sensitive to the presence of outliers
 (i.e., data points that may distort the expected relationship between body length and weight), as shown in \href{https://apansharing.blogspot.com/2018/05/an-r-function-olsrobust-caled-mass-index.html}{this blog by by Chen-Pan Liao}.
 }
@@ -71,5 +74,31 @@ gartersnake |>
   
 }
 \references{
-\insertAllCited{}
+Băncilă RI, Hartel T, Plăiaşu R, Smets J, Cogălniceanu D (2010).
+"Comparing three body condition indices in amphibians: a case study of
+yellow-bellied toad \emph{Bombina variegata}." \emph{Amphibia-Reptilia}, 31(4), 558–562.
+
+García-Berthou E (2001). "On the misuse of residuals in ecology: testing
+regression residuals vs. the analysis of covariance." \emph{Journal of Animal
+Ecology}, 70, 708–711.
+
+Jakob EM, Marshall SD, Uetz GW (1996). "Estimating fitness: a comparison of
+body condition indices." \emph{Oikos}, 77, 61–67.
+
+Krebs CJ, Singleton GR (1993). "Indexes of condition for small mammals."
+\emph{Australian Journal of Zoology}, 41, 317–323.
+
+Labocha MK, Hayes JP (2012). "Morphometric indices of body condition in
+birds: a review." \emph{Journal of Ornithology}, 153, 1–22.
+
+Peig J, Green AJ (2009). "New perspectives for estimating body condition
+from mass/length data: the scaled mass index as an alternative method."
+\emph{Oikos}, 118(12), 1883–1891.
+
+Schulte-Hostedde AI, Zinner B, Millar JS, Hickling GJ (2005). "Restitution
+of mass-size residuals: validating body condition indices." \emph{Ecology},
+86(1), 155–163.
+
+Venables WN, Ripley BD (2002). \emph{Modern Applied Statistics with S}, 4th ed.
+Springer, New York.
 }
