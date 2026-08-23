@@ -8,11 +8,18 @@ plot_bci(
   data,
   body_size,
   weight,
+  log_transform = TRUE,
   method = c("resid_ols", "smi_ols", "smi_rob"),
+  relation = "allometric",
   group = NULL,
-  raw_colours = NULL,
+  group_colours = NULL,
   method_colours = NULL,
-  legend = TRUE
+  x_lab = "Body Size",
+  y_lab = "Weight",
+  group_lab = "Group",
+  method_lab = "Method",
+  legend = TRUE,
+  return_predictions = FALSE
 )
 }
 \arguments{
@@ -25,18 +32,30 @@ weight for each individual of one animal species}
 
 \item{method}{method used to estimate body condition, either residuals from an OLS regression (\code{"resid_ols"}) or scaled mass index using an OLS (\code{"smi_ols"}) or robust regression (\code{"smi_ols"}). Provide one or a list of these.}
 
-\item{group}{Optional column in \code{data} specifying grouping of raw points
-(e.g., sex, population). Default is \code{NULL} (all points treated as one group).}
+\item{relation}{an argument to specify whether or not the relationship between weight and body size variables are assummed to be allometric (\code{"allometric"}) or linear (\code{"linear"}). If allomtric, both variables are log-transformed. Default is \verb{"allometric}. Biologically speaking, most animals exhibit a allometric relationship between their weight and body size measurements, this is the method that is appropriate.}
 
-\item{raw_colours}{Optional named vector specifying colours for each group of raw points.
+\item{group}{Optional column in \code{data} specifying grouping of raw points
+(e.g., sex, population). Default is \code{NULL} (all points treated as one group) and plotted in light grey.}
+
+\item{group_colours}{Optional named vector specifying colours for each group of raw points.
 Names must match the values in the \code{group} column.
 If \code{NULL}, default ggplot2 colours are used.}
 
 \item{method_colours}{Optional named vector specifying colours for the BCI methods.
-Names must match \code{"OLS residuals"}, \code{"SMI (OLS)"}, \code{"SMI (robust)"}.
-Defaults are grey, yellow, and blue.}
+Names must match \code{"OLS regression"}, \code{"SMI (OLS)"}, \code{"SMI (robust)"}.
+Defaults are dark grey, yellow, and blue.}
+
+\item{x_lab}{Label for the x-axis enclosed in quotations. The default is \code{"body_size"}.}
+
+\item{y_lab}{Label for the y-axis enclosed in quotations. The default is \code{"body_size"}.}
+
+\item{group_lab}{Label for the grouping variable, if provided, enclosed in quotations. The default is \code{"Group"}.}
+
+\item{method_lab}{Label for the method of calculating body condition enclosed in quotations. The default is \code{"Method"}.}
 
 \item{legend}{Logical indicating whether to display the legend. Default is \code{TRUE}.}
+
+\item{return_predictions}{Either \code{TRUE} or \code{FALSE} to indicate whether or not you would like the predictions calculated to plot the lines returned to you, or not. The default is \code{FALSE}.}
 }
 \value{
 A \code{ggplot} object.
@@ -62,7 +81,7 @@ plot_bci(
   svl_mm,
   mass_g,
   method = c("resid_ols", "smi_ols", "smi_rob")
-)
+ )
 
 # Plot only BCI using the SMI method estimated with an robust regression
 # and group your raw data by sex
@@ -82,7 +101,7 @@ plot_bci(
   mass_g,
   method = c("smi_ols", "smi_rob"),
   group = sex,
-  raw_colours = c("M" = "darkorange2", "F" = "mediumpurple"),
+  group_colours = c("M" = "darkorange2", "F" = "mediumpurple"),
   method_colours = c("OLS residuals" = "black", "SMI (robust)" = "navy")
 )
 
