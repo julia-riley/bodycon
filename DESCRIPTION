@@ -2,24 +2,30 @@ Package: bodycon
 Title: What the Package Does (One Line, Title Case)
 Version: 0.0.0.9000
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"))
+    person("Julia", "Riley", , "jriley@mta.ca", role = c("aut", "cre"))
 Description: What the package does (one paragraph).
 License: CC BY 4.0
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Imports:
-    smatr,
-    Rdpack,
     dplyr,
+    ggnewscale,
+    ggplot2,
+    MASS,
+    rlang,
+    scales,
+    smatr,
     stats,
-    MASS
-RdMacros: Rdpack
+    tibble
 Suggests: 
+    here,
     knitr,
+    readr,
     rmarkdown,
-    Stat2Data,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    usethis,
+    vdiffr
 VignetteBuilder: knitr
 Depends: 
     R (>= 3.5)

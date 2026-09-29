@@ -1,0 +1,13 @@
+citHeader("To cite bodycon in publications, use:")
+
+bibentry(
+  bibtype = "Manual",
+  title = "bodycon: Estimating and Visualising Animal Body Condition Indices",
+  author = c(
+    person("Julia", "Riley"),
+    person("Fonti", "Kar")
+  ),
+  year = "2026",
+  note = paste("R package version", meta$Version),
+  url = "https://github.com/julia-riley/bodycon"
+)

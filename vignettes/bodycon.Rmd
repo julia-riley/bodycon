@@ -65,7 +65,7 @@ There is one function `bci`in this R package you can use to calculate the body c
 
 ## 1) Body condition index estimation using residuals from an OLS regression
 
-This example calculates body condition indices from the residuals of an ordinary least squares regression (OLS). This is a traditional approach in ecology as outlined by \insertCite{krebs1993;textual}{bodycon}. The method to specify for this is `"resid_ols"` and please see the examples below of using it to calculate body condition of gartersnakes:
+This example calculates body condition indices from the residuals of an ordinary least squares regression (OLS). This is a traditional approach in ecology as outlined by Krebs and Singleton (1993). The method to specify for this is `"resid_ols"` and please see the examples below of using it to calculate body condition of gartersnakes:
 
 ```{r}
 
@@ -81,7 +81,7 @@ The default for the `bci_resid_ols` function is assuming an allometric relations
 
 ## Scaled mass body condition index (SMI) estimation
 
-Yet, calculating body condition indices from the residuals of an ordinary least squares regression (OLS) has been critiqued in the literature. There is discussion whether it is the most robust approach \insertCite{schulte2005,peig2009}{bodycon}, how its appropriateness may vary by taxon \insertCite{jakob1996,buancilua2010,labocha2012}{bodycon}, and whether or not it fits the assumptions of certain statistical tests \insertCite{garcia2001}{bodycon}. An alternative is the scaled mass index (SMI method) as described in \insertCite{peig2009;textual}{bodycon}, which can be estimated using either a OLS or robust regression (as described in [this code by Chen-Pan Liao](https://apansharing.blogspot.com/2018/05/an-r-function-olsrobust-caled-mass-index.html)). One note, for SMI, body size and mass is always log-transformed because this method assumes an allometric relationship between these two variables.
+Yet, calculating body condition indices from the residuals of an ordinary least squares regression (OLS) has been critiqued in the literature. There is discussion about whether it is the most robust approach (Schulte-Hostedde et al., 2005; Peig and Green, 2009), how its appropriateness may vary by taxon (Jakob et al., 1996; Băncilă et al., 2010; Labocha and Hayes, 2012), and whether it fits the assumptions of certain statistical tests (García-Berthou, 2001). An alternative is the scaled mass index (SMI method) described by Peig and Green (2009), which can be estimated using either OLS or robust regression (as described in [this code by Chen-Pan Liao](https://apansharing.blogspot.com/2018/05/an-r-function-olsrobust-caled-mass-index.html)). For SMI, body size and mass are always log-transformed because this method assumes an allometric relationship between the variables.
 
 ### With OLS regression
 
@@ -99,7 +99,7 @@ salamander |>
 
 ### With robust regression
 
-Below is an example of using the SMI method's function using the robust regression using an M estimator (from the MASS R package) \insertCite{venables2002}{bodycon} in its estimation of the body condition indices for salamanders. This method is less sensitive to the presence of outliers (i.e., data points that may distort the expected relationship between body length and weight), as shown in [this blog by by Chen-Pan Liao](https://apansharing.blogspot.com/2018/05/an-r-function-olsrobust-caled-mass-index.html).
+Below is an example of using the SMI method with robust regression using an M estimator from MASS (Venables and Ripley, 2002) to estimate body condition indices for salamanders. This method is less sensitive to the presence of outliers (i.e., data points that may distort the expected relationship between body length and weight), as shown in [this code by Chen-Pan Liao](https://apansharing.blogspot.com/2018/05/an-r-function-olsrobust-caled-mass-index.html).
 
 ```{r}
 
