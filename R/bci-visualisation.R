@@ -36,7 +36,7 @@
 #' and coloured by a grouping variable.
 #'
 #' @examples
-#' gartersnake <- data("gartersnake")
+#' data("gartersnake")
 #'
 #' # Basic plot with all methods
 #' plot_bci(
