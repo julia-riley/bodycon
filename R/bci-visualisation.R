@@ -10,24 +10,26 @@
 #' weight for each individual of one animal species
 #' @param body_size name of standard body size variable (e.g., snout-vent-length of reptiles, tarsus length of birds, length from the snout to the base of the tail for mammals, etc.)
 #' @param weight name of weight variable (e.g., mass of the animal)
-#' @param method method used to estimate body condition, either residuals from an OLS regression (`"resid_ols"`) or scaled mass index using an OLS (`"smi_ols"`) or robust regression (`"smi_ols"`). Provide one or a list of these. 
-#' @param relation an argument to specify whether or not the relationship between weight and body size variables are assummed to be allometric (`"allometric"`) or linear (`"linear"`). If allomtric, both variables are log-transformed. Default is `"allometric`. Biologically speaking, most animals exhibit a allometric relationship between their weight and body size measurements, this is the method that is appropriate.
+#' @param method method used to estimate body condition, either residuals from an OLS regression (`"resid_ols"`) or scaled mass index using an OLS (`"smi_ols"`) or robust regression (`"smi_rob"`). Provide one or a list of these. 
+#' @param relation an argument to specify whether or not the relationship between weight and body size variables are assumed to be allometric (`"allometric"`) or linear (`"linear"`). If allometric, both variables are log-transformed. Default is `"allometric`. Biologically speaking, most animals exhibit a allometric relationship between their weight and body size measurements, this is the method that is appropriate.
 #' @param group Optional column in \code{data} specifying grouping of raw points
 #'   (e.g., sex, population). Default is \code{NULL} (all points treated as one group) and plotted in light grey.
 #' @param group_colours Optional named vector specifying colours for each group of raw points.
 #'   Names must match the values in the \code{group} column.
 #'   If \code{NULL}, default ggplot2 colours are used.
 #' @param method_colours Optional named vector specifying colours for the BCI methods.
-#'   Names must match \code{"OLS regression"}, \code{"SMI (OLS)"}, \code{"SMI (robust)"}.
-#'   Defaults are dark grey, yellow, and blue.
-#' @param x_lab Label for the x-axis enclosed in quotations. The default is `"body_size"`.
-#' @param y_lab Label for the y-axis enclosed in quotations. The default is `"body_size"`.
+#'   Names must match the method labels used in the plot: `"OLS regression (linear)"`,
+#'   `"OLS regression (allometric)"`, `"SMI (OLS)"`, `"SMI (robust)"`. Defaults are dark grey, yellow, and blue.
+#' @param x_lab Label for the x-axis. The default is `"Body Size"`.
+#' @param y_lab Label for the y-axis. The default is `"Weight"`.
 #' @param group_lab Label for the grouping variable, if provided, enclosed in quotations. The default is `"Group"`.
 #' @param method_lab Label for the method of calculating body condition enclosed in quotations. The default is `"Method"`.
 #' @param legend Logical indicating whether to display the legend. Default is \code{TRUE}.
 #' @param return_predictions Either `TRUE` or `FALSE` to indicate whether or not you would like the predictions calculated to plot the lines returned to you, or not. The default is `FALSE`.
 #'
-#' @return A `ggplot` object.
+#' @return A `ggplot` object. If `return_predictions = TRUE`, a list containing
+#'   the plot, the data used to generate the plot, and the predicted values
+#'   used to draw the fitted lines is returned.
 #'
 #' @details
 #' This function is intended for exploratory and comparative visualization

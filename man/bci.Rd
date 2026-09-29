@@ -25,7 +25,7 @@ weight for each individual of one animal species}
 
 \item{method}{method used to estimate body condition, either residuals from an OLS regression (\code{"resid_ols"}) or scaled mass index using an OLS (\code{"smi_ols"} or robust regression (\code{"smi_ols"}). Provide one or a list of these.}
 
-\item{relation}{an argument to specify whether or not the relationship between weight and body size variables are assummed to be allometric (\code{"allometric"}) or linear (\code{"linear"}). If allomtric, both variables are log-transformed. Default is \verb{"allometric}. Biologically speaking, most animals exhibit a allometric relationship between their weight and body size measurements, this is the method that is appropriate.}
+\item{relation}{an argument to specify whether or not the relationship between weight and body size variables are assumed to be allometric (\code{"allometric"}) or linear (\code{"linear"}). If allometric, both variables are log-transformed. Default is \verb{"allometric}. Biologically speaking, most animals exhibit a allometric relationship between their weight and body size measurements, this is the method that is appropriate.}
 }
 \value{
 a vector of body condition indices for each individual estimates using the method specified
@@ -47,7 +47,7 @@ Specifically, this method uses OLS or robust regression in its estimation of the
 OLS regression is sensitive to the presence of outliers (i.e., data points that may distort the expected relationship between body length and weight).
 So, another option is to estimate SMI using robust regression using an M estimator
 from MASS (Venables and Ripley, 2002) in its
-estimation of the body condition indices. The robus regression approach is less sensitive to the presence of outliers
+estimation of the body condition indices. The robust regression approach is less sensitive to the presence of outliers
 (i.e., data points that may distort the expected relationship between body length and weight), as shown in \href{https://apansharing.blogspot.com/2018/05/an-r-function-olsrobust-caled-mass-index.html}{this blog by by Chen-Pan Liao}.
 }
 \examples{

@@ -7,11 +7,11 @@
 \format{
 \subsection{\code{salamander}}{
 
-A data frame with 183 rows and 8 columns:
+A data frame with 128 rows and 8 columns:
 \describe{
 \item{salamander_ID}{A unique identifier for each individual salamander measured.}
-\item{sex}{Either F for female, M for male, or J if the snake was not sexually mature yet (i.e., a juvenile).}
-\item{gravid}{Either n for no or NA if not applicable. All individuals that were gravid (carrying eggs) were removed from this dataset.}
+\item{sex}{Either F for female, M for male, or J if the salamander was not sexually mature yet (i.e., a juvenile).}
+\item{gravid}{Either n for no or NA if not applicable. There are no occurences of y for yes, because all individuals that were gravid (carrying eggs) were removed from this dataset.}
 \item{salamander_ID}{A unique identifier for each individual salamander measured.}
 \item{age}{Either J for juvenile or A for adult, depending on the age of the salamander.}
 \item{mass_g}{Mass, in grams, of the salamander.}
@@ -27,7 +27,7 @@ A data frame with 183 rows and 8 columns:
 salamander
 }
 \description{
-This is a subset of data collected by Sara Leslie during her Honour's thesis at Mount Allison University on
+This is a subset of data collected by Sara Leslie during her Honours thesis at Mount Allison University on
 salamanders in New Brunswick. It includes morphometric data for 128 Eastern Red-backed Salamanders sampled in an
 old growth forest. The paper associated with this data is:  Leslie S, Edge C, Riley JL. 2025. Herbicide
 Application Improves Plethodontid Salamander Habitat Conditions in Regenerating Clear-cut Forests. Canadian

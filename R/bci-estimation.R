@@ -13,7 +13,7 @@
 #' @param body_size name of standard body size variable (e.g., snout-vent-length of reptiles, tarsus length of birds, length from the snout to the base of the tail for mammals, etc.)
 #' @param weight name of weight variable (e.g., mass of the animal)
 #' @param id a unique identifier for the animals included in your dataset. If included, a tibble with these unique identifiers and the estimates is returned and, if not, the estimate alone is returned. Default is `NULL`.
-#' @param relation an argument to specify whether or not the relationship between weight and body size variables are assummed to be allometric (`"allometric"`) or linear (`"linear"`). If allomtric, both variables are log-transformed. Default is `"allometric`. Biologically speaking, most animals exhibit a allometric relationship between their weight and body size measurements, this is the method that is appropriate.
+#' @param relation an argument to specify whether or not the relationship between weight and body size variables are assumed to be allometric (`"allometric"`) or linear (`"linear"`). If allometric, both variables are log-transformed. Default is `"allometric`. Biologically speaking, most animals exhibit a allometric relationship between their weight and body size measurements, this is the method that is appropriate.
 #'
 #' @returns a vector of body condition indices for each individual estimates that are the residuals from an OLS regression
 #' 
@@ -289,7 +289,7 @@ bci_smi_rob <- function(data, body_size, weight, id = NULL){
 #' OLS regression is sensitive to the presence of outliers (i.e., data points that may distort the expected relationship between body length and weight).
 #' So, another option is to estimate SMI using robust regression using an M estimator
 #' from MASS (Venables and Ripley, 2002) in its
-#' estimation of the body condition indices. The robus regression approach is less sensitive to the presence of outliers 
+#' estimation of the body condition indices. The robust regression approach is less sensitive to the presence of outliers 
 #' (i.e., data points that may distort the expected relationship between body length and weight), as shown in [this blog by by Chen-Pan Liao](https://apansharing.blogspot.com/2018/05/an-r-function-olsrobust-caled-mass-index.html).
 #'
 #' @param data tibble/dataframe containing a standard body size variable and the corresponding 
@@ -298,7 +298,7 @@ bci_smi_rob <- function(data, body_size, weight, id = NULL){
 #' @param weight name of weight variable (e.g., mass of the animal)
 #' @param id a unique identifier for the animals included in your dataset. If included, a tibble with these unique identifiers and the estimates is returned and, if not, the estimate alone is returned. Default is `NULL`.
 #' @param method method used to estimate body condition, either residuals from an OLS regression (`"resid_ols"`) or scaled mass index using an OLS (`"smi_ols"` or robust regression (`"smi_ols"`). Provide one or a list of these. 
-#' @param relation an argument to specify whether or not the relationship between weight and body size variables are assummed to be allometric (`"allometric"`) or linear (`"linear"`). If allomtric, both variables are log-transformed. Default is `"allometric`. Biologically speaking, most animals exhibit a allometric relationship between their weight and body size measurements, this is the method that is appropriate.
+#' @param relation an argument to specify whether or not the relationship between weight and body size variables are assumed to be allometric (`"allometric"`) or linear (`"linear"`). If allometric, both variables are log-transformed. Default is `"allometric`. Biologically speaking, most animals exhibit a allometric relationship between their weight and body size measurements, this is the method that is appropriate.
 #'
 #' @return a vector of body condition indices for each individual estimates using the method specified
 #' 

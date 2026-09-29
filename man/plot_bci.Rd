@@ -29,9 +29,9 @@ weight for each individual of one animal species}
 
 \item{weight}{name of weight variable (e.g., mass of the animal)}
 
-\item{method}{method used to estimate body condition, either residuals from an OLS regression (\code{"resid_ols"}) or scaled mass index using an OLS (\code{"smi_ols"}) or robust regression (\code{"smi_ols"}). Provide one or a list of these.}
+\item{method}{method used to estimate body condition, either residuals from an OLS regression (\code{"resid_ols"}) or scaled mass index using an OLS (\code{"smi_ols"}) or robust regression (\code{"smi_rob"}). Provide one or a list of these.}
 
-\item{relation}{an argument to specify whether or not the relationship between weight and body size variables are assummed to be allometric (\code{"allometric"}) or linear (\code{"linear"}). If allomtric, both variables are log-transformed. Default is \verb{"allometric}. Biologically speaking, most animals exhibit a allometric relationship between their weight and body size measurements, this is the method that is appropriate.}
+\item{relation}{an argument to specify whether or not the relationship between weight and body size variables are assumed to be allometric (\code{"allometric"}) or linear (\code{"linear"}). If allometric, both variables are log-transformed. Default is \verb{"allometric}. Biologically speaking, most animals exhibit a allometric relationship between their weight and body size measurements, this is the method that is appropriate.}
 
 \item{group}{Optional column in \code{data} specifying grouping of raw points
 (e.g., sex, population). Default is \code{NULL} (all points treated as one group) and plotted in light grey.}
@@ -41,12 +41,12 @@ Names must match the values in the \code{group} column.
 If \code{NULL}, default ggplot2 colours are used.}
 
 \item{method_colours}{Optional named vector specifying colours for the BCI methods.
-Names must match \code{"OLS regression"}, \code{"SMI (OLS)"}, \code{"SMI (robust)"}.
-Defaults are dark grey, yellow, and blue.}
+Names must match the method labels used in the plot: \code{"OLS regression (linear)"},
+\code{"OLS regression (allometric)"}, \code{"SMI (OLS)"}, \code{"SMI (robust)"}. Defaults are dark grey, yellow, and blue.}
 
-\item{x_lab}{Label for the x-axis enclosed in quotations. The default is \code{"body_size"}.}
+\item{x_lab}{Label for the x-axis. The default is \code{"Body Size"}.}
 
-\item{y_lab}{Label for the y-axis enclosed in quotations. The default is \code{"body_size"}.}
+\item{y_lab}{Label for the y-axis. The default is \code{"Weight"}.}
 
 \item{group_lab}{Label for the grouping variable, if provided, enclosed in quotations. The default is \code{"Group"}.}
 
@@ -57,7 +57,9 @@ Defaults are dark grey, yellow, and blue.}
 \item{return_predictions}{Either \code{TRUE} or \code{FALSE} to indicate whether or not you would like the predictions calculated to plot the lines returned to you, or not. The default is \code{FALSE}.}
 }
 \value{
-A \code{ggplot} object.
+A \code{ggplot} object. If \code{return_predictions = TRUE}, a list containing
+the plot, the data used to generate the plot, and the predicted values
+used to draw the fitted lines is returned.
 }
 \description{
 Visualize and compare body condition index (BCI) estimation methods by
