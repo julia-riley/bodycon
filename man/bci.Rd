@@ -9,7 +9,6 @@ bci(
   body_size,
   weight,
   id = NULL,
-  log_transform = TRUE,
   method = c("resid_ols", "smi_ols", "smi_rob"),
   relation = NULL
 )

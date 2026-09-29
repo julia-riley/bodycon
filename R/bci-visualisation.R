@@ -85,7 +85,6 @@
 #'   theme_classic labs scale_colour_manual theme
 #' @export
 plot_bci <- function(data, body_size, weight,
-                     log_transform = TRUE, 
                      method = c("resid_ols", "smi_ols", "smi_rob"),
                      relation = "allometric",
                      group = NULL,

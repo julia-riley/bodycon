@@ -8,7 +8,6 @@ plot_bci(
   data,
   body_size,
   weight,
-  log_transform = TRUE,
   method = c("resid_ols", "smi_ols", "smi_rob"),
   relation = "allometric",
   group = NULL,
@@ -73,7 +72,7 @@ fitted lines are coloured by method, and points can optionally be split
 and coloured by a grouping variable.
 }
 \examples{
-gartersnake <- data("gartersnake")
+data("gartersnake")
 
 # Basic plot with all methods
 plot_bci(

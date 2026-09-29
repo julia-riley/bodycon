@@ -352,7 +352,6 @@ bci_smi_rob <- function(data, body_size, weight, id = NULL){
 #'   
 #' @export
 bci <- function(data, body_size, weight, id = NULL,
-                log_transform = TRUE,
                 method = c("resid_ols", "smi_ols", "smi_rob"),
                 relation = NULL) {
   
@@ -381,28 +380,6 @@ bci <- function(data, body_size, weight, id = NULL,
     )
   }
   
-  # ---- collect warning messages ----
-  warn_msgs <- character()
-  
-  # linear relation warning (only meaningful if resid_ols is used)
-  if ("resid_ols" %in% method && !is.null(relation) && "linear" %in% relation) {
-    
-    warn_msgs <- c(
-      warn_msgs,
-      "OLS residual method used a linear (non-log) relationship. This is not the more commonly made allometric assumption."
-    )
-  }
-  
-  # SMI relation warning (only once, not repeated)
-  if (any(method %in% c("smi_ols", "smi_rob")) &&
-      !is.null(relation) &&
-      length(setdiff(relation, "allometric")) > 0) {
-    
-    warn_msgs <- c(
-      warn_msgs,
-      "SMI methods always assume allometric (log-log) scaling; relation = 'linear' was ignored for these methods."
-    )
-  }
   
   # ---- collect warning messages ----
   warn_msgs <- character()
@@ -428,14 +405,15 @@ bci <- function(data, body_size, weight, id = NULL,
   }
   
   # ---- emit ONE warning only ----
-  warning(
-    paste0(
-      "BCI configuration notes:\n",
-      paste("-", unique(warn_msgs), collapse = "\n")
+  if (length(warn_msgs) > 0) {
+    warning(
+      paste0(
+        "BCI configuration notes:\n",
+        paste("-", unique(warn_msgs), collapse = "\n")
     ),
     call. = FALSE
   )
-  
+  }
   
   results <- list()
   
