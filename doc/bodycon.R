@@ -1,113 +1,117 @@
 ## ----include = FALSE----------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>",
-  eval = FALSE
+  comment = "#>"
 )
 
-## ----setup--------------------------------------------------------------------
-# library(bodycon)
+## ----hex-sticker, echo=FALSE, out.width='200px'-------------------------------
+knitr::include_graphics("figures/hex_sticker.png")
 
 ## -----------------------------------------------------------------------------
-# # Inspired by Peig & Green
-# #    "New perspectives for estimating body condition from mass/length data:
-# #     the scaled mass index as an alternative method"
-# #     Oikos 118: 1883-1891, 2009
-# # Author: Chen-Pan Liao
-# scaledMassIndex <-
-#   function(x, y, x.0 = mean(x)) {
-#     require(smatr)
-#     require(magrittr)
-#     require(MASS)
-#     require(data.table)
-#     logM.ols <- lm(log(y) ~ log(x))
-#     logM.rob <- rlm(log(y) ~ log(x), method = "M")
-#     b.msa.ols <- coef(sma(log(y) ~ log(x)))[2]
-#     b.msa.rob <- coef(sma(log(y) ~ log(x), robust = T))[2]
-#     SMI.ols <- y * (x.0 / x)^b.msa.ols
-#     SMI.rob <- y * (x.0 / x)^b.msa.rob
-#     res <- data.frame(SMI.ols, SMI.rob, x, y)
-#     pred.DT <-
-#       data.table(x = seq(min(x), max(x), length = 100)) %>%
-#       .[, y.ols := predict(logM.ols, newdata = .) %>% exp()] %>%
-#       .[, y.rob := predict(logM.rob, newdata = .) %>% exp()]
-#     attr(res, "b.msa") <- c(ols = b.msa.ols, rob = b.msa.rob)
-#     return(res)
-#   }
-# 
-# scaledMassIndex_PRED <-
-#   function(x, y, x.0 = mean(x)) {
-#     require(smatr)
-#     require(magrittr)
-#     require(MASS)
-#     require(data.table)
-#     logM.ols <- lm(log(y) ~ log(x))
-#     logM.rob <- rlm(log(y) ~ log(x), method = "M")
-#     b.msa.ols <- coef(sma(log(y) ~ log(x)))[2]
-#     b.msa.rob <- coef(sma(log(y) ~ log(x), robust = T))[2]
-#     SMI.ols <- y * (x.0 / x)^b.msa.ols
-#     SMI.rob <- y * (x.0 / x)^b.msa.rob
-#     res <- data.frame(SMI.ols, SMI.rob, x, y)
-#     pred.DT <-
-#       data.table(x = seq(min(x), max(x), length = 100)) %>%
-#       .[, y.ols := predict(logM.ols, newdata = .) %>% exp()] %>%
-#       .[, y.rob := predict(logM.rob, newdata = .) %>% exp()]
-#     attr(res, "b.msa") <- c(ols = b.msa.ols, rob = b.msa.rob)
-#     return(pred.DT)
-#   }
+install.packages("bodycon")
 
 ## -----------------------------------------------------------------------------
-# 
-# # loading libraries
-# library(tidyverse)
-# library(here)
-# 
-# # loading data
-# indiv_data <- read_csv("ex_sara leslie_individual_data.csv")
-# 
-# # adding body condition indices
-# SMI_data <- indiv_data %>%
-#   filter(
-#     !is.na(mass_g),
-#     !is.na(svl_mm),
-#     species == "RB",
-#     gravid == "n",
-#     age == "A"
-#   ) %>%
-#   # adding scaled mass index
-#   mutate((SMI_func <- scaledMassIndex(svl_mm, mass_g, x.0 = mean(svl_mm))))
-# 
-# head(SMI_data)
+install.packages("remotes")
+remotes::install_github("julia-riley/bodycon")
 
 ## -----------------------------------------------------------------------------
-# data_smi_only <- scaledMassIndex(SMI_data$svl_mm, SMI_data$mass_g, x.0 = mean(SMI_data$svl_mm))
-# summary(data_smi_only)
-# data_smi_w_sp <- cbind(data_smi_only, species = SMI_data$species)
-# dplyr::glimpse(data_smi_w_sp)
+library(bodycon)
 
 ## -----------------------------------------------------------------------------
-# SMI_predictions <- scaledMassIndex_PRED(SMI_data$svl_mm, SMI_data$mass_g, x.0 = mean(SMI_data$svl_mm))
-# glimpse(SMI_predictions)
+# View the first (Maritime Gartersnake) dataset
+dplyr::glimpse(gartersnake)
 
 ## -----------------------------------------------------------------------------
-# SMI_plot <- ggplot(SMI_data, aes(svl_mm, mass_g, colour = sex)) +
-#   geom_point(size = 2, alpha = 0.8) +
-#   scale_color_manual(
-#     name = NULL,
-#     values = c("#C23B3B", "skyblue2")) +
-#   theme_classic() +
-#   theme(
-#     text = element_text(size = 14, family = "serif"),
-#     axis.text = element_text(size = 14),
-#     legend.position = NULL,
-#     legend.title.align = 0.5,
-#     panel.border = element_rect(colour = "black", fill = NA, size = 1)
-#   ) +
-#   labs(
-#     x = "SVL (mm)",
-#     y = "Mass (g)"
-#   ) +
-#   geom_line(data = SMI_predictions, aes(x, y.rob), colour = "gray20", size = 1.8) +
-#   geom_line(data = SMI_predictions, aes(x, y.ols), colour = "gold2", linetype = 2, size = 1.8)
-# SMI_plot
+# View the second (Eastern Red-backed Salamander) dataset
+dplyr::glimpse(salamander)
+
+## -----------------------------------------------------------------------------
+
+bci_resid_ols(gartersnake, svl_mm, mass_g)
+
+# Piped version
+gartersnake |>
+  bci_resid_ols(svl_mm, mass_g)
+
+
+## -----------------------------------------------------------------------------
+
+bci_smi_ols(salamander, svl_mm, mass_g)
+
+# Piped version
+salamander |>
+  bci_smi_ols(svl_mm, mass_g)
+
+
+## -----------------------------------------------------------------------------
+
+bci_smi_rob(salamander, svl_mm, mass_g)
+
+# Piped version
+salamander |>
+  bci_smi_rob(svl_mm, mass_g)
+
+
+## -----------------------------------------------------------------------------
+
+bci(gartersnake, svl_mm, mass_g, 
+    method = c("resid_ols", "smi_ols", "smi_rob"),
+    relation = c("linear", "allometric"))
+
+# Piped version
+gartersnake |>
+  bci(svl_mm, mass_g, 
+      method = c("resid_ols", "smi_ols", "smi_rob"),
+      relation = c("linear", "allometric"))
+
+
+## -----------------------------------------------------------------------------
+
+bci(gartersnake, svl_mm, mass_g,
+    id = id_num,
+    method = c("resid_ols", "smi_ols", "smi_rob"))
+
+# Piped version
+gartersnake |>
+  bci(svl_mm, mass_g, 
+       id = id_num,
+       method = c("resid_ols", "smi_ols", "smi_rob"))
+
+
+## -----------------------------------------------------------------------------
+plot_bci(
+   gartersnake,
+   svl_mm,
+   mass_g,
+   method = c("resid_ols", "smi_ols", "smi_rob")
+   )
+
+## -----------------------------------------------------------------------------
+plot_bci(
+   gartersnake,
+   svl_mm,
+   mass_g,
+   method = c("resid_ols"),
+   relation = c("linear", "allometric")
+   )
+
+## -----------------------------------------------------------------------------
+plot_bci(
+   gartersnake,
+   svl_mm,
+   mass_g,
+   method = c("smi_rob"),
+   group = sex
+   )
+
+## -----------------------------------------------------------------------------
+plot_bci(
+   gartersnake,
+   svl_mm,
+   mass_g,
+   method = c("smi_rob"),
+   group = sex,
+   group_colours = c("M" = "darkorange3", "F" = "darkorchid"),
+   method_colours = c("SMI (robust)" = "black")
+)
 

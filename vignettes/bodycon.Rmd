@@ -4,7 +4,7 @@ author: "Julia Riley & Fonti Kar"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{bodycon}
+  %\VignetteIndexEntry{bodycon Quick Start Guide}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -12,18 +12,15 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>",
-  eval = FALSE
+  comment = "#>"
 )
 ```
 
 ```{r hex-sticker, echo=FALSE, out.width='200px'}
-library(here)
-knitr::include_graphics(
-  here::here("inst", "hex_sticker", "hex_sticker.png"))
+knitr::include_graphics("figures/hex_sticker.png")
 ```
 
-*bodycon* is an R package for calculating commonly-used body condition indices in wildlife ecology research. In this research field, an individual's fitness traits, like reproduction and survival, are the primary metrics used to quantify an animal's health, biology, and evolution. Yet, direct fitness measures like these can be un unfeasible to collect in the field due to financial or logistical research constraints. So, in these cases, animal ecologists often rely on proxies of individual fitness, such as body condition. In general, individuals in better body condition (that are also assumed to have greater energy reserves) experience higher survival and reproductive success than individuals in inferior body condition. This impact of body condition on fitness parameters has been documented across a diversity of taxa. One widely used method of estimating body condition is to relate body mass to a linear measure of body size, but this can be calculated in a variety of ways. This R package contains functions to for commonly-used methods of calculation of body condition indices; and we hope to continue to develop this R package to expand the taxa it can be applied to moving forward.
+*bodycon* is an R package for calculating commonly-used body condition indices in wildlife ecology research. In this research field, an individual's fitness traits, like reproduction and survival, are important measures of individual health and performance. Yet, direct fitness measures like these can be impractical to collect in the field due to financial or logistical research constraints. So, in these cases, animal ecologists often rely on proxies of individual fitness, such as body condition. In general, individuals in better body condition (that are also assumed to have greater energy reserves) experience higher survival and reproductive success than individuals in inferior body condition. This impact of body condition on fitness parameters has been documented across a diversity of taxa. One widely used method of estimating body condition is to relate body mass to a linear measure of body size, but this can be calculated in a variety of ways. This R package contains functions for commonly-used methods of calculation of body condition indices; and we hope to continue to develop this R package to expand the taxa it can be applied to moving forward.
 
 # Installation
 
@@ -46,16 +43,16 @@ library(bodycon)
 
 # Package Datasets
 
-There are two datasets included in the bodycon R package. The first contains data on the morphology of 46 Maritime Gartersnakes (**Thamnophis sirtalis pallidulus**) collected in summer of 2022 in New Brunswick and Nova Scotia, Canada. The length measure is snout-vent-length (mm), which is the distance from the snake's snout to the anterior edge of their cloaca. The weight measure is mass (g).
+There are two datasets included in the bodycon R package. The first contains data on the morphology of 46 Maritime Gartersnakes (**Thamnophis sirtalis pallidulus**) collected in summer of 2022 in New Brunswick and Nova Scotia, Canada. The length measure is snout-vent length (mm), which is the distance from the snake's snout to the anterior edge of their cloaca. The weight measure is mass (g).
 ```{r}
 # View the first (Maritime Gartersnake) dataset
-glimpse(gartersnake)
+dplyr::glimpse(gartersnake)
 ```
 
-There is also a second dataset that contains data on the morphology of 128 Eastern Red-backed Salamanders (**Plethodon cinereus**) that was collected the the summer of 2022 in New Brunswick, Canada. It also contains similar length (snout-vent-length in mm) and mass data for each individual salamander that can be used to calculate body condition indexes.
+There is also a second dataset that contains data on the morphology of 128 Eastern Red-backed Salamanders (**Plethodon cinereus**) that was collected the summer of 2022 in New Brunswick, Canada. It also contains similar length (snout-vent-length in mm) and mass data for each individual salamander that can be used to calculate body condition indices.
 ```{r}
 # View the second (Eastern Red-backed Salamander) dataset
-glimpse(salamander)
+dplyr::glimpse(salamander)
 ```
 
 
@@ -114,45 +111,45 @@ salamander |>
 
 ## Using multiple methods at once
 
-It is possible to estimate body condition indexes using multiple methods. This may be something you might like to do to decide on which method you are going to use for your data. Here is an example of how you can do that:
+It is possible to estimate body condition indexes using multiple methods. It can be useful to calculate multiple indices to compare how estimates of body condition differ among methods. Here is an example of how you can do that:
 
 ```{r}
 
-bci_resid_ols(gartersnake, svl_mm, mass_g, 
-              method = c("resid_ols", "smi_ols", "smi_rob"),
-              relation = c("linear", "allometric"))
+bci(gartersnake, svl_mm, mass_g, 
+    method = c("resid_ols", "smi_ols", "smi_rob"),
+    relation = c("linear", "allometric"))
 
 # Piped version
 gartersnake |>
-  bci_resid_ols(svl_mm, mass_g, 
-                method = c("resid_ols", "smi_ols", "smi_rob"),
-              relation = c("linear", "allometric"))
+  bci(svl_mm, mass_g, 
+      method = c("resid_ols", "smi_ols", "smi_rob"),
+      relation = c("linear", "allometric"))
 
 ```
 
-If you would like to add an unique individual code to tell animals apart, then you can used that using the `id` argument. Here is an example:
+If you would like to add an unique individual code to tell animals apart, then you can use that using the `id` argument. Here is an example:
 
 ```{r}
 
-bci_resid_ols(gartersnake, svl_mm, mass_g,
-              id = id_num,
-              method = c("resid_ols", "smi_ols", "smi_rob"))
+bci(gartersnake, svl_mm, mass_g,
+    id = id_num,
+    method = c("resid_ols", "smi_ols", "smi_rob"))
 
 # Piped version
 gartersnake |>
-  bci_resid_ols(svl_mm, mass_g, 
-                id = id_num,
-                method = c("resid_ols", "smi_ols", "smi_rob"))
+  bci(svl_mm, mass_g, 
+       id = id_num,
+       method = c("resid_ols", "smi_ols", "smi_rob"))
 
 ```
 
 
 # Visual comparison of body condition indices
 
-To explore the body condition methods that are most appropriate for you data, you may want to plot the estimations with your observed, raw data to visually compare methods. Of course, please also consider currently literature about these BCI estimators to assess whether it is correct for your dataset or the analyses you are planning to apply to them. We will plot BCI estimators for animals using the `plot_bci()` function from the bodycon package. The plot allows comparison between:
+To explore the body condition methods that are most appropriate for your data, you may want to plot the estimations with your observed, raw data to visually compare methods. Of course, please also consider current literature about these BCI estimators to assess whether it is correct for your dataset or the analyses you are planning to apply to them. We will plot BCI estimators for animals using the `plot_bci()` function from the bodycon package. The plot allows comparison between:
 
 + OLS residuals (resid_ols)
-+ Scaled Mass Index using OLS regression (smi_ols)
++ Scaled Mass Index using ordinary least squares regression (smi_ols)
 + Scaled Mass Index using robust regression (smi_rob)
 
 Additionally, raw data points can be grouped (e.g., by sex or population) and colours can be customized for both raw points and method lines. In the following examples we will use the `gartersnakes` dataset, which has previously been outlined above.
