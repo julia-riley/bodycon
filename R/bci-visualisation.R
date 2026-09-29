@@ -81,8 +81,8 @@
 #' @importFrom ggplot2 ggplot aes geom_point geom_line theme_classic labs
 #'   scale_colour_manual theme
 #'
-#' @importFrom ggplot2 ggplot aes geom_point geom_line
-#'   theme_classic labs scale_colour_manual theme
+#' @importFrom stats predict
+#'
 #' @export
 plot_bci <- function(data, body_size, weight,
                      method = c("resid_ols", "smi_ols", "smi_rob"),

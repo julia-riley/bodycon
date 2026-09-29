@@ -31,7 +31,8 @@ relationship between body length and weight), as shown in \href{https://apanshar
 }
 \examples{
 # In this examples we will make use of the `gartersnake` dataset in this R package.
-# This dataset contains the mass (in grams) and snout-vent length (in mm) of 46 Maritime Gartersnakes.
+# This dataset contains the mass (in grams) and snout-vent length 
+# (in mm) of 46 Maritime Gartersnakes.
 # To estimate body condition indices (using the scaled mass index with a robust regression)
 # for the gartersnakes from this dataset, one could:
 

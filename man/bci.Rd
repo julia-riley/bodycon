@@ -52,7 +52,8 @@ estimation of the body condition indices. The robus regression approach is less 
 }
 \examples{
 # In these examples we will make use of the `gartersnake` dataset in this R package.
-# This dataset contains the mass (in grams) and snout-vent length (in mm) of 46 Maritime Gartersnakes.
+# This dataset contains the mass (in grams) and snout-vent length 
+# (in mm) of 46 Maritime Gartersnakes.
 # To estimate body condition indices for the gartersnakes this dataset, one could:
 
 # BCI that is the residuals from an OLS regression

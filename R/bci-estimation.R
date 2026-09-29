@@ -45,7 +45,8 @@
 #'
 #' @examples 
 #' # In this examples we will make use of the `gartersnake` dataset in this R package.
-#' # This dataset contains the mass (in grams) and snout-vent length (in mm) of 46 Maritime Gartersnakes.
+#' # This dataset contains the mass (in grams) and snout-vent length 
+#' # (in mm) of 46 Maritime Gartersnakes.
 #' # To estimate body condition indices (using residuals from an OLS) for the gartersnakes
 #' # in this dataset, one could:
 #' 
@@ -135,7 +136,8 @@ bci_resid_ols <- function(data, body_size, weight,
 #' 
 #' @examples 
 #' # In this examples we will make use of the `gartersnake` dataset in this R package.
-#' # This dataset contains the mass (in grams) and snout-vent length (in mm) of 46 Maritime Gartersnakes.
+#' # This dataset contains the mass (in grams) and snout-vent length 
+#' # (in mm) of 46 Maritime Gartersnakes.
 #' # To estimate body condition indices (using the scaled mass index with OLS)
 #' # for the gartersnakes this dataset, one could:
 #' 
@@ -217,7 +219,8 @@ bci_smi_ols <- function(data, body_size, weight, id = NULL){
 #' 
 #' @examples 
 #' # In this examples we will make use of the `gartersnake` dataset in this R package.
-#' # This dataset contains the mass (in grams) and snout-vent length (in mm) of 46 Maritime Gartersnakes.
+#' # This dataset contains the mass (in grams) and snout-vent length 
+#' # (in mm) of 46 Maritime Gartersnakes.
 #' # To estimate body condition indices (using the scaled mass index with a robust regression)
 #' # for the gartersnakes from this dataset, one could:
 #'
@@ -331,7 +334,8 @@ bci_smi_rob <- function(data, body_size, weight, id = NULL){
 #'   
 #' @examples 
 #' # In these examples we will make use of the `gartersnake` dataset in this R package.
-#' # This dataset contains the mass (in grams) and snout-vent length (in mm) of 46 Maritime Gartersnakes.
+#' # This dataset contains the mass (in grams) and snout-vent length 
+#' # (in mm) of 46 Maritime Gartersnakes.
 #' # To estimate body condition indices for the gartersnakes this dataset, one could:
 #' 
 #' # BCI that is the residuals from an OLS regression

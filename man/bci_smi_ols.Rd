@@ -33,7 +33,8 @@ outliers are present.
 }
 \examples{
 # In this examples we will make use of the `gartersnake` dataset in this R package.
-# This dataset contains the mass (in grams) and snout-vent length (in mm) of 46 Maritime Gartersnakes.
+# This dataset contains the mass (in grams) and snout-vent length 
+# (in mm) of 46 Maritime Gartersnakes.
 # To estimate body condition indices (using the scaled mass index with OLS)
 # for the gartersnakes this dataset, one could:
 

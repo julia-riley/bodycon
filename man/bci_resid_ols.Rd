@@ -37,7 +37,8 @@ statistical tests (García-Berthou, 2001).
 }
 \examples{
 # In this examples we will make use of the `gartersnake` dataset in this R package.
-# This dataset contains the mass (in grams) and snout-vent length (in mm) of 46 Maritime Gartersnakes.
+# This dataset contains the mass (in grams) and snout-vent length 
+# (in mm) of 46 Maritime Gartersnakes.
 # To estimate body condition indices (using residuals from an OLS) for the gartersnakes
 # in this dataset, one could:
 
