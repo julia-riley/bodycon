@@ -215,6 +215,20 @@ test_that("relation only affects resid_ols in bci()", {
   expect_true("smi_ols" %in% names(res))
 })
 
+# Is a warning triggers in bci_resid_ols when relation = linear is used?
+test_that("OLS methods trigger warning with linear relation", {
+  
+  expect_warning(
+    bci_resid_ols(
+      gartersnake,
+      svl_mm,
+      mass_g,
+      relation = "linear"
+    ),
+    "OLS residual method"
+  )
+})
+
 # Is a warning triggers in bci() when relation = linear is used?
 test_that("SMI methods trigger warning with linear relation", {
   
@@ -230,7 +244,7 @@ test_that("SMI methods trigger warning with linear relation", {
   )
   })
   
-  # Does error occurs when relation = linear is improperly used?
+# Does error occurs when relation = linear is improperly used?
   test_that("invalid relation-method combo throws error", {
     
     expect_warning((bci(

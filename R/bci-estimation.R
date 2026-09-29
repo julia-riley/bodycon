@@ -48,6 +48,11 @@ bci_resid_ols <- function(data, body_size, weight,
     if (rel == "allometric") {
       tmp_data <- tmp_data |>
         dplyr::mutate(x = log(x), y = log(y))
+    } else {
+      warning(
+        "OLS residual method used a linear (non-log) relationship. This is not the more commonly made allometric assumption.",
+        call.=FALSE
+      )
     }
     
     
