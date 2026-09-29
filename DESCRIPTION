@@ -1,9 +1,11 @@
 Package: bodycon
-Title: What the Package Does (One Line, Title Case)
+Title: Calculation of Body Condition Indices of Animals
 Version: 0.0.0.9000
-Authors@R: 
-    person("Julia", "Riley", , "jriley@mta.ca", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+Authors@R: c(
+    person("Julia", "Riley", , "jriley@mta.ca", role = c("aut", "cre"), comment = c(ORCID = "0000-0001-7691-6910")),
+    person("Fonti", "Kar", role = "aut", comment = c(ORCID = "0000-0002-2760-3974"))
+    )
+Description: Provides functions for calculating and visualizing body condition indices for animals. Methods include residual-based ordinary least squares (OLS) indices, scaled mass index (SMI) using OLS and robust regression, and visualizations to compare and contrast the appropriateness of these indices.
 License: CC BY 4.0
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -27,7 +29,7 @@ Suggests:
     vdiffr
 VignetteBuilder: knitr
 Depends: 
-    R (>= 3.5)
+    R (>= 4.1.0)
 LazyData: true
 Config/testthat/edition: 3
 Config/roxygen2/version: 8.1.0
