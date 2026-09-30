@@ -4,13 +4,7 @@
 \alias{bci_resid_ols}
 \title{Body Condition Index Estimation using Residuals from an OLS Regression}
 \usage{
-bci_resid_ols(
-  data,
-  body_size,
-  weight,
-  id = NULL,
-  relation = c("allometric", "linear")
-)
+bci_resid_ols(data, body_size, weight, id = NULL, relation = c("allometric"))
 }
 \arguments{
 \item{data}{tibble/dataframe containing a standard body size variable and the corresponding weight for each individual of one animal species}
