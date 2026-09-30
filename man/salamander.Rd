@@ -21,7 +21,7 @@ A data frame with 128 rows and 8 columns:
 }
 }
 \source{
-\url{https://doi.org/10.1139/cjfr-2024-0294}
+\doi{10.1139/cjfr-2024-0294}
 }
 \usage{
 salamander
@@ -31,6 +31,6 @@ This is a subset of data collected by Sara Leslie during her Honours thesis at M
 salamanders in New Brunswick. It includes morphometric data for 128 Eastern Red-backed Salamanders sampled in an
 old growth forest. The paper associated with this data is:  Leslie S, Edge C, Riley JL. 2025. Herbicide
 Application Improves Plethodontid Salamander Habitat Conditions in Regenerating Clear-cut Forests. Canadian
-Journal of Forest Research. 55: 1-12. DOI: https://doi.org/10.1139/cjfr-2024-0294
+Journal of Forest Research. 55: 1-12. \doi{10.1139/cjfr-2024-0294}
 }
 \keyword{datasets}
