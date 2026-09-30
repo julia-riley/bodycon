@@ -12,12 +12,15 @@ test_that("Check output values are correct", {
   bci_resid_ols_hand1 <- (ols$residuals)
   
   ## Is bci_resid_ols calculating what we expect (values)?  
-  expect_true(identical(bci_resid_ols_pkg1, bci_resid_ols_hand1))
+  expect_equal(bci_resid_ols_pkg1, bci_resid_ols_hand1)
   
   # OLS Residuals (Linear)
   ## Using the R package
-  results <- gartersnake |>
-    bci_resid_ols(svl_mm, mass_g)
+  results <- suppressWarnings(
+    gartersnake |>
+    bci_resid_ols(svl_mm, mass_g, relation = "linear")
+  )
+  
   bci_resid_ols_pkg2 <- results$resid_linear
   
   ##Estimation by hand 
@@ -25,7 +28,7 @@ test_that("Check output values are correct", {
   bci_resid_ols_hand2 <- (ols$residuals)
   
   ## Is bci_resid_ols calculating what we expect (values)?  
-  expect_true(identical(bci_resid_ols_pkg2, bci_resid_ols_hand2))
+  expect_equal(bci_resid_ols_pkg2, bci_resid_ols_hand2)
   
   # SMI using OLS regression
   ## Using the R package
@@ -41,7 +44,7 @@ test_that("Check output values are correct", {
   bci_smi_ols_hand <- SMI_ols
   
   ## Is bci_smi_ols calculating what we expect (values)?  
-  expect_true(identical(bci_smi_ols_pkg, bci_smi_ols_hand))
+  expect_equal(bci_smi_ols_pkg, bci_smi_ols_hand)
   
   # SMI using robust regression
   ## Using the R package
@@ -57,15 +60,24 @@ test_that("Check output values are correct", {
   bci_smi_rob_hand <- SMI_rob
   
   ## Is bci_smi_rob calculating what we expect (values)?  
-  expect_true(identical(bci_smi_rob_pkg, bci_smi_rob_hand))
+  expect_equal(bci_smi_rob_pkg, bci_smi_rob_hand)
   
   })
+
+test_that("bci_resid_ols defaults to allometric", {
+  res <- bci_resid_ols(
+    gartersnake,
+    svl_mm,
+    mass_g
+  )
+
+  expect_true("resid_allometric" %in% names(res))
+  expect_false("resid_linear" %in% names(res))
+})
 
 
 # Is the structure of 'bci' function output correct?
 test_that("bci returns tibble with correct structure", {
-  
-  skip_on_cran()
   
   out <- suppressWarnings(
   bci(
@@ -85,8 +97,6 @@ test_that("bci returns tibble with correct structure", {
 # Does method selection work?
 test_that("bci respects method selection", {
   
-  skip_on_cran()
-  
   data <- data.frame(
     svl = 1:10,
     mass = 1:10
@@ -104,21 +114,17 @@ test_that("bci respects method selection", {
 # Does the 'bci' function include ID when requested?
 test_that("bci includes ID when requested", {
   
-  skip_on_cran()
-  
   out <- suppressWarnings(
     bci(salamander, svl_mm, mass_g, id = salamander_ID)
   )
   
   expect_true("id" %in% names(out))
-  expect_true(identical(out$id, salamander$salamander_ID))
+  expect_equal(out$id, salamander$salamander_ID)
 })
 
 
 # Does the 'bci' function include ID if NOT requested?
 test_that("bci excludes ID when not provided", {
-
-  skip_on_cran()
   
   out <- suppressWarnings(
     bci(salamander, svl_mm, mass_g)
@@ -130,8 +136,6 @@ test_that("bci excludes ID when not provided", {
 
 # Are the bci outputs numeric and finite?
 test_that("bci outputs are numeric and finite", {
-  
-  skip_on_cran()
   
   out <- suppressWarnings(
     bci(salamander, svl_mm, mass_g, method = c("resid_ols", "smi_ols"))
@@ -159,11 +163,13 @@ test_that("bci_resid_ols returns allometric column correctly", {
 #Does bci_resid_ols return both allometric and linear column when requested?
 test_that("bci_resid_ols returns both allometric and linear", {
   
-  res <- bci_resid_ols(
+  res <- suppressWarnings(
+    bci_resid_ols(
     gartersnake,
     svl_mm,
     mass_g,
     relation = c("allometric", "linear")
+  )
   )
   
   expect_true(all(c(
@@ -183,8 +189,6 @@ test_that("bci_resid_ols output length matches input", {
 #Does bci() return columns for all methods?
 test_that("bci returns correct columns for all methods", {
   
-  skip_on_cran()
-  
   res <- suppressWarnings(
     bci(
     gartersnake,
@@ -200,8 +204,6 @@ test_that("bci returns correct columns for all methods", {
 
 #Does the argument 'relation' affect only resid_ols?
 test_that("relation only affects resid_ols in bci()", {
-  
-  skip_on_cran()
   
   res <- suppressWarnings(
     bci(
@@ -245,7 +247,7 @@ test_that("SMI methods trigger warning with linear relation", {
   })
   
 # Does error occurs when relation = linear is improperly used?
-  test_that("invalid relation-method combo throws error", {
+  test_that("bci warns when linear relation is requested with SMI methods", {
     
     expect_warning((bci(
         gartersnake,
@@ -260,8 +262,6 @@ test_that("SMI methods trigger warning with linear relation", {
   #Does bci() handle NA values okay?
   test_that("functions handle NA values", {
     
-    skip_on_cran()
-    
     df <- gartersnake
     df$svl_mm[1] <- NA
     
@@ -274,8 +274,6 @@ test_that("SMI methods trigger warning with linear relation", {
 
   # Does referring to a single method still return a tibble?
   test_that("single method still returns tibble", {
-    
-    skip_on_cran()
     
     res <- suppressWarnings(
       bci(
