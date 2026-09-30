@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 title: "bodycon: Estimation of Animal Body Condition Indices"
-version: "0.0.0.9000"
+version: "0.1.0"
 date-released: "2026-09-30"
 authors:
   - family-names: Riley
