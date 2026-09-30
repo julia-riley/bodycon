@@ -56,9 +56,9 @@
 #' @export    
 bci_resid_ols <- function(data, body_size, weight,
                           id = NULL,
-                          relation = c("allometric", "linear")) {
+                          relation = c("allometric")) {
   
-  relation <- match.arg(relation, several.ok = TRUE)
+  relation <- match.arg(relation, c("allometric", "linear"), several.ok = TRUE)
   
   out_list <- list()
   
@@ -75,7 +75,7 @@ bci_resid_ols <- function(data, body_size, weight,
         dplyr::mutate(x = log(x), y = log(y))
     } else {
       warning(
-        "OLS residual method used a linear (non-log) relationship. This is not the more commonly made allometric assumption.",
+        "OLS residual method used a linear (non-log) relationship. This assumes a linear relationship between body size and mass.",
         call.=FALSE
       )
     }
