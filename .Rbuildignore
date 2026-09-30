@@ -3,8 +3,6 @@
 ^data-raw$
 ^doc$
 ^Meta$
-^LICENSE\.md$
 ^bodycon.Rproj$
-
 ^\.github$
 ^literature$

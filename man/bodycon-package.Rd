@@ -4,9 +4,17 @@
 \name{bodycon-package}
 \alias{bodycon}
 \alias{bodycon-package}
-\title{bodycon: Calculation of Body Condition Indices of Animals}
+\title{bodycon: Estimation of Animal Body Condition Indices}
 \description{
 Provides functions for calculating and visualizing body condition indices for animals. Methods include residual-based ordinary least squares (OLS) indices, scaled mass index (SMI) using OLS and robust regression, and visualizations to compare and contrast the appropriateness of these indices.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/julia-riley/bodycon}
+  \item Report bugs at \url{https://github.com/julia-riley/bodycon/issues}
+}
+
 }
 \author{
 \strong{Maintainer}: Julia Riley \email{jriley@mta.ca} (\href{https://orcid.org/0000-0001-7691-6910}{ORCID})

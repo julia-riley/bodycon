@@ -7,6 +7,8 @@ Authors@R: c(
     )
 Description: Provides functions for calculating and visualizing body condition indices for animals. Methods include residual-based ordinary least squares (OLS) indices, scaled mass index (SMI) using OLS and robust regression, and visualizations to compare and contrast the appropriateness of these indices.
 License: MIT + file LICENSE
+URL: https://github.com/julia-riley/bodycon
+BugReports: https://github.com/julia-riley/bodycon/issues
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 Imports:
