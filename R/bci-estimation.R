@@ -363,6 +363,7 @@ bci <- function(data, body_size, weight, id = NULL,
   
   relation_used <- NULL
   
+  # ---- handle relation defaults ----
   if (!is.null(relation)) {
     relation_used <- match.arg(relation, c("allometric", "linear"), several.ok = TRUE)
   } else {
@@ -373,51 +374,20 @@ bci <- function(data, body_size, weight, id = NULL,
   has_smi <- any(method %in% c("smi_ols", "smi_rob"))
   has_resid <- "resid_ols" %in% method
   
-  # ---- handle relation defaults ----
-  if (is.null(relation)) {
-    relation_used <- "allometric"
-  } else {
-    relation_used <- match.arg(
-      relation,
-      c("allometric", "linear"),
-      several.ok = TRUE
-    )
-  }
-  
-  
   # ---- collect warning messages ----
   warn_msgs <- character()
-  
-  # linear relation warning (only meaningful if resid_ols is used)
-  if ("resid_ols" %in% method && !is.null(relation) && "linear" %in% relation) {
-    
-    warn_msgs <- c(
-      warn_msgs,
-      "OLS residual method used a linear (non-log) relationship. This is not the more commonly made allometric assumption."
-    )
-  }
   
   # SMI relation warning (only once, not repeated)
   if (any(method %in% c("smi_ols", "smi_rob")) &&
       !is.null(relation) &&
-      length(setdiff(relation, "allometric")) > 0) {
+      "linear" %in% relation_used) {
     
-    warn_msgs <- c(
-      warn_msgs,
-      "SMI methods always assume allometric (log-log) scaling; relation = 'linear' was ignored for these methods."
+    warning(
+      "The 'linear' relation applies only to the OLS residual method; SMI methods always use allometric (log-log) scaling.",
+      call. = FALSE
     )
   }
   
-  # ---- emit ONE warning only ----
-  if (length(warn_msgs) > 0) {
-    warning(
-      paste0(
-        "BCI configuration notes:\n",
-        paste("-", unique(warn_msgs), collapse = "\n")
-    ),
-    call. = FALSE
-  )
-  }
   
   results <- list()
   
