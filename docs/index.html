@@ -4,94 +4,81 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Estimation of Animal Body Condition Indices • bodycon</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
-<script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script><meta property="og:title" content="Estimation of Animal Body Condition Indices">
+<script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Estimation of Animal Body Condition Indices">
+<meta name="description" content="Provides functions for calculating and visualizing body condition indices for animals. Methods include residual-based ordinary least squares (OLS) indices, scaled mass index (SMI) using OLS and robust regression, and visualizations to compare and contrast the appropriateness of these indices.">
 <meta property="og:description" content="Provides functions for calculating and visualizing body condition indices for animals. Methods include residual-based ordinary least squares (OLS) indices, scaled mass index (SMI) using OLS and robust regression, and visualizations to compare and contrast the appropriateness of these indices.">
-<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
 </head>
-<body data-spy="scroll" data-target="#toc">
+<body>
+    <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
-    <div class="container template-home">
-      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="index.html">bodycon</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.0</span>
-      </span>
-    </div>
+    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
 
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-<li>
-  <a href="articles/bodycon.html">Get started</a>
-</li>
-<li>
-  <a href="reference/index.html">Reference</a>
-</li>
+    <a class="navbar-brand me-2" href="index.html">bodycon</a>
+
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar" class="collapse navbar-collapse ms-3">
+      <ul class="navbar-nav me-auto">
+<li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
       </ul>
-<ul class="nav navbar-nav navbar-right">
-<li>
-  <a href="https://github.com/julia-riley/bodycon/" class="external-link">
-    <span class="fab fa-github fa-lg"></span>
-
-  </a>
-</li>
+<ul class="navbar-nav">
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/julia-riley/bodycon/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
-<!--/.nav-collapse -->
+
+
   </div>
-<!--/.container -->
-</div>
-<!--/.navbar -->
-
-
-
-      </header><div class="row">
-  <div class="contents col-md-9">
-<div class="section level1">
+</nav><div class="container template-home">
+<div class="row">
+  <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header"><h1 id="bodycon-">bodycon <img src="inst/hex_sticker/hex_sticker.png" align="right" height="150"><a class="anchor" aria-label="anchor" href="#bodycon-"></a>
 </h1></div>
 <!-- badges: start -->
 
 <p><code>bodycon</code> is an R package for calculating commonly used body condition indices in wildlife ecology research. In this research field, an individual’s fitness traits, like reproduction and survival, are important measures of individual performance and health. However, direct measures of fitness can be impractical to collect in the field due to financial or logistical research constraints. So, in these cases, animal ecologists often rely on proxies of individual fitness, such as body condition.</p>
-<p>One widely used method of estimating body condition is to relate body mass to a linear measure of body size, but this can be calculated in a variety of ways. <code>bodycon</code> contains functions for widely used methods of calculating body condition indices, including residuals from an ordinary least squares (OLS) regression and scaled mass index (SMI) using OLS and robust regression.</p>
-<p><strong>Installation</strong></p>
-<p>The development version of <code>bodycon</code> can be installed from Github with:</p>
+<p>One widely used method of estimating body condition is to relate body mass to a linear measure of body size, but this can be calculated in a variety of ways. <code>bodycon</code> contains functions for a variety of methods of estimating body condition indices, including residuals from an ordinary least squares (OLS) regression and scaled mass index (SMI) using OLS and robust regression.</p>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<p>The development version of <code>bodycon</code> can be installed from GitHub with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"julia-riley/bodycon"</span><span class="op">)</span></span></code></pre></div>
-<p>A stable release of <code>bodycon</code> (version 0.1.0) is also available through the <a href="https://github.com/julia-riley/bodycon/releases" class="external-link">Github releases</a>.</p>
-<p><strong>Getting Started</strong></p>
-<p>See the <a href="TBC">packages vignette</a> for an overview of <code>bodycon</code>, including examples of the included body condition index methods and approaches for evaluating their suitability for your data.</p>
-<p><strong>Citing <code>bodycon</code></strong></p>
+<p>A stable release of <code>bodycon</code> (version 0.1.0) is also available through the <a href="https://github.com/julia-riley/bodycon/releases" class="external-link">GitHub releases</a>.</p>
+</div>
+<div class="section level2">
+<h2 id="getting-started">Getting Started<a class="anchor" aria-label="anchor" href="#getting-started"></a>
+</h2>
+<p>See the <a href="https://julia-riley.github.io/bodycon/articles/bodycon.html">packages vignette</a> for an introduction to <code>bodycon</code>, including examples of the included body condition index methods and approaches for evaluating their suitability for your data.</p>
+</div>
+<div class="section level2">
+<h2 id="citing-bodycon">Citing <code>bodycon</code>
+<a class="anchor" aria-label="anchor" href="#citing-bodycon"></a>
+</h2>
 <p>If you make use of <code>bodycon</code> in your research, please cite:</p>
-<p>Riley J, Kar F (2026). bodycon: Estimation of Animal Body Condition Indices. R package version 0.1.0. <a href="https://doi.org/10.5281/zenodo.23066174" class="external-link uri">https://doi.org/10.5281/zenodo.23066174</a></p>
-<p>Your can also obtain the citation directly in R:</p>
+<p>Riley J, Kar F (2026). <em>bodycon: Estimation of Animal Body Condition Indices</em>. R package version 0.1.0. <a href="https://doi.org/10.5281/zenodo.23066174" class="external-link uri">https://doi.org/10.5281/zenodo.23066174</a></p>
+<p>You can also obtain the citation directly in R:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"bodycon"</span><span class="op">)</span></span></code></pre></div>
-<p><strong>Find a Bug?</strong></p>
+</div>
+<div class="section level2">
+<h2 id="find-a-bug">Find a Bug?<a class="anchor" aria-label="anchor" href="#find-a-bug"></a>
+</h2>
 <p>Thank you for catching it! Please open an <a href="https://github.com/julia-riley/bodycon/issues" class="external-link">issue on GitHub</a> and let us know about it. We will try to get to it as soon as we can.</p>
 </div>
-  </div>
-
-  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-    <div class="links">
+</div>
+  </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
 <li><a href="https://github.com/julia-riley/bodycon/" class="external-link">Browse source code</a></li>
@@ -127,27 +114,24 @@
 <div class="dev-status">
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://github.com/julia-riley/R_package_body_condition/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/julia-riley/R_package_body_condition/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="https://github.com/julia-riley/bodycon/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/julia-riley/bodycon/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
 </ul>
 </div>
 
-  </div>
+  </aside>
 </div>
 
 
-      <footer><div class="copyright">
-  <p></p>
-<p>Developed by Julia Riley, Fonti Kar.</p>
+    <footer><div class="pkgdown-footer-left">
+  <p>Developed by Julia Riley, Fonti Kar.</p>
 </div>
 
-<div class="pkgdown">
-  <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
+<div class="pkgdown-footer-right">
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
-      </footer>
+    </footer>
 </div>
-
 
 
 

@@ -1,0 +1,26 @@
+url: https://julia-riley.github.io/bodycon/
+
+template:
+  bootstrap: 5
+
+navbar:
+  structure:
+    left: [reference, articles]
+    right: [github]
+
+reference:
+  - title: Body condition indices
+    contents:
+      - bci
+      - bci_resid_ols
+      - bci_smi_ols
+      - bci_smi_rob
+
+  - title: Visualization
+    contents:
+      - plot_bci
+
+  - title: Datasets
+    contents:
+      - gartersnake
+      - salamander
