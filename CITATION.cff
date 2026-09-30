@@ -12,6 +12,7 @@ authors:
 repository-code: "https://github.com/julia-riley/bodycon"
 license: MIT
 url: "https://github.com/julia-riley/bodycon"
+doi: "10.5281/zenodo.23066174"
 abstract: >
   Provides functions for calculating and visualizing body condition indices
   for animals, including residual-based ordinary least squares indices,
