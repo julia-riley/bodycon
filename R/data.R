@@ -25,7 +25,7 @@
 #' salamanders in New Brunswick. It includes morphometric data for 128 Eastern Red-backed Salamanders sampled in an
 #' old growth forest. The paper associated with this data is:  Leslie S, Edge C, Riley JL. 2025. Herbicide 
 #' Application Improves Plethodontid Salamander Habitat Conditions in Regenerating Clear-cut Forests. Canadian 
-#' Journal of Forest Research. 55: 1-12. DOI: https://doi.org/10.1139/cjfr-2024-0294
+#' Journal of Forest Research. 55: 1-12. \doi{10.1139/cjfr-2024-0294}
 #'
 #' @format ## `salamander`
 #' A data frame with 128 rows and 8 columns:
@@ -39,5 +39,5 @@
 #'   \item{svl_mm}{Snout-vent length (SVL) in mm of the salamander. SVL is the distance from the individual's snout to the anterior edge of their cloaca.}
 #'   \item{total_length_mm}{Total length in mm of the salamander.}
 #' }
-#' @source <https://doi.org/10.1139/cjfr-2024-0294>
+#' @source \doi{10.1139/cjfr-2024-0294}
 "salamander"
