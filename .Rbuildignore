@@ -9,3 +9,5 @@
 ^literature$
 ^_pkgdown\.yml$
 ^AGENTS\.md$
+^CITATION\.cff$
+^\.Renviron$
