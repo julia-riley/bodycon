@@ -2,7 +2,7 @@
 
 export(bci)
 export(bci_resid_ols)
-export(bci_smi_ols)
+export(bci_smi)
 export(bci_smi_rob)
 export(plot_bci)
 importFrom(ggplot2,
