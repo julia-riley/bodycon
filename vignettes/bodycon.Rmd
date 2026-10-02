@@ -81,7 +81,7 @@ library(bodycon)
 
 # Example Datasets
 
-Two example datasets are included with `bodycon` to demonstrate the function in the package.
+Two example datasets are included with `bodycon` to demonstrate the functions in the package.
 
 ### `gartersnake`
 
@@ -102,9 +102,9 @@ dplyr::glimpse(salamander)
 ```
 
 
-# Calculation of body condition indexes
+# Calculation of body condition indices
 
-The `bodycon` package provides several function for calculating body condition indices from measurements of animal body size and mass. The `bci()` function can be used to calculate indices using one or more methods, while seperate functions are also availiable for each method. The package currently includes three methods: OLS residuals, SMI using OLS regression, and SMI using robust regression. All methods require a standardised measure of body size (i.e., tarsus length for birds or snout-vent length for reptiles) and a measure of body mass. 
+The `bodycon` package provides several functions for calculating body condition indices from measurements of animal body size and mass. The `bci()` function can be used to calculate indices using one or more methods, while separate functions are also available for each method. The package currently includes three methods: OLS residuals, the scaled mass index (SMI) using classical standardised major axis (SMA) regression, and the SMI using robust SMA regression. All methods require a standardised measure of body size (i.e., tarsus length for birds or snout-vent length for reptiles) and a measure of body mass. 
 
 ## Residuals from ordinary least squares regression
 
@@ -122,28 +122,28 @@ You can instead specify `relation = "linear"` to fit the relationship using the 
 
 ## Scaled mass index (SMI)
 
-Residual-based body condition indices have been widely used in ecology, but their use has been critqued. Concerns include the statistical assumptions of residual-based approached (García-Berthou, 2001), their sensitivty to methodological choices (Schulte-Hostedde et al., 2005; Peig and Green, 2009), and whether their appropriateness varies among taxa (Jakob et al., 1996; Băncilă et al., 2010; Labocha and Hayes, 2012). The scaled mass index (SMI) provides an alternative approach for estimating body conition that was developed by Peig and Green (2009).
+Residual-based body condition indices have been widely used in ecology, but their use has been critiqued. Concerns include the statistical assumptions of residual-based approaches (García-Berthou, 2001), their sensitivity to methodological choices (Schulte-Hostedde et al., 2005; Peig and Green, 2009), and whether their appropriateness varies among taxa (Jakob et al., 1996; Băncilă et al., 2010; Labocha and Hayes, 2012). The scaled mass index (SMI) provides an alternative approach for estimating body condition that was developed by Peig and Green (2009).
 
-The SMI estimates expected body mass at a standardized body size based on the scaling relationship between body size and mass. In `bodycon`, SMI can be calculated using either ordinary least squares regression (`bci_smi_ols()`) or robust regression (`bci_smi-rob()`). The standard SMI approach assumes an allometric relationship between body size and mass, so both measurements are log-transformed before the relationship is estimated.
+The SMI estimates expected body mass at a standardised body size based on the scaling relationship between body size and mass. In `bodycon`, the classical SMI method estimates the scaling exponent using classical standardised major axis (SMA) regression, while the robust SMI method estimates the scaling exponent using robust SMA regression. The SMI approach assumes an allometric relationship between body size and mass, so both measurements are log-transformed before the scaling relationship is estimated.
 
-### SMI using ordinary least squares regression
+### SMI using standardised major axis regression
 
-The `bci_smi_ols` functions calculates SMI using ordinary least squares regression. For example, using this fuction we can calculate this for the `salamander` dataset using: 
+The `bci_smi()` function calculates SMI using classical standardised major axis (SMA) regression. For example, we can calculate SMI for the `salamander` dataset using: 
 
 ```{r}
 
-bci_smi_ols(salamander, svl_mm, mass_g)
+bci_smi(salamander, svl_mm, mass_g)
 
 ```
 
-SMIT estimation using OLS can be sensitive to outliers (i.e., data points that may distort the expected relationship between body length and mass). This can have a strong influence on the estimated relationship between body size and mass. When outliers are present, robust regression provides an alternative approach to estimating SMI using the `bci_smi_rob()` function.
+SMI estimation using SMA can be sensitive to outliers (i.e., data points that may distort the expected relationship between body length and mass). This can have a strong influence on the estimated relationship between body size and mass. When outliers are present, robust SMA regression provides an alternative approach to estimating SMI using the `bci_smi_rob()` function.
 
 
-### SMI using robust regression
+### SMI using robust standardised major axis regression
 
-The `bci_smi_rob()` function calculates the SMI using robust regression. The function uses an M estimator from the `MASS` package (Venables and Ripley, 2002), which reduces the influence of outliers when estimating the relationship between body size and mass. This approach is based on this [R code by Chen-Pan Liao](https://apansharing.blogspot.com/2018/05/an-r-function-olsrobust-caled-mass-index.html).
+The `bci_smi_rob()` function calculates SMI using robust standardised major axis (SMA) regression. This approach reduces the influence of potential outliers when estimating the relationship between body size and mass.
 
-For example, SMI can be caculated using robust regression for the `salamander` dataset:
+For example, SMI can be calculated using robust SMA regression for the `salamander` dataset:
 
 ```{r}
 
@@ -151,24 +151,24 @@ bci_smi_rob(salamander, svl_mm, mass_g)
 
 ```
 
-Robust regression can be useful when outliers are present and may disproportionately influence the estimated relationship between body size and mass.
+Robust SMA regression can be useful when outliers are present and may disproportionately influence the estimated relationship between body size and mass.
 
 
 ## Using multiple methods at once
 
-The `bci()` function allows you to calculate body condition indices using multiple methods at once. This can be used fil when you want to compare how estimates of body condition differ among methods. 
+The `bci()` function allows you to calculate body condition indices using multiple methods at once. This can be useful when you want to compare how estimates of body condition differ among methods. 
 
-For example, you can calculate indices using the residual OLS, SMI OLS, and SMI robust regression methods: 
+For example, you can calculate indices using the residual OLS, SMI, and robust SMI methods: 
 
 ```{r}
 
 bci(gartersnake, svl_mm, mass_g, 
-    method = c("resid_ols", "smi_ols", "smi_rob"),
+    method = c("resid_ols", "smi", "smi_rob"),
     relation = c("linear", "allometric"))
 
 ```
 
-The `relation` argument specifies whether the residual OLS method should use a linear or allometric relationship. The SMI methods always use an allometric relationship.
+The `relation` argument specifies whether the residual OLS method should use a linear or allometric relationship. The SMI methods always use an allometric relationship. Thus, in the example above, both linear and allometric OLS residual indices are calculated, while the classical and robust SMI methods are calculated using their respective SMA scaling exponents.
 
 
 ## Including individual identifiers
@@ -181,7 +181,7 @@ For example:
 
 bci(gartersnake, svl_mm, mass_g,
     id = id_num,
-    method = c("resid_ols", "smi_ols", "smi_rob"))
+    method = c("resid_ols", "smi", "smi_rob"))
 
 ```
 
@@ -193,10 +193,10 @@ Visualising body condition indices alongside the observed relationship between b
 The `plot_bci()` function allows you to visualise:
 
 + OLS residuals (resid_ols)
-+ Scaled Mass Index using ordinary least squares regression (smi_ols)
-+ Scaled Mass Index using robust regression (smi_rob)
++ Scaled Mass Index using standardised major axis (SMA) regression (smi)
++ Scaled Mass Index using robust SMA regression (smi_rob)
 
-Raw data can also be grouped (e.g., by sex or population), and colours can be customized for both raw points and fitted method lines.
+Raw data can also be grouped (e.g., by sex or population), and colours can be customized for both raw points and reference relationships.
 
 ### Comparing body condition methods
 
@@ -207,7 +207,7 @@ plot_bci(
    gartersnake,
    svl_mm,
    mass_g,
-   method = c("resid_ols", "smi_ols", "smi_rob")
+   method = c("resid_ols", "smi", "smi_rob")
    )
 ```
 
@@ -240,7 +240,7 @@ plot_bci(
    )
 ```
 
-Colours for raw data groups and method lines can be customised using `group_colours` and `method_colours`.
+Colours for raw data groups and reference relationships can be customised using `group_colours` and `method_colours`.
 
 ```{r}  
 plot_bci(
@@ -254,7 +254,7 @@ plot_bci(
 )
 ```
 
-You can also adjust the labels, presence of a legend, and, in addition to plotting the graph, return the predictions so you can customise a figure further on your own. Check our the documentation for this function using `?plot_bci` for details on all available arguments.
+You can also adjust the labels, presence of a legend, and, in addition to plotting the graph, return the predictions so you can customise a figure further on your own. Check out the documentation for this function using `?plot_bci` for details on all available arguments.
 
 
 # References
@@ -272,5 +272,3 @@ Labocha MK, and Hayes JP. (2012) Morphometric indices of body condition in birds
 Peig J, and Green AJ. (2009) New perspectives for estimating body condition from mass/length data: the scaled mass index as an alternative method. Oikos, 118(12), 1883-1891.
 
 Schulte-Hostedde AI, Zinner B, Millar JS, and Hickling GJ. (2005) Restitution of mass–size residuals: validating body condition indices. Ecology, 86(1), 155-163.
-
-Ripley BD, and Venables WN. (2002). Modern Applied Statistics with S, Fourth edition. Springer, New York. ISBN 0-387-95457-0, https://www.stats.ox.ac.uk/pub/MASS4/.
