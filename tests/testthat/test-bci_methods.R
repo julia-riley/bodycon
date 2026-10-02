@@ -30,23 +30,24 @@ test_that("Check output values are correct", {
   ## Is bci_resid_ols calculating what we expect (values)?  
   expect_equal(bci_resid_ols_pkg2, bci_resid_ols_hand2)
   
-  # SMI using OLS regression
+  # SMI using SMA
   ## Using the R package
   results <- gartersnake |>
-              bci_smi_ols(svl_mm, mass_g)
-  bci_smi_ols_pkg <- results$smi_ols
+              bci_smi(svl_mm, mass_g)
+  bci_smi_pkg <- results$smi
   
   ## Estimation by hand 
   x0 <- mean(gartersnake$svl_mm)
-  logM_ols <- lm(log(gartersnake$mass_g) ~ log(gartersnake$svl_mm))
-  b_msa_ols <- coef(smatr::sma(log(gartersnake$mass_g) ~ log(gartersnake$svl_mm)))[2]
-  SMI_ols <- gartersnake$mass_g * (x0 / gartersnake$svl_mm)^b_msa_ols
-  bci_smi_ols_hand <- SMI_ols
+  b_sma <- coef(smatr::sma(log(gartersnake$mass_g) ~ log(gartersnake$svl_mm),
+                           method = "SMA",
+                           robust = FALSE))[2]
+  SMI <- gartersnake$mass_g * (x0 / gartersnake$svl_mm)^b_sma
+  bci_smi_hand <- SMI
   
-  ## Is bci_smi_ols calculating what we expect (values)?  
-  expect_equal(bci_smi_ols_pkg, bci_smi_ols_hand)
+  ## Is bci_smi calculating what we expect (values)?  
+  expect_equal(bci_smi_pkg, bci_smi_hand)
   
-  # SMI using robust regression
+  # SMI using robust SMA 
   ## Using the R package
   results <- gartersnake |>
                 bci_smi_rob(svl_mm, mass_g)
@@ -54,9 +55,10 @@ test_that("Check output values are correct", {
   
   ## Estimation by hand 
   x0 <- mean(gartersnake$svl_mm)
-  logM_rob <- MASS::rlm(log(gartersnake$mass_g) ~ log(gartersnake$svl_mm), method = "M")
-  b_msa_rob <- coef(smatr::sma(log(gartersnake$mass_g) ~ log(gartersnake$svl_mm), robust = T))[2]
-  SMI_rob <- gartersnake$mass_g * (x0 / gartersnake$svl_mm)^b_msa_rob
+  b_sma_rob <- coef(smatr::sma(log(gartersnake$mass_g) ~ log(gartersnake$svl_mm), 
+                               method = "SMA",
+                               robust = T))[2]
+  SMI_rob <- gartersnake$mass_g * (x0 / gartersnake$svl_mm)^b_sma_rob
   bci_smi_rob_hand <- SMI_rob
   
   ## Is bci_smi_rob calculating what we expect (values)?  
@@ -84,13 +86,13 @@ test_that("bci returns tibble with correct structure", {
     gartersnake,
     body_size = svl_mm,
     weight = mass_g,
-    method = c("resid_ols", "smi_ols")
+    method = c("resid_ols", "smi")
   ))
   
   expect_s3_class(out, "data.frame")
   expect_equal(nrow(out), nrow(gartersnake))
   
-  expect_true(all(c("resid_allometric", "smi_ols") %in% names(out)))
+  expect_true(all(c("resid_allometric", "smi") %in% names(out)))
 })
 
 
@@ -107,7 +109,7 @@ test_that("bci respects method selection", {
   )
   
   expect_true("resid_allometric" %in% names(out))
-  expect_false("smi_ols" %in% names(out))
+  expect_false("smi" %in% names(out))
   expect_false("smi_rob" %in% names(out))
 })
 
@@ -138,7 +140,7 @@ test_that("bci excludes ID when not provided", {
 test_that("bci outputs are numeric and finite", {
   
   out <- suppressWarnings(
-    bci(salamander, svl_mm, mass_g, method = c("resid_ols", "smi_ols"))
+    bci(salamander, svl_mm, mass_g, method = c("resid_ols", "smi"))
   )
   
   num_cols <- sapply(out, is.numeric)
@@ -194,11 +196,11 @@ test_that("bci returns correct columns for all methods", {
     gartersnake,
     svl_mm,
     mass_g,
-    method = c("resid_ols", "smi_ols", "smi_rob")
+    method = c("resid_ols", "smi", "smi_rob")
   ))
   
   expect_true(any(grepl("resid_", names(res))))
-  expect_true("smi_ols" %in% names(res))
+  expect_true("smi" %in% names(res))
   expect_true("smi_rob" %in% names(res))
 })
 
@@ -210,11 +212,12 @@ test_that("relation only affects resid_ols in bci()", {
     gartersnake,
     svl_mm,
     mass_g,
-    method = c("smi_ols"),
+    method = c("smi"),
     relation = "linear"
   ))
   
-  expect_true("smi_ols" %in% names(res))
+  expect_true("smi" %in% names(res))
+  expect_false("resid_linear" %in% names(res))
 })
 
 # Is a warning triggers in bci_resid_ols when relation = linear is used?
@@ -231,6 +234,7 @@ test_that("OLS methods trigger warning with linear relation", {
   )
 })
 
+
 # Is a warning triggers in bci() when relation = linear is used?
 test_that("SMI methods trigger warning with linear relation", {
   
@@ -239,7 +243,7 @@ test_that("SMI methods trigger warning with linear relation", {
       gartersnake,
       svl_mm,
       mass_g,
-      method = "smi_ols",
+      method = "smi",
       relation = "linear"
     ),
     "SMI methods"
@@ -253,24 +257,11 @@ test_that("SMI methods trigger warning with linear relation", {
         gartersnake,
         svl_mm,
         mass_g,
-        method = c("smi_ols", "smi_rob"),
+        method = c("smi", "smi_rob"),
         relation = "linear"
       )))
   })
-  
-  
-  #Does bci() handle NA values okay?
-  test_that("functions handle NA values", {
-    
-    df <- gartersnake
-    df$svl_mm[1] <- NA
-    
-    res <- suppressWarnings(
-      bci(df, svl_mm, mass_g, id = id_num, method = "smi_ols")
-    )
-    
-    expect_true(nrow(res) == nrow(df))
-  })
+
 
   # Does referring to a single method still return a tibble?
   test_that("single method still returns tibble", {
@@ -286,3 +277,89 @@ test_that("SMI methods trigger warning with linear relation", {
     expect_s3_class(res, "tbl_df")
   })
   
+test_that("functions preserve rows and missing values", {
+    
+    df <- gartersnake
+    
+    # Missing body size
+    df$svl_mm[1] <- NA
+    
+    # Missing mass
+    df$mass_g[2] <- NA
+    
+    res <- suppressWarnings(
+      bci(
+        df,
+        svl_mm,
+        mass_g,
+        id = id_num,
+        method = c("resid_ols", "smi", "smi_rob")
+      )
+    )
+    
+    # Output should retain one row per individual
+    expect_equal(nrow(res), nrow(df))
+    
+    # IDs should remain aligned with the input data
+    expect_equal(res$id, df$id_num)
+    
+    # Missing observations should remain missing
+    expect_true(is.na(res$resid_allometric[1]))
+    expect_true(is.na(res$resid_allometric[2]))
+    
+    expect_true(is.na(res$smi[1]))
+    expect_true(is.na(res$smi[2]))
+    
+    expect_true(is.na(res$smi_rob[1]))
+    expect_true(is.na(res$smi_rob[2]))
+  })
+  
+  test_that("bci_smi returns expected output", {
+    
+    res <- bci_smi(
+      gartersnake,
+      svl_mm,
+      mass_g
+    )
+    
+    expect_s3_class(res, "tbl_df")
+    expect_equal(nrow(res), nrow(gartersnake))
+    expect_true("smi" %in% names(res))
+  })
+  
+  test_that("relation does not affect SMI in bci()", {
+    
+    res_default <- suppressWarnings(
+      bci(
+        gartersnake,
+        svl_mm,
+        mass_g,
+        method = "smi"
+      )
+    )
+    
+    res_linear <- suppressWarnings(
+      bci(
+        gartersnake,
+        svl_mm,
+        mass_g,
+        method = "smi",
+        relation = "linear"
+      )
+    )
+    
+    expect_equal(res_default$smi, res_linear$smi)
+  })
+  
+  test_that("bci_smi_rob returns expected output", {
+    
+    res <- bci_smi_rob(
+      gartersnake,
+      svl_mm,
+      mass_g
+    )
+    
+    expect_s3_class(res, "tbl_df")
+    expect_equal(nrow(res), nrow(gartersnake))
+    expect_true("smi_rob" %in% names(res))
+  })
