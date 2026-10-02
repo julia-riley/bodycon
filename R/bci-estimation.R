@@ -81,7 +81,7 @@ bci_resid_ols <- function(data, body_size, weight,
     }
     
     
-    fit <- lm(y ~ x, data = tmp_data, na.action = na.exclude)
+    fit <- lm(y ~ x, data = tmp_data, na.action = stats::na.exclude)
     
     res <- resid(fit)
     
