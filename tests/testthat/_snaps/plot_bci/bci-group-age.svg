@@ -195,7 +195,7 @@
 <rect x='579.17' y='336.16' width='17.28' height='17.28' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
 <line x1='580.89' y1='344.80' x2='594.72' y2='344.80' style='stroke-width: 2.56; stroke: #4682B4; stroke-linecap: butt;' />
 <text x='601.93' y='313.27' style='font-size: 8.80px; font-family: sans;' textLength='107.12px' lengthAdjust='spacingAndGlyphs'>OLS regression (allometric)</text>
-<text x='601.93' y='330.55' style='font-size: 8.80px; font-family: sans;' textLength='41.57px' lengthAdjust='spacingAndGlyphs'>SMI (OLS)</text>
+<text x='601.93' y='330.55' style='font-size: 8.80px; font-family: sans;' textLength='15.65px' lengthAdjust='spacingAndGlyphs'>SMI</text>
 <text x='601.93' y='347.83' style='font-size: 8.80px; font-family: sans;' textLength='48.42px' lengthAdjust='spacingAndGlyphs'>SMI (robust)</text>
 <text x='35.24' y='14.56' style='font-size: 13.20px; font-family: sans;' textLength='81.46px' lengthAdjust='spacingAndGlyphs'>bci-group-age</text>
 </g>

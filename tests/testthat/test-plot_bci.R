@@ -56,21 +56,21 @@ test_that("plot_bci only OLS method", {
 })
 
 
-# SMI OLS method only
-test_that("plot_bci SMI OLS only", {
+# SMI using SMA only
+test_that("plot_bci SMI only", {
   
   p <- plot_bci(
     data = salamander,
     body_size = svl_mm,
     weight = mass_g,
-    method = "smi_ols"
+    method = "smi"
   )
   
-  vdiffr::expect_doppelganger("bci-smi-ols-only", p)
+  vdiffr::expect_doppelganger("bci-smi-only", p)
 })
 
 
-# SMI robus method only
+# SMI robust method only
 test_that("plot_bci SMI robust only", {
   
   p <- plot_bci(
@@ -99,20 +99,20 @@ test_that("plot_bci without legend", {
 })
 
 
-# Plot tha also returns predictions
-test_that("plot_bci returns predictions correctly", {
+# Plot that also returns predictions
+test_that("plot_bci returns SMI predictions", {
   
   out <- plot_bci(
-    data = salamander,
-    body_size = svl_mm,
-    weight = mass_g,
+    gartersnake,
+    svl_mm,
+    mass_g,
+    method = "smi",
     return_predictions = TRUE
   )
   
-  expect_true(is.list(out))
-  expect_true("plot" %in% names(out))
   expect_true("predictions" %in% names(out))
-  expect_true("data" %in% names(out))
+  expect_true(all(c("body_size", "pred_wgt", "method") %in% names(out$predictions)))
+  expect_true(all(out$predictions$method == "SMI"))
 })
 
 #Does the plot show both linear and alometric when requested?
@@ -138,7 +138,7 @@ test_that("plot_bci mixed methods snapshot", {
     gartersnake,
     svl_mm,
     mass_g,
-    method = c("resid_ols", "smi_ols", "smi_rob"),
+    method = c("resid_ols", "smi", "smi_rob"),
     relation = "allometric"
   )
   
@@ -164,4 +164,30 @@ test_that("plot_bci grouping snapshot", {
     "plot_bci_grouped",
     p
   )
+})
+
+test_that("plot_bci SMI is unchanged by linear relation", {
+  
+  p_default <- suppressWarnings(
+    plot_bci(
+      gartersnake,
+      svl_mm,
+      mass_g,
+      method = "smi",
+      return_predictions = TRUE
+    )
+  )
+  
+  p_linear <- suppressWarnings(
+    plot_bci(
+      gartersnake,
+      svl_mm,
+      mass_g,
+      method = "smi",
+      relation = "linear",
+      return_predictions = TRUE
+    )
+  )
+  
+  expect_equal(p_default$predictions, p_linear$predictions)
 })
