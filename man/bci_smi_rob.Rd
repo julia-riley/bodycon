@@ -2,7 +2,7 @@
 % Please edit documentation in R/bci-estimation.R
 \name{bci_smi_rob}
 \alias{bci_smi_rob}
-\title{Scaled Mass Body Condition Index Estimation with Robust Regression}
+\title{Scaled Mass Index using Robust Standardized Major Axis Regression}
 \usage{
 bci_smi_rob(data, body_size, weight, id = NULL)
 }
@@ -18,16 +18,14 @@ tarsus length of birds, length from the snout to the base of the tail for mammal
 \item{id}{a unique identifier for the animals included in your dataset. If included, a tibble with these unique identifiers and the estimates is returned and, if not, the estimate alone is returned. Default is \code{NULL}.}
 }
 \value{
-a vector of body condition indices for each individual estimates using the SMI
-method using a robust regression
+a tibble containing SMI estimates calculated using the robust SMA scaling exponent.
 }
 \description{
 This function calculates body condition indices using the scaled mass index (SMI method)
-as described by Peig and Green (2009). Specifically, this method uses robust
-regression using an M estimator from MASS (Venables and Ripley, 2002) in its
-estimation of the body condition indices. This method is less sensitive to
+as described by Peig and Green (2009), with the with the scaling exponent
+estimated using robust standardized major axis (SMA) regression. This method is less sensitive to
 the presence of outliers (i.e., data points that may distort the expected
-relationship between body length and weight), as shown in \href{https://apansharing.blogspot.com/2018/05/an-r-function-olsrobust-caled-mass-index.html}{this code by Chen-Pan Liao}.
+relationship between body length and weight).
 }
 \examples{
 # In this examples we will make use of the `gartersnake` dataset in this R package.
@@ -44,7 +42,4 @@ gartersnake |>
 Peig J, Green AJ (2009). "New perspectives for estimating body condition
 from mass/length data: the scaled mass index as an alternative method."
 \emph{Oikos}, 118(12), 1883–1891.
-
-Venables WN, Ripley BD (2002). \emph{Modern Applied Statistics with S}, 4th ed.
-Springer, New York.
 }
