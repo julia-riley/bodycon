@@ -2,10 +2,11 @@
 
 ## Authors
 
-- **Julia Riley**. Author, maintainer.
+- **Julia Riley**. Author, maintainer, copyright holder.
   [](https://orcid.org/0000-0001-7691-6910)
 
-- **Fonti Kar**. Author. [](https://orcid.org/0000-0002-2760-3974)
+- **Fonti Kar**. Author, copyright holder.
+  [](https://orcid.org/0000-0002-2760-3974)
 
 ## Citation
 
