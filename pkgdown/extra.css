@@ -1,0 +1,46 @@
+.bodycon-intro {
+  display: flex;
+  align-items: flex-start;
+  gap: 25px;
+  margin-bottom: 1rem;
+}
+
+.bodycon-vignette-header {
+  flex: 0 0 100px;
+  width: 100px;
+}
+
+.bodycon-vignette-header img {
+  display: block;
+  width: 100px !important;
+  max-width: 100px !important;
+  height: auto !important;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+}
+
+.bodycon-intro-text {
+  flex: 1;
+}
+
+.template-article h1 {
+  margin-top: 2.5em !important;
+  margin-bottom: 1.0em;
+}
+
+.template-article h2 {
+  margin-top: 2.25em;
+  margin-bottom: 1.0em;
+}
+
+.template-article h3 {
+  margin-top: 1.75em;
+  margin-bottom: 0.75em;
+}
+
+.template-article h4 {
+  margin-top: 1.5em;
+  margin-bottom: 0.75em;
+}

@@ -1,4 +1,4 @@
-# bodycon <img src="inst/hex_sticker/hex_sticker.png" align="right" height="150" />
+# bodycon <img src="man/figures/hex_sticker.png" align="right" height="150" />
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/julia-riley/bodycon/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/julia-riley/bodycon/actions/workflows/R-CMD-check.yaml)

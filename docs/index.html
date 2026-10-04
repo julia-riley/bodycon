@@ -10,7 +10,8 @@
 <link href="deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
 <script src="deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Estimation of Animal Body Condition Indices">
+<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><link href="extra.css" rel="stylesheet">
+<meta property="og:title" content="Estimation of Animal Body Condition Indices">
 <meta name="description" content="Provides functions for calculating and visualizing body condition indices for animals. Methods include residual-based ordinary least squares (OLS) indices, the scaled mass index (SMI) using classical standardized major axis (SMA) regression, and the SMI using robust SMA regression, along with visualizations for comparing these approaches.">
 <meta property="og:description" content="Provides functions for calculating and visualizing body condition indices for animals. Methods include residual-based ordinary least squares (OLS) indices, the scaled mass index (SMI) using classical standardized major axis (SMA) regression, and the SMI using robust SMA regression, along with visualizations for comparing these approaches.">
 </head>
@@ -31,15 +32,13 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
+<li class="nav-item"><a class="nav-link" href="articles/bodycon.html">Get started</a></li>
 <li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
-<li class="nav-item dropdown">
-  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="articles/smi-estimator-review-response.html">Response to the SMI estimator review</a></li>
-  </ul>
-</li>
       </ul>
 <ul class="navbar-nav">
+<li class="nav-item"><form class="form-inline" role="search">
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json">
+</form></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/julia-riley/bodycon/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
@@ -49,12 +48,12 @@
 </nav><div class="container template-home">
 <div class="row">
   <main id="main" class="col-md-9"><div class="section level1">
-<div class="page-header"><h1 id="bodycon-">bodycon <img src="inst/hex_sticker/hex_sticker.png" align="right" height="150"><a class="anchor" aria-label="anchor" href="#bodycon-"></a>
+<div class="page-header"><h1 id="bodycon-">bodycon <img src="reference/figures/hex_sticker.png" align="right" height="150"><a class="anchor" aria-label="anchor" href="#bodycon-"></a>
 </h1></div>
 <!-- badges: start -->
 
-<p><code>bodycon</code> is an R package for calculating commonly used body condition indices in wildlife ecology research. In this research field, an individual’s fitness traits, like reproduction and survival, are important measures of individual performance and health. However, direct measures of fitness can be impractical to collect in the field due to financial or logistical research constraints. So, in these cases, animal ecologists often rely on proxies of individual fitness, such as body condition.</p>
-<p>One widely used approach to estimating body condition is to relate body mass to a measure of body size, but this can be calculated in a variety of ways. <code>bodycon</code> contains functions for a variety of methods of estimating body condition indices, including residuals from an ordinary least squares (OLS) regression, the scaled mass index (SMI) using classical standardised major axis (SMA) regression, and the SMI using robust SMA regression.</p>
+<p><code>bodycon</code> is an R package for calculating commonly used body condition indices in wildlife ecology research. In this research field, an individual’s fitness traits, like reproduction and survival, are important measures of individual performance and health. However, direct measures of fitness can be impractical to collect in the field due to financial or logistical constraints. So, in these cases, animal ecologists often rely on proxies of individual fitness, such as body condition.</p>
+<p>One widely used approach to estimating body condition is to relate body mass to a measure of body size, but this can be calculated in a variety of ways. <code>bodycon</code> contains functions for a variety of methods of estimating body condition indices, including residuals from an ordinary least squares (OLS) regression, the scaled mass index (SMI) using standardised major axis (SMA) regression, and the SMI using robust SMA regression.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>

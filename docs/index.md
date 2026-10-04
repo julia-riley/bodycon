@@ -1,11 +1,11 @@
-# bodycon ![](inst/hex_sticker/hex_sticker.png)
+# bodycon ![](reference/figures/hex_sticker.png)
 
 `bodycon` is an R package for calculating commonly used body condition
 indices in wildlife ecology research. In this research field, an
 individual’s fitness traits, like reproduction and survival, are
 important measures of individual performance and health. However, direct
 measures of fitness can be impractical to collect in the field due to
-financial or logistical research constraints. So, in these cases, animal
+financial or logistical constraints. So, in these cases, animal
 ecologists often rely on proxies of individual fitness, such as body
 condition.
 
@@ -14,14 +14,17 @@ mass to a measure of body size, but this can be calculated in a variety
 of ways. `bodycon` contains functions for a variety of methods of
 estimating body condition indices, including residuals from an ordinary
 least squares (OLS) regression, the scaled mass index (SMI) using
-classical standardised major axis (SMA) regression, and the SMI using
-robust SMA regression.
+standardised major axis (SMA) regression, and the SMI using robust SMA
+regression.
 
 ## Installation
 
 The development version of `bodycon` can be installed from GitHub with:
 
-`remotes``::`[`install_github`](https://remotes.r-lib.org/reference/install_github.html)`(``"julia-riley/bodycon"``)`
+``` r
+
+remotes::install_github("julia-riley/bodycon")
+```
 
 A stable release of `bodycon` (version 0.1.0) is also available through
 the [GitHub releases](https://github.com/julia-riley/bodycon/releases).
@@ -44,7 +47,10 @@ Indices*. R package version 0.1.0.
 
 You can also obtain the citation directly in R:
 
-[`citation`](https://rdrr.io/r/utils/citation.html)`(``"bodycon"``)`
+``` r
+
+citation("bodycon")
+```
 
 ## Find a Bug?
 

@@ -157,7 +157,15 @@ decision.
 
 I would also defer an API such as
 
-[`bci_smi`](https://julia-riley.github.io/bodycon/reference/bci_smi.md)`(`` `` ``data``,`` `` ``body_size``,`` `` ``weight``,`` `` slope_method ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"sma"``, ``"robust_sma"``, ``"ols"``, ``"robust_ols"``)`` ``)`
+``` r
+
+bci_smi(
+  data,
+  body_size,
+  weight,
+  slope_method = c("sma", "robust_sma", "ols", "robust_ols")
+)
+```
 
 This is a reasonable future design, but I think it solves a larger
 problem than we currently have.
@@ -188,7 +196,7 @@ aliases.
 
 I suggest:
 
-```
+``` text
 bci_resid_ols()   -> OLS residual body-condition index
 bci_smi()         -> Peig-Green SMI using classical SMA
 bci_smi_rob()     -> robust SMI using robust SMA
@@ -196,7 +204,15 @@ bci_smi_rob()     -> robust SMI using robust SMA
 
 And in the wrapper:
 
-[`bci`](https://julia-riley.github.io/bodycon/reference/bci.md)`(`` `` ``data``,`` `` ``body_size``,`` `` ``weight``,`` `` method ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"resid_ols"``, ``"smi"``, ``"smi_rob"``)`` ``)`
+``` r
+
+bci(
+  data,
+  body_size,
+  weight,
+  method = c("resid_ols", "smi", "smi_rob")
+)
+```
 
 I think this is clearer than retaining `smi_ols`, because the method is
 not actually OLS-based. It also makes the distinction between the three
