@@ -28,7 +28,7 @@ knitr::opts_chunk$set(
 <div class="bodycon-vignette-header">
 <img src="figures/hex_sticker.png"
      alt="bodycon hex sticker"
-     style="display: block; width: 100px !important; max-width: 100px !important; height: auto !important;">
+     style="display: block; width: 200px !important; max-width: 200px !important; height: auto !important;">
 </div>
 <div class="bodycon-intro-text">
 <em>bodycon</em> is an R package for calculating commonly used body condition indices in wildlife ecology. Body condition is often used as a proxy for individual health and energetic reserves when direct measures of fitness, like survival or reproductive success, are difficult to obtain. This package provides functions for calculating several widely used body condition indices from measurements of animal body size and mass, with tools for comparing methods and visualising results. We hope to continue to develop <code>bodycon</code> to expand the taxa and approaches to which it can be applied.

@@ -6,14 +6,14 @@
 }
 
 .bodycon-vignette-header {
-  flex: 0 0 100px;
-  width: 100px;
+  flex: 0 0 200px;
+  width: 200px;
 }
 
 .bodycon-vignette-header img {
   display: block;
-  width: 100px !important;
-  max-width: 100px !important;
+  width: 200px !important;
+  max-width: 200px !important;
   height: auto !important;
   margin: 0;
   padding: 0;
