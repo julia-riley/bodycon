@@ -44,14 +44,14 @@ bci_resid_ols(data, body_size, weight, id = NULL, relation = c("allometric"))
   an argument to specify whether or not the relationship between weight
   and body size variables are assumed to be allometric (`"allometric"`)
   or linear (`"linear"`). If allometric, both variables are
-  log-transformed. Default is `"allometric`. Biologically speaking, most
-  animals exhibit a allometric relationship between their weight and
-  body size measurements, this is the method that is appropriate.
+  log-transformed. Default is `"allometric"`. Biologically speaking,
+  most animals exhibit an allometric relationship between their weight
+  and body size measurements.
 
 ## Value
 
-a vector of body condition indices for each individual estimates that
-are the residuals from an OLS regression
+A tibble containing residual-based body condition indices from the
+specified OLS relationship.
 
 ## References
 

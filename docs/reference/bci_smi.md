@@ -1,16 +1,18 @@
-# Scaled Mass Index using Robust Standardized Major Axis Regression
+# Scaled Mass Index
 
 This function calculates body condition indices using the scaled mass
-index (SMI method) as described by Peig and Green (2009), with the with
-the scaling exponent estimated using robust standardized major axis
-(SMA) regression. This method is less sensitive to the presence of
-outliers (i.e., data points that may distort the expected relationship
-between body length and weight).
+index (SMI method) as described by Peig and Green (2009). Specifically,
+this method uses standardized major axis regression in its estimation of
+the body condition indices. Yet, this method is sensitive to the
+presence of outliers (i.e., data points that may distort the expected
+relationship between body length and weight), and so SMI estimation
+using robust regression (see function `bci_smi_rob`) may be more
+appropriate in cases where outliers are present.
 
 ## Usage
 
 ``` r
-bci_smi_rob(data, body_size, weight, id = NULL)
+bci_smi(data, body_size, weight, id = NULL)
 ```
 
 ## Arguments
@@ -39,7 +41,7 @@ bci_smi_rob(data, body_size, weight, id = NULL)
 
 ## Value
 
-a tibble containing SMI estimates calculated using the robust SMA
+a tibble containing SMI estimates calculated using the classical SMA
 scaling exponent.
 
 ## References
@@ -54,23 +56,23 @@ from mass/length data: the scaled mass index as an alternative method."
 # In this examples we will make use of the `gartersnake` dataset in this R package.
 # This dataset contains the mass (in grams) and snout-vent length 
 # (in mm) of 46 Maritime Gartersnakes.
-# To estimate body condition indices (using the scaled mass index with a robust regression)
-# for the gartersnakes from this dataset, one could:
+# To estimate body condition indices using the scaled mass index
+# for the gartersnakes this dataset, one could:
 
-gartersnake |>
-  bci_smi_rob(svl_mm, mass_g)
+gartersnake  |>
+  bci_smi(svl_mm, mass_g)
 #> # A tibble: 46 × 1
-#>    smi_rob
-#>      <dbl>
-#>  1    35.6
-#>  2    43.2
-#>  3    47.9
-#>  4    39.8
-#>  5    45.3
-#>  6    45.1
-#>  7    90.4
-#>  8    95.5
-#>  9    24.1
-#> 10    23.8
+#>      smi
+#>    <dbl>
+#>  1  38.0
+#>  2  46.4
+#>  3  48.4
+#>  4  39.8
+#>  5  46.5
+#>  6  46.2
+#>  7  89.8
+#>  8  97.2
+#>  9  24.7
+#> 10  24.3
 #> # ℹ 36 more rows
 ```

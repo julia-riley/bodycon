@@ -1,10 +1,11 @@
 # Visualise and Compare Body Condition Index Methods
 
 Visualize and compare body condition index (BCI) estimation methods by
-plotting raw, observed body size–weight data alongside BCI estimated
-fits. The function uses the
-[`bci()`](https://julia-riley.github.io/bodycon/reference/bci.md)
-wrapper to ensure consistency between analytical and visual outputs.
+plotting raw, observed body size–weight data alongside reference
+relationships implied by the selected BCI method(s). The function
+applies the same body condition index methods used by
+[`bci()`](https://julia-riley.github.io/bodycon/reference/bci.md) to
+provide a consistent visual comparison of the resulting relationships.
 
 ## Usage
 
@@ -13,7 +14,7 @@ plot_bci(
   data,
   body_size,
   weight,
-  method = c("resid_ols", "smi_ols", "smi_rob"),
+  method = c("resid_ols", "smi", "smi_rob"),
   relation = "allometric",
   group = NULL,
   group_colours = NULL,
@@ -47,18 +48,19 @@ plot_bci(
 - method:
 
   method used to estimate body condition, either residuals from an OLS
-  regression (`"resid_ols"`) or scaled mass index using an OLS
-  (`"smi_ols"`) or robust regression (`"smi_rob"`). Provide one or a
-  list of these.
+  regression (`"resid_ols"`), the scaled mass index using classical
+  standardized major axis (SMA) regression (`"smi"`), or the scaled mass
+  index using robust SMA regression (`"smi_rob"`). One or more methods
+  can be supplied.
 
 - relation:
 
   an argument to specify whether or not the relationship between weight
   and body size variables are assumed to be allometric (`"allometric"`)
   or linear (`"linear"`). If allometric, both variables are
-  log-transformed. Default is `"allometric`. Biologically speaking, most
-  animals exhibit a allometric relationship between their weight and
-  body size measurements, this is the method that is appropriate.
+  log-transformed. Default is `"allometric"`. Biologically speaking,
+  most animals exhibit an allometric relationship between their weight
+  and body size measurements.
 
 - group:
 
@@ -76,9 +78,8 @@ plot_bci(
 
   Optional named vector specifying colours for the BCI methods. Names
   must match the method labels used in the plot:
-  `"OLS regression (linear)"`, `"OLS regression (allometric)"`,
-  `"SMI (OLS)"`, `"SMI (robust)"`. Defaults are dark grey, yellow, and
-  blue.
+  `"OLS regression (linear)"`, `"OLS regression (allometric)"`, `"SMI"`,
+  `"SMI (robust)"`. Defaults are dark grey, yellow, and blue.
 
 - x_lab:
 
@@ -112,14 +113,14 @@ plot_bci(
 
 A `ggplot` object. If `return_predictions = TRUE`, a list containing the
 plot, the data used to generate the plot, and the predicted values used
-to draw the fitted lines is returned.
+to draw the reference relationships is returned.
 
 ## Details
 
 This function is intended for exploratory and comparative visualization
 of body condition estimation methods. When multiple BCI methods are
-shown, fitted lines are coloured by method, and points can optionally be
-split and coloured by a grouping variable.
+shown, reference relationships are coloured by method, and points can
+optionally be split and coloured by a grouping variable.
 
 ## Examples
 
@@ -131,7 +132,7 @@ plot_bci(
   gartersnake,
   svl_mm,
   mass_g,
-  method = c("resid_ols", "smi_ols", "smi_rob")
+  method = c("resid_ols", "smi", "smi_rob")
  )
 
 
@@ -152,10 +153,10 @@ plot_bci(
   gartersnake,
   svl_mm,
   mass_g,
-  method = c("smi_ols", "smi_rob"),
+  method = c("smi", "smi_rob"),
   group = sex,
   group_colours = c("M" = "darkorange2", "F" = "mediumpurple"),
-  method_colours = c("OLS residuals" = "black", "SMI (robust)" = "navy")
+  method_colours = c("OLS regression (allometric)" = "black", "SMI (robust)" = "navy")
 )
 
 
@@ -165,7 +166,7 @@ plot_bci(
   gartersnake,
   svl_mm,
   mass_g,
-  method = c("smi_ols"),
+  method = c("smi"),
   legend = FALSE
 )
 

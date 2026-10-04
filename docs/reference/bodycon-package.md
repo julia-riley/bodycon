@@ -2,9 +2,9 @@
 
 Provides functions for calculating and visualizing body condition
 indices for animals. Methods include residual-based ordinary least
-squares (OLS) indices, scaled mass index (SMI) using OLS and robust
-regression, and visualizations to compare and contrast the
-appropriateness of these indices.
+squares (OLS) indices, the scaled mass index (SMI) using classical
+standardized major axis (SMA) regression, and the SMI using robust SMA
+regression, along with visualizations for comparing these approaches.
 
 ## See also
 

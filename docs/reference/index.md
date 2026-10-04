@@ -2,15 +2,15 @@
 
 ## Body condition indices
 
-- [`bci()`](https://julia-riley.github.io/bodycon/reference/bci.md) :
-  Animal Body Condition Index Estimation
+- [`bci_smi()`](https://julia-riley.github.io/bodycon/reference/bci_smi.md)
+  : Scaled Mass Index
 - [`bci_resid_ols()`](https://julia-riley.github.io/bodycon/reference/bci_resid_ols.md)
   : Body Condition Index Estimation using Residuals from an OLS
   Regression
-- [`bci_smi_ols()`](https://julia-riley.github.io/bodycon/reference/bci_smi_ols.md)
-  : Scaled Mass Body Condition Index Estimation with OLS Regression
 - [`bci_smi_rob()`](https://julia-riley.github.io/bodycon/reference/bci_smi_rob.md)
-  : Scaled Mass Body Condition Index Estimation with Robust Regression
+  : Scaled Mass Index using Robust Standardized Major Axis Regression
+- [`bci()`](https://julia-riley.github.io/bodycon/reference/bci.md) :
+  Animal Body Condition Index Estimation
 
 ## Visualization
 

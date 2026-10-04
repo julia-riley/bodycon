@@ -30,6 +30,12 @@
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><a class="dropdown-item" href="../articles/smi-estimator-review-response.html">Response to the SMI estimator review</a></li>
+  </ul>
+</li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/julia-riley/bodycon/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
@@ -50,7 +56,7 @@
                         <h4 data-toc-skip class="author">Julia Riley
 &amp; Fonti Kar</h4>
             
-            <h4 data-toc-skip class="date">2026-09-30</h4>
+            <h4 data-toc-skip class="date">2026-10-04</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/julia-riley/bodycon/blob/HEAD/vignettes/bodycon.Rmd" class="external-link"><code>vignettes/bodycon.Rmd</code></a></small>
       <div class="d-none name"><code>bodycon.Rmd</code></div>
@@ -126,7 +132,7 @@ from CRAN:</p>
 <h2 id="example-datasets">Example Datasets<a class="anchor" aria-label="anchor" href="#example-datasets"></a>
 </h2>
 <p>Two example datasets are included with <code>bodycon</code> to
-demonstrate the function in the package.</p>
+demonstrate the functions in the package.</p>
 <div class="section level4">
 <h4 id="gartersnake">
 <code>gartersnake</code><a class="anchor" aria-label="anchor" href="#gartersnake"></a>
@@ -179,17 +185,18 @@ using:</p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="calculation-of-body-condition-indexes">Calculation of body condition indexes<a class="anchor" aria-label="anchor" href="#calculation-of-body-condition-indexes"></a>
+<h2 id="calculation-of-body-condition-indices">Calculation of body condition indices<a class="anchor" aria-label="anchor" href="#calculation-of-body-condition-indices"></a>
 </h2>
-<p>The <code>bodycon</code> package provides several function for
+<p>The <code>bodycon</code> package provides several functions for
 calculating body condition indices from measurements of animal body size
 and mass. The <code><a href="../reference/bci.html">bci()</a></code> function can be used to calculate
-indices using one or more methods, while seperate functions are also
-availiable for each method. The package currently includes three
-methods: OLS residuals, SMI using OLS regression, and SMI using robust
-regression. All methods require a standardised measure of body size
-(i.e., tarsus length for birds or snout-vent length for reptiles) and a
-measure of body mass.</p>
+indices using one or more methods, while separate functions are also
+available for each method. The package currently includes three methods:
+OLS residuals, the scaled mass index (SMI) using classical standardised
+major axis (SMA) regression, and the SMI using robust SMA regression.
+All methods require a standardised measure of body size (i.e., tarsus
+length for birds or snout-vent length for reptiles) and a measure of
+body mass.</p>
 <div class="section level3">
 <h3 id="residuals-from-ordinary-least-squares-regression">Residuals from ordinary least squares regression<a class="anchor" aria-label="anchor" href="#residuals-from-ordinary-least-squares-regression"></a>
 </h3>
@@ -235,62 +242,61 @@ before choosing this option.</p>
 <h3 id="scaled-mass-index-smi">Scaled mass index (SMI)<a class="anchor" aria-label="anchor" href="#scaled-mass-index-smi"></a>
 </h3>
 <p>Residual-based body condition indices have been widely used in
-ecology, but their use has been critqued. Concerns include the
-statistical assumptions of residual-based approached (García-Berthou,
-2001), their sensitivty to methodological choices (Schulte-Hostedde et
+ecology, but their use has been critiqued. Concerns include the
+statistical assumptions of residual-based approaches (García-Berthou,
+2001), their sensitivity to methodological choices (Schulte-Hostedde et
 al., 2005; Peig and Green, 2009), and whether their appropriateness
 varies among taxa (Jakob et al., 1996; Băncilă et al., 2010; Labocha and
 Hayes, 2012). The scaled mass index (SMI) provides an alternative
-approach for estimating body conition that was developed by Peig and
+approach for estimating body condition that was developed by Peig and
 Green (2009).</p>
-<p>The SMI estimates expected body mass at a standardized body size
+<p>The SMI estimates expected body mass at a standardised body size
 based on the scaling relationship between body size and mass. In
-<code>bodycon</code>, SMI can be calculated using either ordinary least
-squares regression (<code><a href="../reference/bci_smi_ols.html">bci_smi_ols()</a></code>) or robust regression
-(<code>bci_smi-rob()</code>). The standard SMI approach assumes an
-allometric relationship between body size and mass, so both measurements
-are log-transformed before the relationship is estimated.</p>
+<code>bodycon</code>, the classical SMI method estimates the scaling
+exponent using classical standardised major axis (SMA) regression, while
+the robust SMI method estimates the scaling exponent using robust SMA
+regression. The SMI approach assumes an allometric relationship between
+body size and mass, so both measurements are log-transformed before the
+scaling relationship is estimated.</p>
 <div class="section level4">
-<h4 id="smi-using-ordinary-least-squares-regression">SMI using ordinary least squares regression<a class="anchor" aria-label="anchor" href="#smi-using-ordinary-least-squares-regression"></a>
+<h4 id="smi-using-standardised-major-axis-regression">SMI using standardised major axis regression<a class="anchor" aria-label="anchor" href="#smi-using-standardised-major-axis-regression"></a>
 </h4>
-<p>The <code>bci_smi_ols</code> functions calculates SMI using ordinary
-least squares regression. For example, using this fuction we can
-calculate this for the <code>salamander</code> dataset using:</p>
+<p>The <code><a href="../reference/bci_smi.html">bci_smi()</a></code> function calculates SMI using classical
+standardised major axis (SMA) regression. For example, we can calculate
+SMI for the <code>salamander</code> dataset using:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span><span class="fu"><a href="../reference/bci_smi_ols.html">bci_smi_ols</a></span><span class="op">(</span><span class="va">salamander</span>, <span class="va">svl_mm</span>, <span class="va">mass_g</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/bci_smi.html">bci_smi</a></span><span class="op">(</span><span class="va">salamander</span>, <span class="va">svl_mm</span>, <span class="va">mass_g</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 128 × 1</span></span></span>
-<span><span class="co">#&gt;    smi_ols</span></span>
-<span><span class="co">#&gt;      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>   0.459</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>   0.427</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>   0.611</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>   0.576</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>   0.570</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>   0.760</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>   0.558</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>   0.506</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>   0.532</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>   0.626</span></span>
+<span><span class="co">#&gt;      smi</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 0.459</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 0.427</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 0.611</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 0.576</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 0.570</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 0.760</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 0.558</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 0.506</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 0.532</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 0.626</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 118 more rows</span></span></span></code></pre></div>
-<p>SMIT estimation using OLS can be sensitive to outliers (i.e., data
+<p>SMI estimation using SMA can be sensitive to outliers (i.e., data
 points that may distort the expected relationship between body length
 and mass). This can have a strong influence on the estimated
 relationship between body size and mass. When outliers are present,
-robust regression provides an alternative approach to estimating SMI
+robust SMA regression provides an alternative approach to estimating SMI
 using the <code><a href="../reference/bci_smi_rob.html">bci_smi_rob()</a></code> function.</p>
 </div>
 <div class="section level4">
-<h4 id="smi-using-robust-regression">SMI using robust regression<a class="anchor" aria-label="anchor" href="#smi-using-robust-regression"></a>
+<h4 id="smi-using-robust-standardised-major-axis-regression">SMI using robust standardised major axis regression<a class="anchor" aria-label="anchor" href="#smi-using-robust-standardised-major-axis-regression"></a>
 </h4>
-<p>The <code><a href="../reference/bci_smi_rob.html">bci_smi_rob()</a></code> function calculates the SMI using
-robust regression. The function uses an M estimator from the
-<code>MASS</code> package (Venables and Ripley, 2002), which reduces the
-influence of outliers when estimating the relationship between body size
-and mass. This approach is based on this <a href="https://apansharing.blogspot.com/2018/05/an-r-function-olsrobust-caled-mass-index.html" class="external-link">R
-code by Chen-Pan Liao</a>.</p>
-<p>For example, SMI can be caculated using robust regression for the
-<code>salamander</code> dataset:</p>
+<p>The <code><a href="../reference/bci_smi_rob.html">bci_smi_rob()</a></code> function calculates SMI using robust
+standardised major axis (SMA) regression. This approach reduces the
+influence of potential outliers when estimating the relationship between
+body size and mass.</p>
+<p>For example, SMI can be calculated using robust SMA regression for
+the <code>salamander</code> dataset:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="../reference/bci_smi_rob.html">bci_smi_rob</a></span><span class="op">(</span><span class="va">salamander</span>, <span class="va">svl_mm</span>, <span class="va">mass_g</span><span class="op">)</span></span>
@@ -308,7 +314,7 @@ code by Chen-Pan Liao</a>.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>   0.528</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>   0.622</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 118 more rows</span></span></span></code></pre></div>
-<p>Robust regression can be useful when outliers are present and may
+<p>Robust SMA regression can be useful when outliers are present and may
 disproportionately influence the estimated relationship between body
 size and mass.</p>
 </div>
@@ -317,37 +323,40 @@ size and mass.</p>
 <h3 id="using-multiple-methods-at-once">Using multiple methods at once<a class="anchor" aria-label="anchor" href="#using-multiple-methods-at-once"></a>
 </h3>
 <p>The <code><a href="../reference/bci.html">bci()</a></code> function allows you to calculate body
-condition indices using multiple methods at once. This can be used fil
+condition indices using multiple methods at once. This can be useful
 when you want to compare how estimates of body condition differ among
 methods.</p>
-<p>For example, you can calculate indices using the residual OLS, SMI
-OLS, and SMI robust regression methods:</p>
+<p>For example, you can calculate indices using the residual OLS, SMI,
+and robust SMI methods:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="../reference/bci.html">bci</a></span><span class="op">(</span><span class="va">gartersnake</span>, <span class="va">svl_mm</span>, <span class="va">mass_g</span>, </span>
-<span>    method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"resid_ols"</span>, <span class="st">"smi_ols"</span>, <span class="st">"smi_rob"</span><span class="op">)</span>,</span>
+<span>    method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"resid_ols"</span>, <span class="st">"smi"</span>, <span class="st">"smi_rob"</span><span class="op">)</span>,</span>
 <span>    relation <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"linear"</span>, <span class="st">"allometric"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning: The 'linear' relation applies only to the OLS residual method; SMI</span></span>
 <span><span class="co">#&gt; methods always use allometric (log-log) scaling.</span></span>
 <span><span class="co">#&gt; Warning: OLS residual method used a linear (non-log) relationship. This assumes</span></span>
 <span><span class="co">#&gt; a linear relationship between body size and mass.</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 46 × 4</span></span></span>
-<span><span class="co">#&gt;    resid_linear resid_allometric smi_ols smi_rob</span></span>
-<span><span class="co">#&gt;           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>        16.9           -<span style="color: #BB0000;">0.372</span>     38.0    35.6</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>        21.1           -<span style="color: #BB0000;">0.196</span>     46.4    43.2</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>        -<span style="color: #BB0000;">6.29</span>           0.068<span style="text-decoration: underline;">6</span>    48.4    47.9</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>       -<span style="color: #BB0000;">14.1</span>           -<span style="color: #BB0000;">0.094</span><span style="color: #BB0000; text-decoration: underline;">5</span>    39.8    39.8</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>        -<span style="color: #BB0000;">2.49</span>          -<span style="color: #BB0000;">0.032</span><span style="color: #BB0000; text-decoration: underline;">4</span>    46.5    45.3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>        -<span style="color: #BB0000;">3.25</span>          -<span style="color: #BB0000;">0.033</span><span style="color: #BB0000; text-decoration: underline;">1</span>    46.2    45.1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>        52.6            0.746     89.8    90.4</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>        21.0            0.735     97.2    95.5</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>       -<span style="color: #BB0000;">11.7</span>           -<span style="color: #BB0000;">0.661</span>     24.7    24.1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>       -<span style="color: #BB0000;">16.0</span>           -<span style="color: #BB0000;">0.658</span>     24.3    23.8</span></span>
+<span><span class="co">#&gt;    resid_linear resid_allometric   smi smi_rob</span></span>
+<span><span class="co">#&gt;           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>        16.9           -<span style="color: #BB0000;">0.372</span>   38.0    35.6</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>        21.1           -<span style="color: #BB0000;">0.196</span>   46.4    43.2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>        -<span style="color: #BB0000;">6.29</span>           0.068<span style="text-decoration: underline;">6</span>  48.4    47.9</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>       -<span style="color: #BB0000;">14.1</span>           -<span style="color: #BB0000;">0.094</span><span style="color: #BB0000; text-decoration: underline;">5</span>  39.8    39.8</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>        -<span style="color: #BB0000;">2.49</span>          -<span style="color: #BB0000;">0.032</span><span style="color: #BB0000; text-decoration: underline;">4</span>  46.5    45.3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>        -<span style="color: #BB0000;">3.25</span>          -<span style="color: #BB0000;">0.033</span><span style="color: #BB0000; text-decoration: underline;">1</span>  46.2    45.1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>        52.6            0.746   89.8    90.4</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>        21.0            0.735   97.2    95.5</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>       -<span style="color: #BB0000;">11.7</span>           -<span style="color: #BB0000;">0.661</span>   24.7    24.1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>       -<span style="color: #BB0000;">16.0</span>           -<span style="color: #BB0000;">0.658</span>   24.3    23.8</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 36 more rows</span></span></span></code></pre></div>
 <p>The <code>relation</code> argument specifies whether the residual OLS
 method should use a linear or allometric relationship. The SMI methods
-always use an allometric relationship.</p>
+always use an allometric relationship. Thus, in the example above, both
+linear and allometric OLS residual indices are calculated, while the
+classical and robust SMI methods are calculated using their respective
+SMA scaling exponents.</p>
 </div>
 <div class="section level3">
 <h3 id="including-individual-identifiers">Including individual identifiers<a class="anchor" aria-label="anchor" href="#including-individual-identifiers"></a>
@@ -361,20 +370,20 @@ estimates to individual animals.</p>
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="../reference/bci.html">bci</a></span><span class="op">(</span><span class="va">gartersnake</span>, <span class="va">svl_mm</span>, <span class="va">mass_g</span>,</span>
 <span>    id <span class="op">=</span> <span class="va">id_num</span>,</span>
-<span>    method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"resid_ols"</span>, <span class="st">"smi_ols"</span>, <span class="st">"smi_rob"</span><span class="op">)</span><span class="op">)</span></span>
+<span>    method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"resid_ols"</span>, <span class="st">"smi"</span>, <span class="st">"smi_rob"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 46 × 4</span></span></span>
-<span><span class="co">#&gt;       id resid_allometric smi_ols smi_rob</span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>     1          -<span style="color: #BB0000;">0.372</span>     38.0    35.6</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>     3          -<span style="color: #BB0000;">0.196</span>     46.4    43.2</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>     4           0.068<span style="text-decoration: underline;">6</span>    48.4    47.9</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>     5          -<span style="color: #BB0000;">0.094</span><span style="color: #BB0000; text-decoration: underline;">5</span>    39.8    39.8</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>     6          -<span style="color: #BB0000;">0.032</span><span style="color: #BB0000; text-decoration: underline;">4</span>    46.5    45.3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>     7          -<span style="color: #BB0000;">0.033</span><span style="color: #BB0000; text-decoration: underline;">1</span>    46.2    45.1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>     8           0.746     89.8    90.4</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>     9           0.735     97.2    95.5</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>    10          -<span style="color: #BB0000;">0.661</span>     24.7    24.1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>    11          -<span style="color: #BB0000;">0.658</span>     24.3    23.8</span></span>
+<span><span class="co">#&gt;       id resid_allometric   smi smi_rob</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>     1          -<span style="color: #BB0000;">0.372</span>   38.0    35.6</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>     3          -<span style="color: #BB0000;">0.196</span>   46.4    43.2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>     4           0.068<span style="text-decoration: underline;">6</span>  48.4    47.9</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>     5          -<span style="color: #BB0000;">0.094</span><span style="color: #BB0000; text-decoration: underline;">5</span>  39.8    39.8</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>     6          -<span style="color: #BB0000;">0.032</span><span style="color: #BB0000; text-decoration: underline;">4</span>  46.5    45.3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>     7          -<span style="color: #BB0000;">0.033</span><span style="color: #BB0000; text-decoration: underline;">1</span>  46.2    45.1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>     8           0.746   89.8    90.4</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>     9           0.735   97.2    95.5</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>    10          -<span style="color: #BB0000;">0.661</span>   24.7    24.1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>    11          -<span style="color: #BB0000;">0.658</span>   24.3    23.8</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 36 more rows</span></span></span></code></pre></div>
 </div>
 </div>
@@ -390,13 +399,13 @@ condition index.</p>
 <p>The <code><a href="../reference/plot_bci.html">plot_bci()</a></code> function allows you to visualise:</p>
 <ul>
 <li>OLS residuals (resid_ols)</li>
-<li>Scaled Mass Index using ordinary least squares regression
-(smi_ols)</li>
-<li>Scaled Mass Index using robust regression (smi_rob)</li>
+<li>Scaled Mass Index using standardised major axis (SMA) regression
+(smi)</li>
+<li>Scaled Mass Index using robust SMA regression (smi_rob)</li>
 </ul>
 <p>Raw data can also be grouped (e.g., by sex or population), and
-colours can be customized for both raw points and fitted method
-lines.</p>
+colours can be customized for both raw points and reference
+relationships.</p>
 <div class="section level4">
 <h4 id="comparing-body-condition-methods">Comparing body condition methods<a class="anchor" aria-label="anchor" href="#comparing-body-condition-methods"></a>
 </h4>
@@ -407,7 +416,7 @@ together:</p>
 <span>   <span class="va">gartersnake</span>,</span>
 <span>   <span class="va">svl_mm</span>,</span>
 <span>   <span class="va">mass_g</span>,</span>
-<span>   method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"resid_ols"</span>, <span class="st">"smi_ols"</span>, <span class="st">"smi_rob"</span><span class="op">)</span></span>
+<span>   method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"resid_ols"</span>, <span class="st">"smi"</span>, <span class="st">"smi_rob"</span><span class="op">)</span></span>
 <span>   <span class="op">)</span></span></code></pre></div>
 <p><img src="bodycon_files/figure-html/unnamed-chunk-12-1.png" class="r-plt" alt="" width="100%"></p>
 </div>
@@ -443,8 +452,9 @@ when plotting the SMI using robust regression:</p>
 <span>   group <span class="op">=</span> <span class="va">sex</span></span>
 <span>   <span class="op">)</span></span></code></pre></div>
 <p><img src="bodycon_files/figure-html/unnamed-chunk-14-1.png" class="r-plt" alt="" width="100%"></p>
-<p>Colours for raw data groups and method lines can be customised using
-<code>group_colours</code> and <code>method_colours</code>.</p>
+<p>Colours for raw data groups and reference relationships can be
+customised using <code>group_colours</code> and
+<code>method_colours</code>.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_bci.html">plot_bci</a></span><span class="op">(</span></span>
 <span>   <span class="va">gartersnake</span>,</span>
@@ -458,7 +468,7 @@ when plotting the SMI using robust regression:</p>
 <p><img src="bodycon_files/figure-html/unnamed-chunk-15-1.png" class="r-plt" alt="" width="100%"></p>
 <p>You can also adjust the labels, presence of a legend, and, in
 addition to plotting the graph, return the predictions so you can
-customise a figure further on your own. Check our the documentation for
+customise a figure further on your own. Check out the documentation for
 this function using <code><a href="../reference/plot_bci.html">?plot_bci</a></code> for details on all available
 arguments.</p>
 </div>
@@ -485,8 +495,6 @@ method. Oikos, 118(12), 1883-1891.</p>
 <p>Schulte-Hostedde AI, Zinner B, Millar JS, and Hickling GJ. (2005)
 Restitution of mass–size residuals: validating body condition indices.
 Ecology, 86(1), 155-163.</p>
-<p>Ripley BD, and Venables WN. (2002). Modern Applied Statistics with S,
-Fourth edition. Springer, New York. ISBN 0-387-95457-0, <a href="https://www.stats.ox.ac.uk/pub/MASS4/" class="external-link uri">https://www.stats.ox.ac.uk/pub/MASS4/</a>.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

@@ -9,28 +9,26 @@ financial or logistical research constraints. So, in these cases, animal
 ecologists often rely on proxies of individual fitness, such as body
 condition.
 
-One widely used method of estimating body condition is to relate body
-mass to a linear measure of body size, but this can be calculated in a
-variety of ways. `bodycon` contains functions for a variety of methods
-of estimating body condition indices, including residuals from an
-ordinary least squares (OLS) regression and scaled mass index (SMI)
-using OLS and robust regression.
+One widely used approach to estimating body condition is to relate body
+mass to a measure of body size, but this can be calculated in a variety
+of ways. `bodycon` contains functions for a variety of methods of
+estimating body condition indices, including residuals from an ordinary
+least squares (OLS) regression, the scaled mass index (SMI) using
+classical standardised major axis (SMA) regression, and the SMI using
+robust SMA regression.
 
 ## Installation
 
 The development version of `bodycon` can be installed from GitHub with:
 
-``` r
-
-remotes::install_github("julia-riley/bodycon")
-```
+`remotes``::`[`install_github`](https://remotes.r-lib.org/reference/install_github.html)`(``"julia-riley/bodycon"``)`
 
 A stable release of `bodycon` (version 0.1.0) is also available through
 the [GitHub releases](https://github.com/julia-riley/bodycon/releases).
 
 ## Getting Started
 
-See the [packages
+See the [package
 vignette](https://julia-riley.github.io/bodycon/articles/bodycon.html)
 for an introduction to `bodycon`, including examples of the included
 body condition index methods and approaches for evaluating their
@@ -46,10 +44,7 @@ Indices*. R package version 0.1.0.
 
 You can also obtain the citation directly in R:
 
-``` r
-
-citation("bodycon")
-```
+[`citation`](https://rdrr.io/r/utils/citation.html)`(``"bodycon"``)`
 
 ## Find a Bug?
 

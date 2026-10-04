@@ -5,19 +5,15 @@ export(bci_resid_ols)
 export(bci_smi)
 export(bci_smi_rob)
 export(plot_bci)
-importFrom(ggplot2,
-  aes,
-  geom_line,
-  geom_point,
-  ggplot,
-  labs,
-  scale_colour_manual,
-  theme,
-  theme_classic
-)
-importFrom(stats,
-  coef,
-  lm,
-  predict,
-  resid
-)
+importFrom(ggplot2,aes)
+importFrom(ggplot2,geom_line)
+importFrom(ggplot2,geom_point)
+importFrom(ggplot2,ggplot)
+importFrom(ggplot2,labs)
+importFrom(ggplot2,scale_colour_manual)
+importFrom(ggplot2,theme)
+importFrom(ggplot2,theme_classic)
+importFrom(stats,coef)
+importFrom(stats,lm)
+importFrom(stats,predict)
+importFrom(stats,resid)
