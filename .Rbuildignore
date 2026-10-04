@@ -12,3 +12,4 @@
 ^CITATION\.cff$
 ^\.Renviron$
 ^pkgdown$
+^cran-comments\.md$
