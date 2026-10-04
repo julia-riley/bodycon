@@ -15,7 +15,7 @@ vignette: >
 <style>
 .vignette-header {
   float: left;
-  width: 100px;
+  width: 150px;
   margin: 0 25px 10px 0;
 }
 
@@ -79,7 +79,7 @@ library(bodycon)
 ```
 
 
-# Example Datasets
+# Example datasets
 
 Two example datasets are included with `bodycon` to demonstrate the functions in the package.
 
