@@ -20,7 +20,7 @@ A stable release of `bodycon` (version 0.1.0) is also available through the [Git
 
 ## Getting Started
 
-See the [packages vignette](https://julia-riley.github.io/bodycon/articles/bodycon.html) for an introduction to `bodycon`, including examples of the included body condition index methods and approaches for evaluating their suitability for your data.
+See the [package vignette](https://julia-riley.github.io/bodycon/articles/bodycon.html) for an introduction to `bodycon`, including examples of the included body condition index methods and approaches for evaluating their suitability for your data.
 
 
 ## Citing `bodycon`
