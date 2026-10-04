@@ -11,10 +11,10 @@ navbar:
 reference:
   - title: Body condition indices
     contents:
-      - bci
+      - bci_smi
       - bci_resid_ols
-      - bci_smi_ols
       - bci_smi_rob
+      - bci
 
   - title: Visualization
     contents:
