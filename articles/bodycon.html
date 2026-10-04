@@ -10,7 +10,8 @@
 <link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="bodycon Quick Start Guide">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
+<meta property="og:title" content="bodycon Quick Start Guide">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -29,9 +30,13 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
+<li class="active nav-item"><a class="nav-link" href="../articles/bodycon.html">Get started</a></li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
       </ul>
 <ul class="navbar-nav">
+<li class="nav-item"><form class="form-inline" role="search">
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
+</form></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/julia-riley/bodycon/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
@@ -58,31 +63,11 @@
 
     
     
-<style>
-.vignette-header {
-  float: left;
-  width: 150px;
-  margin: 0 25px 10px 0;
-}
-
-.vignette-header img {
-  width: 100%;
-  height: auto;
-  padding: 0;
-  margin: 0;
-  border: none;
-  border-radius: 0;
-}
-
-h1 {
-  margin-top: 1.75em !important;
-  margin-bottom: 0.75em;
-}
-
-</style>
-<div class="vignette-header">
-<p><img src="figures/hex_sticker.png" alt="bodycon hex sticker"></p>
+<div class="bodycon-intro" style="display: flex; align-items: flex-start; gap: 25px;">
+<div class="bodycon-vignette-header">
+<p><img src="figures/hex_sticker.png" alt="bodycon hex sticker" style="display: block; width: 100px !important; max-width: 100px !important; height: auto !important;"></p>
 </div>
+<div class="bodycon-intro-text">
 <p><em>bodycon</em> is an R package for calculating commonly used body
 condition indices in wildlife ecology. Body condition is often used as a
 proxy for individual health and energetic reserves when direct measures
@@ -92,8 +77,7 @@ used body condition indices from measurements of animal body size and
 mass, with tools for comparing methods and visualising results. We hope
 to continue to develop <code>bodycon</code> to expand the taxa and
 approaches to which it can be applied.</p>
-<div style="clear: both;">
-
+</div>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -159,9 +143,9 @@ using:</p>
 <p>The <code>salamander</code> dataset contains morphological
 measurements from 128 Eastern Red-backed Salamanders (<em>Plethodon
 cinereus</em>) collected in New Brunswick, Canada in the summer of 2022.
-The dataset includes measurement of size (SVL in mm) and mass data for
-each individual salamander that can be used to calculate body condition
-indices.</p>
+The dataset includes measurements of size (SVL in mm) and mass (g) data
+for each individual salamander that can be used to calculate body
+condition indices.</p>
 <p>You can view the structure of the <code>salamander</code> dataset
 using:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
@@ -186,19 +170,19 @@ calculating body condition indices from measurements of animal body size
 and mass. The <code><a href="../reference/bci.html">bci()</a></code> function can be used to calculate
 indices using one or more methods, while separate functions are also
 available for each method. The package currently includes three methods:
-OLS residuals, the scaled mass index (SMI) using classical standardised
-major axis (SMA) regression, and the SMI using robust SMA regression.
-All methods require a standardised measure of body size (i.e., tarsus
-length for birds or snout-vent length for reptiles) and a measure of
-body mass.</p>
+OLS residuals, the scaled mass index (SMI) using standardised major axis
+(SMA) regression, and the SMI using robust SMA regression. All methods
+require a standardised measure of body size (i.e., tarsus length for
+birds or snout-vent length for squamates) and a measure of body
+mass.</p>
 <div class="section level3">
 <h3 id="residuals-from-ordinary-least-squares-regression">Residuals from ordinary least squares regression<a class="anchor" aria-label="anchor" href="#residuals-from-ordinary-least-squares-regression"></a>
 </h3>
-<p>This residual method estimates body condition indices from the
-residuals of an ordinary least squares regression (OLS). This is a
-traditional approach in ecology (Krebs and Singleton 1993). The method
-is specified as <code>"resid_ols"</code>, and see the examples below of
-using it to calculate body condition of gartersnakes:</p>
+<p>The <code><a href="../reference/bci_resid_ols.html">bci_resid_ols()</a></code> function estimates body condition
+indices from the residuals of an ordinary least squares regression
+(OLS). This is a traditional approach in ecology (Krebs and Singleton
+1993). For example, body condition can be calculated using this method
+for the <code>gartersnake</code> dataset using:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/bci_resid_ols.html">bci_resid_ols</a></span><span class="op">(</span><span class="va">gartersnake</span>, <span class="va">svl_mm</span>, <span class="va">mass_g</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 46 × 1</span></span></span>
@@ -239,25 +223,25 @@ before choosing this option.</p>
 ecology, but their use has been critiqued. Concerns include the
 statistical assumptions of residual-based approaches (García-Berthou,
 2001), their sensitivity to methodological choices (Schulte-Hostedde et
-al., 2005; Peig and Green, 2009), and whether their appropriateness
-varies among taxa (Jakob et al., 1996; Băncilă et al., 2010; Labocha and
-Hayes, 2012). The scaled mass index (SMI) provides an alternative
-approach for estimating body condition that was developed by Peig and
-Green (2009).</p>
+al., 2005; Peig and Green, 2009), and that their appropriateness varies
+among taxa (Jakob et al., 1996; Băncilă et al., 2010; Labocha and Hayes,
+2012). The scaled mass index (SMI) provides an alternative approach for
+estimating body condition that was developed by Peig and Green
+(2009).</p>
 <p>The SMI estimates expected body mass at a standardised body size
 based on the scaling relationship between body size and mass. In
-<code>bodycon</code>, the classical SMI method estimates the scaling
-exponent using classical standardised major axis (SMA) regression, while
-the robust SMI method estimates the scaling exponent using robust SMA
-regression. The SMI approach assumes an allometric relationship between
-body size and mass, so both measurements are log-transformed before the
-scaling relationship is estimated.</p>
+<code>bodycon</code>, the SMI method estimates the scaling exponent
+using standardised major axis (SMA) regression, while the robust SMI
+method estimates the scaling exponent using robust SMA regression. The
+SMI approach assumes an allometric relationship between body size and
+mass, so both measurements are log-transformed before the scaling
+relationship is estimated.</p>
 <div class="section level4">
 <h4 id="smi-using-standardised-major-axis-regression">SMI using standardised major axis regression<a class="anchor" aria-label="anchor" href="#smi-using-standardised-major-axis-regression"></a>
 </h4>
-<p>The <code><a href="../reference/bci_smi.html">bci_smi()</a></code> function calculates SMI using classical
-standardised major axis (SMA) regression. For example, we can calculate
-SMI for the <code>salamander</code> dataset using:</p>
+<p>The <code><a href="../reference/bci_smi.html">bci_smi()</a></code> function calculates SMI using standardised
+major axis (SMA) regression. For example, we can calculate SMI for the
+<code>salamander</code> dataset using:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="../reference/bci_smi.html">bci_smi</a></span><span class="op">(</span><span class="va">salamander</span>, <span class="va">svl_mm</span>, <span class="va">mass_g</span><span class="op">)</span></span>
@@ -277,10 +261,10 @@ SMI for the <code>salamander</code> dataset using:</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 118 more rows</span></span></span></code></pre></div>
 <p>SMI estimation using SMA can be sensitive to outliers (i.e., data
 points that may distort the expected relationship between body length
-and mass). This can have a strong influence on the estimated
+and mass). These outliers can have a strong influence on the estimated
 relationship between body size and mass. When outliers are present,
-robust SMA regression provides an alternative approach to estimating SMI
-using the <code><a href="../reference/bci_smi_rob.html">bci_smi_rob()</a></code> function.</p>
+robust SMA regression provides an alternative approach to estimating
+SMI.</p>
 </div>
 <div class="section level4">
 <h4 id="smi-using-robust-standardised-major-axis-regression">SMI using robust standardised major axis regression<a class="anchor" aria-label="anchor" href="#smi-using-robust-standardised-major-axis-regression"></a>
@@ -308,8 +292,8 @@ the <code>salamander</code> dataset:</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>   0.528</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>   0.622</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 118 more rows</span></span></span></code></pre></div>
-<p>Robust SMA regression can be useful when outliers are present and may
-disproportionately influence the estimated relationship between body
+<p>Robust SMA regression can be useful when outliers are present that
+may disproportionately influence the estimated relationship between body
 size and mass.</p>
 </div>
 </div>
@@ -320,8 +304,9 @@ size and mass.</p>
 condition indices using multiple methods at once. This can be useful
 when you want to compare how estimates of body condition differ among
 methods.</p>
-<p>For example, you can calculate indices using the residual OLS, SMI,
-and robust SMI methods:</p>
+<p>For example, you can use the <code>method</code> argument to specify
+the methods to include, like residual OLS (<code>"resid_ols"</code>),
+SMI (<code>"smi"</code>), and robust SMI (<code>"smi_rob"</code>):</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="../reference/bci.html">bci</a></span><span class="op">(</span><span class="va">gartersnake</span>, <span class="va">svl_mm</span>, <span class="va">mass_g</span>, </span>
@@ -348,18 +333,20 @@ and robust SMI methods:</p>
 <p>The <code>relation</code> argument specifies whether the residual OLS
 method should use a linear or allometric relationship. The SMI methods
 always use an allometric relationship. Thus, in the example above, both
-linear and allometric OLS residual indices are calculated, while the
-classical and robust SMI methods are calculated using their respective
-SMA scaling exponents.</p>
+linear and allometric OLS residual indices are calculated, while the two
+SMI methods are calculated using their respective SMA scaling
+exponents.</p>
 </div>
 <div class="section level3">
 <h3 id="including-individual-identifiers">Including individual identifiers<a class="anchor" aria-label="anchor" href="#including-individual-identifiers"></a>
 </h3>
-<p>If your dataset contained a unique identifier for each individual,
-you can include it using the <code>id</code> argument. This adds the
+<p>If your dataset contains a unique identifier for each individual, you
+can include it using the <code>id</code> argument. This adds the
 identifier to the output, making it easier to match body condition
 estimates to individual animals.</p>
-<p>For example:</p>
+<p>For example, the <code>id</code> argument can be used to include the
+<code>id_num</code> variable from the <code>gartersnake</code> dataset
+in the output:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="../reference/bci.html">bci</a></span><span class="op">(</span><span class="va">gartersnake</span>, <span class="va">svl_mm</span>, <span class="va">mass_g</span>,</span>
@@ -392,10 +379,11 @@ literature and the goals of your analyses when selecting a body
 condition index.</p>
 <p>The <code><a href="../reference/plot_bci.html">plot_bci()</a></code> function allows you to visualise:</p>
 <ul>
-<li>OLS residuals (resid_ols)</li>
+<li>OLS residuals (<code>"resid_ols"</code>)</li>
 <li>Scaled Mass Index using standardised major axis (SMA) regression
-(smi)</li>
-<li>Scaled Mass Index using robust SMA regression (smi_rob)</li>
+(<code>"smi"</code>)</li>
+<li>Scaled Mass Index using robust SMA regression
+(<code>"smi_rob"</code>)</li>
 </ul>
 <p>Raw data can also be grouped (e.g., by sex or population), and
 colours can be customized for both raw points and reference
@@ -417,10 +405,10 @@ together:</p>
 <div class="section level4">
 <h4 id="comparing-linear-and-allometric-relationships">Comparing linear and allometric relationships<a class="anchor" aria-label="anchor" href="#comparing-linear-and-allometric-relationships"></a>
 </h4>
-<p>You can also use <code>plot_bci</code> to compare linear
-vs. allometric relationships between body size and mass. This can be
-useful when evaluating whether the assumptions of the residual OLS
-method are appropriate for your data.</p>
+<p>You can also use <code><a href="../reference/plot_bci.html">plot_bci()</a></code> to compare linear versus
+allometric relationships between body size and mass. This can be useful
+when evaluating whether the assumptions of the residual OLS method are
+appropriate for your data.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_bci.html">plot_bci</a></span><span class="op">(</span></span>
 <span>   <span class="va">gartersnake</span>,</span>
@@ -436,7 +424,7 @@ method are appropriate for your data.</p>
 </h4>
 <p>The <code>group</code> argument allows you to highlight groups within
 the raw data. For example, you can separate male and female gartersnakes
-when plotting the SMI using robust regression:</p>
+when plotting raw data and SMI using robust SMA regression:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_bci.html">plot_bci</a></span><span class="op">(</span></span>
 <span>   <span class="va">gartersnake</span>,</span>
@@ -463,8 +451,8 @@ customised using <code>group_colours</code> and
 <p>You can also adjust the labels, presence of a legend, and, in
 addition to plotting the graph, return the predictions so you can
 customise a figure further on your own. Check out the documentation for
-this function using <code><a href="../reference/plot_bci.html">?plot_bci</a></code> for details on all available
-arguments.</p>
+this function using <code>?plot_bci()</code> for details on all
+available arguments.</p>
 </div>
 </div>
 <div class="section level2">
