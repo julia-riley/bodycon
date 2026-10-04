@@ -90,5 +90,3 @@ about it. We will try to get to it as soon as we can.
 
 - [bodycon Quick Start
   Guide](https://julia-riley.github.io/bodycon/articles/bodycon.md):
-- [Response to the SMI estimator
-  review](https://julia-riley.github.io/bodycon/articles/smi-estimator-review-response.md):
