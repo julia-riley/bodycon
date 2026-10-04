@@ -11,5 +11,3 @@
 ^AGENTS\.md$
 ^CITATION\.cff$
 ^\.Renviron$
-^vignettes/smi-estimator-review\.Rmd$
-^vignettes/smi-estimator-review-response\.Rmd$
