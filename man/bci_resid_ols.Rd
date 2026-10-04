@@ -15,10 +15,10 @@ bci_resid_ols(data, body_size, weight, id = NULL, relation = c("allometric"))
 
 \item{id}{a unique identifier for the animals included in your dataset. If included, a tibble with these unique identifiers and the estimates is returned and, if not, the estimate alone is returned. Default is \code{NULL}.}
 
-\item{relation}{an argument to specify whether or not the relationship between weight and body size variables are assumed to be allometric (\code{"allometric"}) or linear (\code{"linear"}). If allometric, both variables are log-transformed. Default is \verb{"allometric}. Biologically speaking, most animals exhibit a allometric relationship between their weight and body size measurements, this is the method that is appropriate.}
+\item{relation}{an argument to specify whether or not the relationship between weight and body size variables are assumed to be allometric (\code{"allometric"}) or linear (\code{"linear"}). If allometric, both variables are log-transformed. Default is \code{"allometric"}. Biologically speaking, most animals exhibit an allometric relationship between their weight and body size measurements.}
 }
 \value{
-a vector of body condition indices for each individual estimates that are the residuals from an OLS regression
+A tibble containing residual-based body condition indices from the specified OLS relationship.
 }
 \description{
 This function calculates body condition indices from the residuals of an ordinary

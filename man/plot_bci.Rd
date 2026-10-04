@@ -8,7 +8,7 @@ plot_bci(
   data,
   body_size,
   weight,
-  method = c("resid_ols", "smi_ols", "smi_rob"),
+  method = c("resid_ols", "smi", "smi_rob"),
   relation = "allometric",
   group = NULL,
   group_colours = NULL,
@@ -29,9 +29,9 @@ weight for each individual of one animal species}
 
 \item{weight}{name of weight variable (e.g., mass of the animal)}
 
-\item{method}{method used to estimate body condition, either residuals from an OLS regression (\code{"resid_ols"}) or scaled mass index using an OLS (\code{"smi_ols"}) or robust regression (\code{"smi_rob"}). Provide one or a list of these.}
+\item{method}{method used to estimate body condition, either residuals from an OLS regression (\code{"resid_ols"}), the scaled mass index using classical standardized major axis (SMA) regression (\code{"smi"}), or the scaled mass index using robust SMA regression (\code{"smi_rob"}). One or more methods can be supplied.}
 
-\item{relation}{an argument to specify whether or not the relationship between weight and body size variables are assumed to be allometric (\code{"allometric"}) or linear (\code{"linear"}). If allometric, both variables are log-transformed. Default is \verb{"allometric}. Biologically speaking, most animals exhibit a allometric relationship between their weight and body size measurements, this is the method that is appropriate.}
+\item{relation}{an argument to specify whether or not the relationship between weight and body size variables are assumed to be allometric (\code{"allometric"}) or linear (\code{"linear"}). If allometric, both variables are log-transformed. Default is \code{"allometric"}. Biologically speaking, most animals exhibit an allometric relationship between their weight and body size measurements.}
 
 \item{group}{Optional column in \code{data} specifying grouping of raw points
 (e.g., sex, population). Default is \code{NULL} (all points treated as one group) and plotted in light grey.}
@@ -42,7 +42,7 @@ If \code{NULL}, default ggplot2 colours are used.}
 
 \item{method_colours}{Optional named vector specifying colours for the BCI methods.
 Names must match the method labels used in the plot: \code{"OLS regression (linear)"},
-\code{"OLS regression (allometric)"}, \code{"SMI (OLS)"}, \code{"SMI (robust)"}. Defaults are dark grey, yellow, and blue.}
+\code{"OLS regression (allometric)"}, \code{"SMI"}, \code{"SMI (robust)"}. Defaults are dark grey, yellow, and blue.}
 
 \item{x_lab}{Label for the x-axis. The default is \code{"Body Size"}.}
 
@@ -59,18 +59,18 @@ Names must match the method labels used in the plot: \code{"OLS regression (line
 \value{
 A \code{ggplot} object. If \code{return_predictions = TRUE}, a list containing
 the plot, the data used to generate the plot, and the predicted values
-used to draw the fitted lines is returned.
+used to draw the reference relationships is returned.
 }
 \description{
 Visualize and compare body condition index (BCI) estimation methods by
-plotting raw, observed body size–weight data alongside BCI estimated fits.
-The function uses the \code{bci()} wrapper to ensure consistency between
-analytical and visual outputs.
+plotting raw, observed body size–weight data alongside reference relationships implied by the selected BCI method(s).
+The function applies the same body condition index methods used by \code{bci()} to provide a
+consistent visual comparison of the resulting relationships.
 }
 \details{
 This function is intended for exploratory and comparative visualization
 of body condition estimation methods. When multiple BCI methods are shown,
-fitted lines are coloured by method, and points can optionally be split
+reference relationships are coloured by method, and points can optionally be split
 and coloured by a grouping variable.
 }
 \examples{
@@ -81,7 +81,7 @@ plot_bci(
   gartersnake,
   svl_mm,
   mass_g,
-  method = c("resid_ols", "smi_ols", "smi_rob")
+  method = c("resid_ols", "smi", "smi_rob")
  )
 
 # Plot only BCI using the SMI method estimated with an robust regression
@@ -100,10 +100,10 @@ plot_bci(
   gartersnake,
   svl_mm,
   mass_g,
-  method = c("smi_ols", "smi_rob"),
+  method = c("smi", "smi_rob"),
   group = sex,
   group_colours = c("M" = "darkorange2", "F" = "mediumpurple"),
-  method_colours = c("OLS residuals" = "black", "SMI (robust)" = "navy")
+  method_colours = c("OLS regression (allometric)" = "black", "SMI (robust)" = "navy")
 )
 
 # Plot BCI using the SMI method estimated with an robust regression
@@ -112,7 +112,7 @@ plot_bci(
   gartersnake,
   svl_mm,
   mass_g,
-  method = c("smi_ols"),
+  method = c("smi"),
   legend = FALSE
 )
 

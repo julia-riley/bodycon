@@ -9,7 +9,7 @@ bci(
   body_size,
   weight,
   id = NULL,
-  method = c("resid_ols", "smi_ols", "smi_rob"),
+  method = c("resid_ols", "smi", "smi_rob"),
   relation = NULL
 )
 }
@@ -23,16 +23,18 @@ weight for each individual of one animal species}
 
 \item{id}{a unique identifier for the animals included in your dataset. If included, a tibble with these unique identifiers and the estimates is returned and, if not, the estimate alone is returned. Default is \code{NULL}.}
 
-\item{method}{method used to estimate body condition, either residuals from an OLS regression (\code{"resid_ols"}) or scaled mass index using an OLS (\code{"smi_ols"} or robust regression (\code{"smi_ols"}). Provide one or a list of these.}
+\item{method}{method used to estimate body condition. Options are residuals from an OLS regression (\code{"resid_ols"}), the scaled mass index using classical SMA regression (\code{"smi"}), or the scaled mass index using robust SMA regression (\code{"smi_rob"}). One or more methods can be supplied.}
 
 \item{relation}{an argument to specify whether or not the relationship between weight and body size variables are assumed to be allometric (\code{"allometric"}) or linear (\code{"linear"}). If allometric, both variables are log-transformed. Default is \verb{"allometric}. Biologically speaking, most animals exhibit a allometric relationship between their weight and body size measurements, this is the method that is appropriate.}
 }
 \value{
-a vector of body condition indices for each individual estimates using the method specified
+a tibble of body condition indices for each individual estimates using the method specified
 }
 \description{
-This function calculates body condition indices using multiple established methods: from the residuals of an ordinary
-least squares regression (OLS), and using the scaled mass index (SMI) method using OLS or robust regression for estimation.
+This function calculates body condition indices using three established
+approaches: residuals from an ordinary least squares regression (OLS),
+the scaled mass index (SMI) using classical standardized major axis (SMA)
+regression, and the SMI using robust SMA regression.
 
 First, calculating body condition indices from the residuals of an OLS regression  is a traditional
 approach in ecology as outlined by Krebs and Singleton (1993). There is discussion
@@ -41,14 +43,12 @@ Peig and Green, 2009), how its appropriateness may vary by taxon (Jakob et al.,
 1996; Băncilă et al., 2010; Labocha and Hayes, 2012), and whether it fits the
 assumptions of certain statistical tests (García-Berthou, 2001).
 
-The second method calculates body condition indices using the SMI method as
-described by Peig and Green (2009).
-Specifically, this method uses OLS or robust regression in its estimation of the body condition indices.
-OLS regression is sensitive to the presence of outliers (i.e., data points that may distort the expected relationship between body length and weight).
-So, another option is to estimate SMI using robust regression using an M estimator
-from MASS (Venables and Ripley, 2002) in its
-estimation of the body condition indices. The robust regression approach is less sensitive to the presence of outliers
-(i.e., data points that may distort the expected relationship between body length and weight), as shown in \href{https://apansharing.blogspot.com/2018/05/an-r-function-olsrobust-caled-mass-index.html}{this blog by by Chen-Pan Liao}.
+The SMI method described by Peig and Green (2009) uses an allometric,
+log-transformed relationship and the scaling exponent estimated from a
+standardized major axis regression to scale individual mass to a common
+reference body size. The robust SMI method uses the same SMI framework but
+estimates the scaling exponent using robust standardized major axis regression,
+reducing the influence of potential outliers on the fitted allometric relationship.
 }
 \examples{
 # In these examples we will make use of the `gartersnake` dataset in this R package.
@@ -60,17 +60,17 @@ estimation of the body condition indices. The robust regression approach is less
 gartersnake  |>
   bci(svl_mm, mass_g, method = "resid_ols")
   
-# BCI using the SMI method estimated with an OLS regression
+# BCI using the scaled mass index
 gartersnake  |>
-  bci(svl_mm, mass_g, method = "smi_ols")
+  bci(svl_mm, mass_g, method = "smi")
   
-# BCI using the SMI method estimated with an robust regression
+# BCI using the scaled mass index with robust SMA
 gartersnake  |>
   bci(svl_mm, mass_g, method = "smi_rob")
   
 # BCI with all three methods
 gartersnake |>
-  bci(svl_mm, mass_g, method = c("resid_ols", "smi_ols", "smi_rob"))
+  bci(svl_mm, mass_g, method = c("resid_ols", "smi", "smi_rob"))
   
 }
 \references{
@@ -98,7 +98,4 @@ from mass/length data: the scaled mass index as an alternative method."
 Schulte-Hostedde AI, Zinner B, Millar JS, Hickling GJ (2005). "Restitution
 of mass-size residuals: validating body condition indices." \emph{Ecology},
 86(1), 155–163.
-
-Venables WN, Ripley BD (2002). \emph{Modern Applied Statistics with S}, 4th ed.
-Springer, New York.
 }
