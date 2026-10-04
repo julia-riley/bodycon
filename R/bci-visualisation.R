@@ -2,16 +2,16 @@
 #'
 #' @description
 #' Visualize and compare body condition index (BCI) estimation methods by
-#' plotting raw, observed body size–weight data alongside BCI estimated fits. 
-#' The function uses the \code{bci()} wrapper to ensure consistency between
-#' analytical and visual outputs.
+#' plotting raw, observed body size–weight data alongside reference relationships implied by the selected BCI method(s). 
+#' The function applies the same body condition index methods used by `bci()` to provide a 
+#' consistent visual comparison of the resulting relationships.
 #'
 #' @param data tibble/dataframe containing a standard body size variable and the corresponding 
 #' weight for each individual of one animal species
 #' @param body_size name of standard body size variable (e.g., snout-vent-length of reptiles, tarsus length of birds, length from the snout to the base of the tail for mammals, etc.)
 #' @param weight name of weight variable (e.g., mass of the animal)
-#' @param method method used to estimate body condition, either residuals from an OLS regression (`"resid_ols"`) or scaled mass index using an OLS (`"smi_ols"`) or robust regression (`"smi_rob"`). Provide one or a list of these. 
-#' @param relation an argument to specify whether or not the relationship between weight and body size variables are assumed to be allometric (`"allometric"`) or linear (`"linear"`). If allometric, both variables are log-transformed. Default is `"allometric`. Biologically speaking, most animals exhibit a allometric relationship between their weight and body size measurements, this is the method that is appropriate.
+#' @param method method used to estimate body condition, either residuals from an OLS regression (`"resid_ols"`), the scaled mass index using classical standardized major axis (SMA) regression (`"smi"`), or the scaled mass index using robust SMA regression (`"smi_rob"`). One or more methods can be supplied.
+#' @param relation an argument to specify whether or not the relationship between weight and body size variables are assumed to be allometric (`"allometric"`) or linear (`"linear"`). If allometric, both variables are log-transformed. Default is `"allometric"`. Biologically speaking, most animals exhibit an allometric relationship between their weight and body size measurements.
 #' @param group Optional column in \code{data} specifying grouping of raw points
 #'   (e.g., sex, population). Default is \code{NULL} (all points treated as one group) and plotted in light grey.
 #' @param group_colours Optional named vector specifying colours for each group of raw points.
@@ -19,7 +19,7 @@
 #'   If \code{NULL}, default ggplot2 colours are used.
 #' @param method_colours Optional named vector specifying colours for the BCI methods.
 #'   Names must match the method labels used in the plot: `"OLS regression (linear)"`,
-#'   `"OLS regression (allometric)"`, `"SMI (OLS)"`, `"SMI (robust)"`. Defaults are dark grey, yellow, and blue.
+#'   `"OLS regression (allometric)"`, `"SMI"`, `"SMI (robust)"`. Defaults are dark grey, yellow, and blue.
 #' @param x_lab Label for the x-axis. The default is `"Body Size"`.
 #' @param y_lab Label for the y-axis. The default is `"Weight"`.
 #' @param group_lab Label for the grouping variable, if provided, enclosed in quotations. The default is `"Group"`.
@@ -29,12 +29,12 @@
 #'
 #' @return A `ggplot` object. If `return_predictions = TRUE`, a list containing
 #'   the plot, the data used to generate the plot, and the predicted values
-#'   used to draw the fitted lines is returned.
+#'   used to draw the reference relationships is returned.
 #'
 #' @details
 #' This function is intended for exploratory and comparative visualization
 #' of body condition estimation methods. When multiple BCI methods are shown,
-#' fitted lines are coloured by method, and points can optionally be split
+#' reference relationships are coloured by method, and points can optionally be split
 #' and coloured by a grouping variable.
 #'
 #' @examples
@@ -45,7 +45,7 @@
 #'   gartersnake,
 #'   svl_mm,
 #'   mass_g,
-#'   method = c("resid_ols", "smi_ols", "smi_rob")
+#'   method = c("resid_ols", "smi", "smi_rob")
 #'  )
 #'
 #' # Plot only BCI using the SMI method estimated with an robust regression
@@ -64,10 +64,10 @@
 #'   gartersnake,
 #'   svl_mm,
 #'   mass_g,
-#'   method = c("smi_ols", "smi_rob"),
+#'   method = c("smi", "smi_rob"),
 #'   group = sex,
 #'   group_colours = c("M" = "darkorange2", "F" = "mediumpurple"),
-#'   method_colours = c("OLS residuals" = "black", "SMI (robust)" = "navy")
+#'   method_colours = c("OLS regression (allometric)" = "black", "SMI (robust)" = "navy")
 #' )
 #' 
 #' # Plot BCI using the SMI method estimated with an robust regression
@@ -76,7 +76,7 @@
 #'   gartersnake,
 #'   svl_mm,
 #'   mass_g,
-#'   method = c("smi_ols"),
+#'   method = c("smi"),
 #'   legend = FALSE
 #' )
 #' 
@@ -87,7 +87,7 @@
 #'
 #' @export
 plot_bci <- function(data, body_size, weight,
-                     method = c("resid_ols", "smi_ols", "smi_rob"),
+                     method = c("resid_ols", "smi", "smi_rob"),
                      relation = "allometric",
                      group = NULL,
                      group_colours = NULL,
@@ -99,10 +99,20 @@ plot_bci <- function(data, body_size, weight,
                      legend = TRUE,
                      return_predictions = FALSE) {
   
-  relation <- match.arg(relation, c("allometric", "linear"), several.ok = TRUE)
+  method <- match.arg(
+    method,
+    c("resid_ols", "smi", "smi_rob"),
+    several.ok = TRUE
+  )
+  
+  relation <- match.arg(
+    relation,
+    c("allometric", "linear"),
+    several.ok = TRUE
+  )
   
   # ---- SMI warning ----
-  if (any(method %in% c("smi_ols", "smi_rob")) && "linear" %in% relation) {
+  if (any(method %in% c("smi", "smi_rob")) && "linear" %in% relation) {
     warning(
       paste(
         "SMI methods always assume allometric (log-log) scaling.",
@@ -145,12 +155,12 @@ plot_bci <- function(data, body_size, weight,
     method_colours <- c(
       "OLS regression (linear)" = "grey50",
       "OLS regression (allometric)" = "black",
-      "SMI (OLS)" = "gold2",
+      "SMI" = "gold2",
       "SMI (robust)" = "steelblue"
     )
   }
   
-  #----Calculating predictions for lines of fit---
+  #----Calculating reference relationships---
   pred_lines <- list()
   
   body_seq <- seq(
@@ -162,7 +172,7 @@ plot_bci <- function(data, body_size, weight,
   method_labels <- c(
     resid_ols_allometric = "OLS regression (allometric)",
     resid_ols_linear = "OLS regression (linear)",
-    smi_ols = "SMI (OLS)",
+    smi = "SMI",
     smi_rob = "SMI (robust)"
   )
   
@@ -196,24 +206,27 @@ plot_bci <- function(data, body_size, weight,
     }
   }
   
-  ## SMI using OLS regression
-  if ("smi_ols" %in% method) {
+  ## SMI
+  if ("smi" %in% method) {
     
     x0 <- mean(plot_data$body_size, na.rm = TRUE)
     
-    b_msa_ols <- coef(
-      smatr::sma(log(weight) ~ log(body_size), data = plot_data)
+    b_sma <- coef(
+      smatr::sma(log(weight) ~ log(body_size), 
+                 method = "SMA",
+                 robust = FALSE,
+                 data = plot_data)
     )[2]
     
     smi_values <- plot_data$weight *
-      (x0 / plot_data$body_size)^b_msa_ols
+      (x0 / plot_data$body_size)^b_sma
     
     mean_smi <- mean(smi_values, na.rm = TRUE)
     
-    pred_lines$smi_ols <- dplyr::mutate(
+    pred_lines$smi <- dplyr::mutate(
       pred_grid,
-      pred_wgt = mean_smi * (body_size / x0)^b_msa_ols,
-      method = method_labels["smi_ols"]
+      pred_wgt = mean_smi * (body_size / x0)^b_sma,
+      method = method_labels["smi"]
     )
   }
   
@@ -222,20 +235,21 @@ plot_bci <- function(data, body_size, weight,
     
     x0 <- mean(plot_data$body_size, na.rm = TRUE)
     
-    b_msa_rob <- coef(
+    b_sma_rob <- coef(
       smatr::sma(log(weight) ~ log(body_size),
                  data = plot_data,
+                 method = "SMA",
                  robust = TRUE)
     )[2]
     
     smi_values <- plot_data$weight *
-      (x0 / plot_data$body_size)^b_msa_rob
+      (x0 / plot_data$body_size)^b_sma_rob
     
     mean_smi <- mean(smi_values, na.rm = TRUE)
     
     pred_lines$smi_rob <- dplyr::mutate(
       pred_grid,
-      pred_wgt = mean_smi * (body_size / x0)^b_msa_rob,
+      pred_wgt = mean_smi * (body_size / x0)^b_sma_rob,
       method = method_labels["smi_rob"]
     )
   }
