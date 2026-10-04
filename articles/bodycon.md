@@ -42,7 +42,7 @@ Once installed, load the package:
 library(bodycon)
 ```
 
-## Example Datasets
+## Example datasets
 
 Two example datasets are included with `bodycon` to demonstrate the
 functions in the package.
