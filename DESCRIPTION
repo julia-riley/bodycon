@@ -5,7 +5,7 @@ Authors@R: c(
     person("Julia", "Riley", , "jriley@mta.ca", role = c("aut", "cre", "cph"), comment = c(ORCID = "0000-0001-7691-6910")),
     person("Fonti", "Kar", role = c("aut", "cph"), comment = c(ORCID = "0000-0002-2760-3974"))
     )
-Description: Provides functions for calculating and visualizing body condition indices for animals. Methods include residual-based ordinary least squares (OLS) indices, the scaled mass index (SMI) using classical standardized major axis (SMA) regression, and the SMI using robust SMA regression, along with visualizations for comparing these approaches.
+Description: Description: Provides functions for calculating and visualizing body condition indices for animals. Methods include residual-based ordinary least squares (OLS) indices, the scaled mass index (SMI) using standardised major axis (SMA) regression, and the SMI using robust SMA regression, along with visualizations for comparing these approaches. Methods are described by Krebs and Singleton (1993) <doi:10.1071/ZO9930317>, Peig and Green (2009) <doi:10.1111/j.1600-0706.2009.17643.x>, and Warton et al. (2012) <doi:10.1111/j.2041-210X.2011.00153.x>.
 License: MIT + file LICENSE
 URL: https://github.com/julia-riley/bodycon, https://julia-riley.github.io/bodycon/
 BugReports: https://github.com/julia-riley/bodycon/issues
