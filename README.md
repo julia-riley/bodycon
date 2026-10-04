@@ -10,13 +10,17 @@ One widely used approach to estimating body condition is to relate body mass to 
 
 ## Installation
 
+The released version of bodycon can be installed from CRAN with:
+
+```r
+install.packages("bodycon")
+```
+
 The development version of `bodycon` can be installed from GitHub with: 
 
 ```r
 remotes::install_github("julia-riley/bodycon")
 ```
-
-A stable release of `bodycon` (version 0.1.0) is also available through the [GitHub releases](https://github.com/julia-riley/bodycon/releases).
 
 ## Getting Started
 
